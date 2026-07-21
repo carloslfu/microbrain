@@ -34,6 +34,28 @@ softmax learns slowly (a near-one-hot distribution barely moves when its
 inputs nudge, so almost no gradient flows back through it; exercise 2 pokes
 at exactly this, with a twist).
 
+The whole mechanism, from [train3.py](../train3.py) (the two `attn_trace`
+lines are this repo's instrument for drawing the heatmap later — not part of
+the algorithm):
+
+```python
+    # 1) Single-head attention block
+    x_residual = x
+    x = rmsnorm(x)
+    q = linear(x, state_dict['attn_wq'])
+    k = linear(x, state_dict['attn_wk'])
+    v = linear(x, state_dict['attn_wv'])
+    keys.append(k)
+    values.append(v)
+    attn_logits = [sum(q[j] * keys[t][j] for j in range(n_embd)) / n_embd**0.5 for t in range(len(keys))]
+    attn_weights = softmax(attn_logits)
+    if attn_trace is not None:
+        attn_trace.append([w.data for w in attn_weights])
+    x_attn = [sum(attn_weights[t] * values[t][j] for t in range(len(values))) for j in range(n_embd)]
+    x = linear(x_attn, state_dict['attn_wo'])
+    x = [a + b for a, b in zip(x, x_residual)]
+```
+
 Note the two lists threaded through `gpt(token_id, pos_id, keys, values)`:
 every position appends its key and value. During training this looks like mere
 bookkeeping. Rung 6 reveals the same two lists are *the* serving optimization

@@ -21,7 +21,24 @@ Four heads cost *nothing*. The same 16 query dimensions are cut into four
 independent slices of 4; each slice computes its own scores against its own
 slice of the keys, takes its own softmax, and averages its own slice of the
 values. Four small lookups instead of one big one, concatenated back to 16
-numbers, price unchanged.
+numbers, price unchanged. The split itself, from [train4.py](../train4.py)
+(the `head_rows` lines are the heatmap instrument):
+
+```python
+        x_attn = []
+        head_rows = []
+        for h in range(n_head):
+            hs = h * head_dim
+            q_h = q[hs:hs+head_dim]
+            k_h = [ki[hs:hs+head_dim] for ki in keys[li]]
+            v_h = [vi[hs:hs+head_dim] for vi in values[li]]
+            attn_logits = [sum(q_h[j] * k_h[t][j] for j in range(head_dim)) / head_dim**0.5 for t in range(len(k_h))]
+            attn_weights = softmax(attn_logits)
+            if attn_trace is not None and li == 0:
+                head_rows.append([w.data for w in attn_weights])
+            head_out = [sum(attn_weights[t] * v_h[t][j] for t in range(len(v_h))) for j in range(head_dim)]
+            x_attn.extend(head_out)
+```
 
 ## Walk the code
 
@@ -41,11 +58,11 @@ which is the right picture to carry into production models too. Set
 `n_layer = 2` and nothing else needs to know. When you hear "a 96-layer
 model," it is this loop.
 
-(On reading the diff: `diff train3.py train4.py` runs long because each rung
-also swaps its own instruments — the single attention triangle becomes four.
-The lesson lives in the hunks that touch `gpt()` and the state_dict: the head
-loop, the layer-prefixed keys, the nested KV lists. Read those; skim the
-rest.)
+(The full diff against train3 runs long because each rung also swaps its own
+instruments — the single attention triangle becomes four. The blocks shown
+above *are* the lesson hunks. Terminal-comfortable? `diff train3.py
+train4.py` shows them in place. Or hand both files to your agent and have it
+walk you through every hunk — that's what agents are for.)
 
 ## What the numbers said
 

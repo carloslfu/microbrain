@@ -24,13 +24,39 @@ The entire trick is a 40-line class. A `Value` wraps one number and remembers
 two things: which Values it was computed *from* (`_children`), and how sensitive
 it is to each of them (`_local_grads`). Multiplication knows its locals are
 "the other guy's data." `log` knows its local is `1/x`. Nobody knows anything
-global — each op knows only its own one-step derivative.
+global — each op knows only its own one-step derivative. Here is
+multiplication, whole, from [train2.py](../train2.py):
+
+```python
+    def __mul__(self, other):
+        other = other if isinstance(other, Value) else Value(other)
+        return Value(self.data * other.data, (self, other), (other.data, self.data))
+```
 
 `backward()` then does the only clever thing in the file: a topological sort
 (children before parents), walked in *reverse*, each node handing its
 accumulated blame to its children, scaled by the local gradient. That's the
-chain rule as a graph traversal. The forty lines of train1 calculus fall out
-as a special case, and so does every architecture we'll ever build on top.
+chain rule as a graph traversal — all of it:
+
+```python
+    def backward(self):
+        topo = []
+        visited = set()
+        def build_topo(v):
+            if v not in visited:
+                visited.add(v)
+                for child in v._children:
+                    build_topo(child)
+                topo.append(v)
+        build_topo(self)
+        self.grad = 1
+        for v in reversed(topo):
+            for child, local_grad in zip(v._children, v._local_grads):
+                child.grad += local_grad * v.grad
+```
+
+The forty lines of train1 calculus fall out as a special case, and so does
+every architecture we'll ever build on top.
 
 The file opens with a graph small enough to check by hand —
 `L = (relu(a·b + 8) − 5)²` with `a=2, b=−3` — and prints it, post-backward:

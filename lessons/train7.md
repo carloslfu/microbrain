@@ -16,6 +16,24 @@ init — baseline plus five surgeries — and prints what each removal actually
 cost. If you ran it as intended, your predicted ranking is written down and
 it is about to be graded.
 
+The whole lab mechanism is one dict the model consults, plus the list of
+surgeries, from [train7.py](../train7.py):
+
+```python
+FLAGS = {'wpe': True, 'residual': True, 'rmsnorm': True, 'relu': True, 'beta2': 0.99}
+```
+
+```python
+SURGERIES = [
+    ('baseline',    {}),
+    ('no-wpe',      {'wpe': False}),
+    ('no-residual', {'residual': False}),
+    ('no-rmsnorm',  {'rmsnorm': False}),
+    ('no-relu',     {'relu': False}),
+    ('beta2=0.5',   {'beta2': 0.5}),
+]
+```
+
 Two calibration notes before the reveal. First: the val set is 55 documents,
 so differences under ~0.03 nats are coin-flips; differences over ~0.1 are
 real wounds. Second: the baseline below reads 15.6 effective choices, not

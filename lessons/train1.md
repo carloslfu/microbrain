@@ -47,7 +47,16 @@ model's *information* hasn't changed (still one character of context), only the
 layer to 64 hidden units → ReLU → a linear layer to 38 logits. `softmax` turns
 logits into probabilities: exponentiate (making everything positive, and gaps
 multiplicative), then normalize. 4,064 parameters, initialized to small random
-noise, `gauss(0, 0.08)`.
+noise, `gauss(0, 0.08)`. The whole network, from [train1.py](../train1.py):
+
+```python
+def mlp(token_id):
+    x = state_dict['wte'][token_id]
+    x = linear(x, state_dict['mlp_fc1'])
+    x = [max(0, xi) for xi in x] # relu
+    logits = linear(x, state_dict['mlp_fc2'])
+    return logits
+```
 
 **The two gradients.** This file computes every gradient twice:
 
@@ -124,7 +133,14 @@ The learning rate starts at 1.0 and decays linearly to zero — big exploratory
 strides early, careful settling late. Nothing about this loop will change for
 the rest of the course. Rungs 2–5 change how the gradient is *computed* and
 how the step is *shaped*. The loop itself is finished, and it fits in four
-lines.
+lines:
+
+```python
+    # SGD update
+    lr_t = learning_rate * (1 - step / num_steps) # linear learning rate decay
+    for i, (row, j) in enumerate(params):
+        row[j] -= lr_t * grad[i]
+```
 
 ## Exercises
 

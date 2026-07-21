@@ -35,7 +35,30 @@ thought for train5's essay; here, on to the toolkit.
 ```
 
 The save format is `json.dump` of the state_dict. No serialization framework,
-no magic: a GPT *is* a named collection of float lists. To prove it, the file
+no magic: a GPT *is* a named collection of float lists — the checkpoint, from
+[train6.py](../train6.py):
+
+```python
+checkpoint = {
+    'n_embd': n_embd, 'block_size': block_size, 'n_head': n_head, 'n_layer': n_layer,
+    'uchars': ''.join(uchars),
+    'state_dict': {k: [[p.data for p in row] for row in mat] for k, mat in state_dict.items()},
+}
+```
+
+And the kill-and-resurrect, whole:
+
+```python
+for p in params:
+    p.data = 0.0
+random.seed(123)
+print(f"   all {len(params)} params zeroed. it now babbles: {sample_names(3, temperature=1.0)}")
+loaded = json.load(open(model_path))
+for k, mat in state_dict.items():
+    for row, loaded_row in zip(mat, loaded['state_dict'][k]):
+        for p, w in zip(row, loaded_row):
+            p.data = w
+``` To prove it, the file
 kills the model — every parameter set to 0.0 — and samples from the corpse:
 `02e3x0jbv5bb8-f2l1agx24t...`. Recognize that static? All-zero parameters make
 all-zero logits make softmax uniform: you are looking at **38 effective

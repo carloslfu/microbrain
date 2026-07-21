@@ -29,6 +29,24 @@ becomes an id. One extra token, BOS, marks both the start and the end of a name
 `i`. That's it. To predict, normalize row `i` into probabilities. We add one
 imaginary count to every cell (Laplace smoothing) so nothing has probability
 exactly zero — "never say never," for reasons the break-it exercise makes vivid.
+The entire model, from [train0.py](../train0.py):
+
+```python
+# The "model": given a token_id, return the probability distribution over the next token
+def bigram(token_id):
+    row = state_dict[token_id]
+    total = sum(row) + vocab_size # add-one (Laplace) smoothing
+    return [(c + 1) / total for c in row]
+```
+
+And the entirety of "training" — three lines inside the loop:
+
+```python
+    # Update the model: incorporate this document's bigram counts
+    for pos_id in range(n):
+        token_id, target_id = tokens[pos_id], tokens[pos_id + 1]
+        state_dict[token_id][target_id] += 1
+```
 
 **The loss** is `-log P(the char that actually came next)`. Read it as
 *surprise*: probability 1 → surprise 0; probability 1/38 → surprise 3.6376 (measured in

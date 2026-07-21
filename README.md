@@ -18,13 +18,13 @@ resurrected, and shipped as a working name-generator.
 
 ## The ladder
 
-Each rung is one runnable file and one short essay. One new idea per rung —
-everything else is frozen scaffold from the rung below, so the diff between
-adjacent rungs carries the lesson. (Each rung also swaps its own instruments;
-the essays point at exactly the hunks that matter and license you to skim the
-rest — notice the instrument hunks never touch the model.) Numbers below are
-from full runs on this repo's corpus (543 idea names, 38-token vocabulary,
-10% held out):
+Each rung is one runnable file and one short lesson. One new idea per rung —
+everything else is frozen scaffold from the rung below, and **every lesson
+shows the exact new lines inline**, verbatim from the file, with the full
+file one click away. You never need a terminal diff to follow the idea (the
+files stay adjacent and diffable for those who like it, or for your agent).
+Numbers below are from full runs on this repo's corpus (543 idea names,
+38-token vocabulary, 10% held out):
 
 | rung | file | the one new idea | val loss | effective choices¹ |
 |---|---|---|---|---|
@@ -92,6 +92,15 @@ Concepts arrive in plain words, in order, each defined the first time it's
 needed — and everything lives in the [glossary](GLOSSARY.md) with its aliases
 ("cross-entropy, aka negative log-likelihood, aka rung 0's *surprise*"), so a
 term met mid-course is never more than one lookup away.
+
+**Agent-native.** The reading is for you; the terminal work is optional —
+any AI agent makes a fine lab partner for it. Have it run the rungs, produce
+and explain the diff between any two files, referee your exercise
+predictions, or chase a tangent. Everything an agent needs is in-repo:
+pinned canon in `reference/`, deterministic seeds, the author's logs in
+`runs/`. The lessons show every load-bearing line inline, so *following the
+course* never requires running anything at all — though training your own
+and hitting the quiz is the whole fun.
 
 ## What's in the box
 

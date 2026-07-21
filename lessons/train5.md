@@ -8,10 +8,9 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
         you are here: the steps get smart. this is microgpt.
 ```
 
-In the diff against train4, the lesson is nine lines — five of optimizer
-state, four of update rule; the other hunks are this rung swapping its
-instruments (album and race chart in, attention tracing out). Nine lines,
-and the largest single improvement on the course's scoreboard. Sit with that
+The change from train4 is nine lines — five of optimizer state, four of
+update rule, shown complete below — and it is the largest single improvement
+on the course's scoreboard. Sit with that
 asymmetry: rungs 3 and 4 rebuilt the entire model around attention and
 *couldn't beat counting*; this rung changes only how the parameters step, and
 wins. In deep learning, the optimizer is not plumbing. It's a protagonist.
@@ -36,8 +35,31 @@ averages *per parameter* and moves by their ratio:
   artificially small; dividing by `1 − β^t` un-shrinks them exactly. Without
   it, the first dozen steps would be timid for no reason.
 
-That's the whole optimizer. It shipped in 2014 and is, with cosmetic changes,
-what trains the frontier today.
+That's the whole optimizer — here it is, complete, from
+[train5.py](../train5.py); everything else that changed this rung is
+instrument swap (album and race chart in, attention tracing out):
+
+```python
+# Adam optimizer and its buffers
+learning_rate, beta1, beta2, eps_adam = 0.01, 0.85, 0.99, 1e-8
+m = [0.0] * len(params) # first moment buffer
+v = [0.0] * len(params) # second moment buffer
+```
+
+```python
+    # Adam update
+    lr_t = learning_rate * (1 - step / num_steps) # linear learning rate decay
+    for i, p in enumerate(params):
+        m[i] = beta1 * m[i] + (1 - beta1) * p.grad
+        v[i] = beta2 * v[i] + (1 - beta2) * p.grad ** 2
+        m_hat = m[i] / (1 - beta1 ** (step + 1))
+        v_hat = v[i] / (1 - beta2 ** (step + 1))
+        p.data -= lr_t * m_hat / (v_hat ** 0.5 + eps_adam)
+        p.grad = 0
+```
+
+It shipped in 2014 and is, with cosmetic changes, what trains the frontier
+today.
 
 ## What the numbers said
 
