@@ -1,6 +1,6 @@
 # epilogue — everything else is efficiency
 
-> The question this essay answers: **what actually separates your 4,928 floats from ChatGPT?**
+> The question this lesson answers: **what actually separates your 4,928 floats from ChatGPT?**
 
 ```
 docs -> tokenize -> model -> loss -> backward -> update -> sample

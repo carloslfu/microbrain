@@ -24,7 +24,7 @@ step 1000 / 1000 | loss 2.4283 | val loss 2.6216 | effective choices 13.8 of 38
 
 **13.8. The count table (14.5) has finally been beaten** — by the same
 architecture that lost to it under SGD for two straight rungs. Hold that
-thought for train5's essay; here, on to the toolkit.
+thought for train5's lesson; here, on to the toolkit.
 
 ## 1. The file of floats
 
@@ -58,8 +58,10 @@ for k, mat in state_dict.items():
     for row, loaded_row in zip(mat, loaded['state_dict'][k]):
         for p, w in zip(row, loaded_row):
             p.data = w
-``` To prove it, the file
-kills the model — every parameter set to 0.0 — and samples from the corpse:
+```
+
+To prove it, the file kills the model — every parameter set to 0.0 — and
+samples from the corpse:
 `02e3x0jbv5bb8-f2l1agx24t...`. Recognize that static? All-zero parameters make
 all-zero logits make softmax uniform: you are looking at **38 effective
 choices**, the exact shrug the course started from at rung 0, now as text.

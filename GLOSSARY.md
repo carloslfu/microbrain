@@ -1,7 +1,7 @@
 # Glossary
 
 Every term the course uses, in plain words, with the rung where it's *earned*
-— the essays introduce each one in place; this page is for looking things up
+— the lessons introduce each one in place; this page is for looking things up
 mid-course. "aka" lists the other names the same idea travels under, so
 nothing here ever reads as two concepts when it's one.
 
@@ -51,7 +51,7 @@ nothing here ever reads as two concepts when it's one.
   associates with each token; the only thing it "knows" about a character.
   A row of the `wte` table. Rung 1.
 - **epoch** — one full pass over the training data. Frontier models train
-  for *less* than one; this course does about two. Rung 5's essay, en route.
+  for *less* than one; this course does about two. Rung 5's lesson, en route.
 - **gradient** — for each parameter, how much the loss would change if that
   parameter nudged up: the direction of steepest blame. Computed numerically
   (perturb and measure) or analytically (chain rule) at rung 1; automatically

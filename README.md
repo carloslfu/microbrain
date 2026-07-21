@@ -29,14 +29,14 @@ Numbers below are from full runs on this repo's corpus (543 idea names,
 | rung | file | the one new idea | val loss | effective choices¹ |
 |---|---|---|---|---|
 | — | — | uniform shrug (no model) | 3.6376 | 38.0 |
-| 0 | [train0.py](train0.py) · [essay](lessons/train0.md) | bigram by **counting** | 2.6774 | 14.5 |
-| 1 | [train1.py](train1.py) · [essay](lessons/train1.md) | **gradients, by hand** (SGD) | 2.7301 | 15.3 |
-| 2 | [train2.py](train2.py) · [essay](lessons/train2.md) | **autograd** — same numbers, ~45× slower, Karpathy's file gets *shorter* | 2.7301 | 15.3 |
-| 3 | [train3.py](train3.py) · [essay](lessons/train3.md) | **attention** + positions + residuals + rmsnorm | 2.6886 | 14.7 |
-| 4 | [train4.py](train4.py) · [essay](lessons/train4.md) | **multi-head** — same param count, four spotlights | 2.6926 | 14.8 |
-| 5 | [train5.py](train5.py) · [essay](lessons/train5.md) | **Adam** — the count table finally falls | **2.6216** | **13.8** |
-| 6 | [train6.py](train6.py) · [essay](lessons/train6.md) | *(ours)* save/load, temperature, the KV cache measured, the quiz | 2.6216 | 13.8 |
-| 7 | [train7.py](train7.py) · [essay](lessons/train7.md) | *(ours)* the ablation lab: break it on purpose, organ by organ | — | — |
+| 0 | [train0.py](train0.py) · [lesson](lessons/train0.md) | bigram by **counting** | 2.6774 | 14.5 |
+| 1 | [train1.py](train1.py) · [lesson](lessons/train1.md) | **gradients, by hand** (SGD) | 2.7301 | 15.3 |
+| 2 | [train2.py](train2.py) · [lesson](lessons/train2.md) | **autograd** — same numbers, ~45× slower, Karpathy's file gets *shorter* | 2.7301 | 15.3 |
+| 3 | [train3.py](train3.py) · [lesson](lessons/train3.md) | **attention** + positions + residuals + rmsnorm | 2.6886 | 14.7 |
+| 4 | [train4.py](train4.py) · [lesson](lessons/train4.md) | **multi-head** — same param count, four spotlights | 2.6926 | 14.8 |
+| 5 | [train5.py](train5.py) · [lesson](lessons/train5.md) | **Adam** — the count table finally falls | **2.6216** | **13.8** |
+| 6 | [train6.py](train6.py) · [lesson](lessons/train6.md) | *(ours)* save/load, temperature, the KV cache measured, the quiz | 2.6216 | 13.8 |
+| 7 | [train7.py](train7.py) · [lesson](lessons/train7.md) | *(ours)* the ablation lab: break it on purpose, organ by organ | — | — |
 | ∎ | [namer.py](namer.py) · [epilogue](lessons/epilogue.md) | your model as a tool; the bridge to production | — | — |
 
 ¹ `e^(val loss)` — out of 38 possible next characters, how many is the model
@@ -44,16 +44,16 @@ still effectively guessing among? Uniform = 38, perfect = 1 — and yes, an
 untrained transformer can score *above* 38 by actively mixing noise into its
 guesses (rung 3 opens there). It's perplexity, wearing its plain-English
 name. Watch it fall down the ladder, 38 → 13.8 — not monotonically: the
-bumps at rungs 1 and 4 are lessons, and the essays own them.
+bumps at rungs 1 and 4 are lessons, and the lessons own them.
 
 The mid-ladder plot twist is real and deliberate: **a complete GPT loses to a
 count table for two straight rungs** (14.7, 14.8 vs 14.5) until the optimizer
-rung lands. The architecture was never the bottleneck. Rung 5's essay is
+rung lands. The architecture was never the bottleneck. Rung 5's lesson is
 where that sinks in.
 
-One honesty note: every number in the essays comes from *this* corpus with
+One honesty note: every number in the lessons comes from *this* corpus with
 *these* seeds, and the runs are deterministic — walk the course on the same
-data and your logs will match the essays digit for digit. Bring your own
+data and your logs will match the lessons digit for digit. Bring your own
 corpus (`--names`, `--from`) and the numbers will differ; the shape of the
 story is what transfers.
 
@@ -65,7 +65,7 @@ python train0.py                # instant
 python train1.py                # ~10 s
 ```
 
-Then read `lessons/train0.md` — the essays assume you run first, read second.
+Then read `lessons/train0.md` — the lessons assume you run first, read second.
 (`python` here means your Python 3; some systems spell it `python3`.) Not the
 author of this particular brain? Step 1 harvests *his* knowledge base, so
 bring your own corpus: `--names` downloads Karpathy's 32k human names, or
@@ -82,7 +82,7 @@ rung takes `--fast` (seconds on the early rungs, ~1–3 min on the heavy ones)
 when you want the shape without the wait; `python compare.py` prints the
 whole ladder from whatever logs you've produced and fast-runs the gaps.
 
-Each essay ends with three exercises: **predict-then-run** (commit before the
+Each lesson ends with three exercises: **predict-then-run** (commit before the
 machine answers), **break it** (sabotage with a diagnosis — the NaNs are real
 and were observed), and **extend it** (the gradcheck grades your calculus).
 Do them. The course's actual thesis is that intuition comes from predictions
@@ -110,10 +110,10 @@ train6.py  train7.py     ours — the inference toolkit and the ablation lab
 namer.py                 the payoff: out/model.json as a name-generating tool (try --quiz)
 compare.py               the ladder on one screen
 data/make_dataset.py     corpus harvester (data.txt stays gitignored — it's personal)
-lessons/                 one essay per rung + the epilogue
+lessons/                 one lesson per rung + the epilogue
 GLOSSARY.md              every term in plain words, with its aliases and the rung
                          where it's earned — for mid-course lookups
-runs/                    the author's full logs — every excerpt in the essays is quoted
+runs/                    the author's full logs — every excerpt in the lessons is quoted
                          verbatim from these files, so every claim is checkable
 reference/               pinned snapshots of both Karpathy gists, fetched revision by revision
 PROGRESSION.md           the published ladder + the gist's own revision story (243 → 199 lines)

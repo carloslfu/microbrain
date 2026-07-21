@@ -106,11 +106,11 @@ four minutes.
 **1. Predict, then run** — you already did; the lab is structured around it.
 Grade your ranking now, in writing, including the direction of your no-wpe
 prediction. (If you had wpe near the top of the damage chart, you're in good
-company — so did the author of this essay.)
+company — so did the author of this lesson.)
 
 **2. Break it further.** The lab's most important dial is `num_steps`. Rerun
 at 600 or 1000 steps: does no-wpe still win? Does no-relu stay free? Commit
-to both answers first. This essay deliberately does not spoil either — the
+to both answers first. This lesson deliberately does not spoil either — the
 whole point of owning the lab is that the answer is four minutes away and
 *yours*.
 
