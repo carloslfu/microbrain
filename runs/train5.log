@@ -1,0 +1,59 @@
+num docs: 488 train / 55 val
+vocab size: 38
+num params: 4928
+step    1 / 1000 | loss 3.5698 | val loss 3.6669 | effective choices 39.1 of 38
+step    2 / 1000 | loss 3.6524
+step    3 / 1000 | loss 3.4667
+step    4 / 1000 | loss 3.5519
+step    5 / 1000 | loss 3.7139
+step  501 / 1000 | loss 2.6792 | val loss 2.6778 | effective choices 14.6 of 38
+step 1000 / 1000 | loss 2.4283 | val loss 2.6216 | effective choices 13.8 of 38
+training took 672.0s
+
+--- SGD (s, train4) vs Adam (A, train5), smoothed loss over 1000 steps ---
+   3.60 | *s                                                              
+   3.52 |  As                                                             
+   3.44 |                                                                 
+   3.36 |    s                                                            
+   3.28 |   A                                                             
+   3.20 |     s                                                           
+   3.13 |    AAs                                                          
+   3.05 |       s                                                         
+   2.97 |      AAs  s       s                                             
+   2.89 |        As A**s   *A*s*s   *                                     
+   2.81 |         A*   As**   A A*** *ss**  ss            ss  ss   s      
+   2.74 |               A             AA  *sAA*s   *ss    AAssA sssAsssss 
+   2.66 |                                  A   As s AAssss  AA AAAA A  AAs
+   2.58 |                                       AsA   AAAA           AA  A
+   2.50 |                                        A                        
+        +----------------------------------------------------------------
+         step 1                                                  step 1000
+
+--- the childhood album: samples through training ---
+step    0 | m129o8dwl-x7nfi1o8kliw13m-uvwax1c7omlpp6, fpx3bbb2kk73p9lfqj3pl, iqz, bm7i, b3hgsg5moz-0p4ws, eejl-67xbj9-pcqi07banztoknwhbreuvaoagaoy
+step   50 | reva-ve, manrema-lalat-g-s, re-la-tonias, secmani-tep-l-loloas-cale-da-mh-e-anecan, jadde-ag-lotinar, nexoa-r
+step  250 | menticarerenmiti-landiol-s, eorel-mesellarepe-patinstis-vacpong, arore-agrenengerative-1, laman-ord, tenge-cingentra, rab-pelt-mantinenongengy-mang
+step 1000 | mianicov, reat-hivarsian, jang-tin-tining-avingantige, agan-folin, seag, an
+
+--- inference (new, hallucinated idea names) ---
+sample  1: rarl-marocen-rong
+sample  2: jas-tioti-sosor
+sample  3: decongepl-dicion-alenge-atioroncrcon
+sample  4: vinclon
+sample  5: corom-arematinitinin
+sample  6: coroban-esertintrioron
+sample  7: ron-trertionit-muchion-int
+sample  8: neani-arinangr
+sample  9: ivaco-arler
+sample 10: ant-ares-manantilis-montis
+sample 11: pewoconin-amapon
+sample 12: agrke-g-aerseronerin
+sample 13: mang
+sample 14: mom-ale-condinemon
+sample 15: jar-mang
+sample 16: rart-pedione-rereary
+sample 17: cont-semariveer-ating
+sample 18: morl-vicre
+sample 19: momis-borile-t-iolen
+sample 20: seli-mod-marerti-horis
+memorization: 0/20 samples are verbatim training docs

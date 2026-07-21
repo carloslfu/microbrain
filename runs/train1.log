@@ -1,0 +1,51 @@
+num docs: 488 train / 55 val
+vocab size: 38
+num params: 4064
+gradient check on 'cscg-george-2021' | loss_n 3.636937 | loss_a 3.636937 | max diff 0.00000000
+step    1 / 1000 | loss 3.6369 | val loss 3.6403 | effective choices 38.1 of 38
+step    2 / 1000 | loss 3.6394
+step    3 / 1000 | loss 3.6429
+step    4 / 1000 | loss 3.6393
+step    5 / 1000 | loss 3.6364
+step  501 / 1000 | loss 2.7682 | val loss 2.7960 | effective choices 16.4 of 38
+step 1000 / 1000 | loss 2.5796 | val loss 2.7301 | effective choices 15.3 of 38
+training took 9.7s
+
+--- the loss valley for one weight (doc: 'cscg-george-2021') ---
+  loss  3.229 |                     W                   *
+  loss  3.223 |                     W                  * 
+  loss  3.216 |                     W                 *  
+  loss  3.210 |                     W               **   
+  loss  3.204 |                     W             **     
+  loss  3.198 |                     W            *       
+  loss  3.191 |                     W         ***        
+  loss  3.185 |                     W       **           
+  loss  3.179 |                     W    ***             
+  loss  3.172 |                     W****                
+  loss  3.166 |                  ****                    
+  loss  3.160 |            ******                        
+  loss  3.153 | *****************************************
+  weight sweeps -3.03 .. +2.97, W = trained value -0.031, min loss 3.1535
+
+--- inference (new, hallucinated idea names) ---
+sample  1: gentid
+sample  2: 224
+sample  3: ice-an
+sample  4: merg
+sample  5: sy-aron-meie-c-a
+sample  6: sinint-anttiven-ting-an
+sample  7: s
+sample  8: s
+sample  9: miverotini-ade
+sample 10: pemre-se-oratin
+sample 11: ctitigron-com-s
+sample 12: pron-kin
+sample 13: tre
+sample 14: tefiarengeratins-blarenaningaresebarbana
+sample 15: in-t-sen
+sample 16: stipenins-stinenite-at
+sample 17: con-replitinid-sinis-amancong
+sample 18: en
+sample 19: habon
+sample 20: pal-ati-foel-monanico-n
+memorization: 0/20 samples are verbatim training docs

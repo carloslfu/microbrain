@@ -1,0 +1,81 @@
+num docs: 488 train / 55 val
+vocab size: 38
+uniform loss: ln(38) = 3.6376 -> effective choices: 38
+step    1 /  488 | loss 3.6376
+step    2 /  488 | loss 3.5390
+step    3 /  488 | loss 3.5800
+step  100 /  488 | loss 2.9405
+step  200 /  488 | loss 2.7655
+step  300 /  488 | loss 2.5680
+step  400 /  488 | loss 2.3932
+step  488 /  488 | loss 2.8910
+
+train loss 2.6221 | val loss 2.6774 | effective choices 14.5 of 38
+
+--- the model itself: P(next | current), one row per current token ---
+    -0123456789abcdefghijklmnopqrstuvwxyz^
+  -    -       @-#--:::-  -%::= =%=.::    
+  0 ::+@. . .                         .  .
+  1 @*:=:::==@@::::::::::::::::::::::::::%
+  2 .@ .. ..                             :
+  3 @:...:...............................-
+  4 @...-................................-
+  5 @:::::::::::::::::::::::::::::::::::::
+  6 @::::::::::::::::::::::::::::::::::::+
+  7 @:+:::::::::::::::::::::::::::::::::::
+  8 @::=::::::::::::::::::::::::::::::::::
+  9 *-------**@--------------------------*
+  a :           :=   - -  #-@ : @-@..     
+  b .          *.  %   +  #: @  #* -     .
+  c -          =   *  #: .:  @  :.+:      
+  d %          :   @   +     .  .  .     :
+  e @          - :::   .  =-@ : %+: . .  -
+  f #          +   @=  %. :  @  * +-     .
+  g =          .   @  .:  . ..  -  .     =
+  h -          @   %   *   :.=    .-   . -
+  i :          . -.:..    :.@*   -= :     
+  j =          @   -   .     #     -      
+  k @   .      +   +.  @  :..:  .*..   . #
+  l @          %  =@   %  #: +   =.:   . :
+  m +          %. .@   =   . @-  . .     :
+  n %          - :== % =     .   :@      +
+  o .           . -  .    .:@.. *...      
+  p .          %   %  -:  =  +: @::.     :
+  q .          .                   @      
+  r -          # - @ . + .: .+   :..   : -
+  s %          : : #.  +     :.  -@.   . @
+  t +          -   +  :@     .  - ..   . .
+  u .          +-*-- - -  *-#.: @@%     ..
+  v .          -   @   =     .   :        
+  w .          -   =  .+  .  @           :
+  x @            . +   -      =   -      -
+  y @            .          .    :       %
+  z ...........@...%..=:..:.=....:......::
+  ^            @.@*=-=---.-%.:+ +#* -= .  
+after '^': 'c' 0.09, 'a' 0.09, 'm' 0.07
+after '-': 'a' 0.11, 's' 0.09, 'm' 0.09
+after 'a': 't' 0.14, 'n' 0.13, 'r' 0.13
+after 'q': 'u' 0.25, '-' 0.04, 'a' 0.04
+
+--- inference (new, hallucinated idea names) ---
+sample  1: o-cerot-g-ck-boncor-steave-atistiyantiti
+sample  2: p657-cajmelaiviodk37
+sample  3: ons
+sample  4: sc-dag
+sample  5: tephyedandhvec
+sample  6: k-20ath-f
+sample  7: l
+sample  8: t-prifodemzvenatugnj5riso-d-utse-ty-j-ro
+sample  9: blifthantal
+sample 10: ong018jag-nctt-cof7yngrsachentjz4biteble
+sample 11: datiti0
+sample 12: s
+sample 13: vq6gel-f
+sample 14: dong
+sample 15: ziodbyont-mftav426og0vconglivarchnddn-i
+sample 16: z302
+sample 17: tuicton
+sample 18: o-seqx-aclborboinzuama-rlaspi-atwkun802x
+sample 19: s
+sample 20: uce-rull9y
+memorization: 0/20 samples are verbatim training docs

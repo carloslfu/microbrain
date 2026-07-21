@@ -1,0 +1,56 @@
+num docs: 488 train / 55 val
+vocab size: 38
+num params: 4928
+step    1 / 1000 | loss 3.7557 | val loss 3.6776 | effective choices 39.6 of 38
+step    2 / 1000 | loss 3.5595
+step    3 / 1000 | loss 3.6431
+step    4 / 1000 | loss 3.6106
+step    5 / 1000 | loss 3.6779
+step  501 / 1000 | loss 2.7643 | val loss 2.7225 | effective choices 15.2 of 38
+step 1000 / 1000 | loss 2.5713 | val loss 2.6886 | effective choices 14.7 of 38
+training took 627.8s
+
+--- attention over 'test-time-training' (row = current position, cols = looked-at positions) ---
+      ^test-time-training
+    ^ | @
+    t | @@
+    e | #@#
+    s | @%%#
+    t | @@##%
+    - | @@%@@@
+    t | @@%%%@%
+    i | #@*#%#@#
+    m | @@##%%%%*
+    e | #@##@#@##%
+    - | @@%@@@@%@@@
+    t | @@%%@@@%@%@@
+    r | @####%#@##%#%
+    a | %@#%@%@%#%%@@@
+    i | %@#%%#@%*##@%%#
+    n | @#%**%#@#%%*#%@%
+    i | #@*#%*@#*#*@#%#%#
+    n | @##**%*@##%*%%@%@%
+    g | @%%%%@%@@%@%@@@%@%%
+
+--- inference (new, hallucinated idea names) ---
+sample  1: malaranti-senge-marin
+sample  2: ale-stin
+sample  3: aparinerant
+sample  4: anen-gee-peng
+sample  5: marl
+sample  6: litule-l
+sample  7: fargen-me
+sample  8: 208ati
+sample  9: harl-baseng-mari-angy
+sample 10: sinitintheunstin
+sample 11: stesa-verintinti-fele
+sample 12: charore-jd-stiomor
+sample 13: parere-tin-m-mentetinengelaaringelingeng
+sample 14: jarn-an-meting
+sample 15: pontin-ry-inonces
+sample 16: tionton-inscon-as
+sample 17: diplanen
+sample 18: gerirerins-sontin
+sample 19: csagrlarm-s
+sample 20: ti-baren-ontlati
+memorization: 0/20 samples are verbatim training docs

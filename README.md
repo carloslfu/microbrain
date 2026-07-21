@@ -20,10 +20,11 @@ resurrected, and shipped as a working name-generator.
 
 Each rung is one runnable file and one short essay. One new idea per rung —
 everything else is frozen scaffold from the rung below, so the diff between
-adjacent rungs carries the lesson (each rung also swaps its own instruments;
-the essays point at exactly the hunks that matter and license you to skim
-the rest — notice the instrument hunks never touch the model). Numbers below are from full runs of this repo's
-corpus (543 idea names, 38-token vocabulary, 10% held out):
+adjacent rungs carries the lesson. (Each rung also swaps its own instruments;
+the essays point at exactly the hunks that matter and license you to skim the
+rest — notice the instrument hunks never touch the model.) Numbers below are
+from full runs on this repo's corpus (543 idea names, 38-token vocabulary,
+10% held out):
 
 | rung | file | the one new idea | val loss | effective choices¹ |
 |---|---|---|---|---|
@@ -42,9 +43,8 @@ corpus (543 idea names, 38-token vocabulary, 10% held out):
 still effectively guessing among? Uniform = 38, perfect = 1 — and yes, an
 untrained transformer can score *above* 38 by actively mixing noise into its
 guesses (rung 3 opens there). It's perplexity, wearing its plain-English
-name. Watch it fall down the ladder, 38 → 13.8 —
-not monotonically: the bumps at rungs 1 and 4 are lessons, and the essays
-own them.
+name. Watch it fall down the ladder, 38 → 13.8 — not monotonically: the
+bumps at rungs 1 and 4 are lessons, and the essays own them.
 
 The mid-ladder plot twist is real and deliberate: **a complete GPT loses to a
 count table for two straight rungs** (14.7, 14.8 vs 14.5) until the optimizer
@@ -77,9 +77,9 @@ reruns it falls back to.
 
 Then keep climbing. Honest timings on a laptop (pure-Python scalar autograd
 is the point, not a flaw): train2 ≈ 7 min, train3–train6 ≈ 10–12 min each,
-train7 ≈ 20 min for all six runs (five surgeries plus the baseline). Every rung takes `--fast` (seconds on
-the early rungs, ~1–3 min on the heavy ones) when you want the shape without
-the wait; `python compare.py` prints the
+train7 ≈ 20 min for all six runs (five surgeries plus the baseline). Every
+rung takes `--fast` (seconds on the early rungs, ~1–3 min on the heavy ones)
+when you want the shape without the wait; `python compare.py` prints the
 whole ladder from whatever logs you've produced and fast-runs the gaps.
 
 Each essay ends with three exercises: **predict-then-run** (commit before the
@@ -93,13 +93,18 @@ you got wrong in private.
 ```
 train0.py … train5.py    the canon — Karpathy's six build-steps, ported (block 40, vocab 38)
 train6.py  train7.py     ours — the inference toolkit and the ablation lab
-namer.py                 the payoff: out/model.json as a name-generating tool
+namer.py                 the payoff: out/model.json as a name-generating tool (try --quiz)
 compare.py               the ladder on one screen
 data/make_dataset.py     corpus harvester (data.txt stays gitignored — it's personal)
 notes/                   one essay per rung + the epilogue
+runs/                    the author's full logs — every excerpt in the essays is quoted
+                         verbatim from these files, so every claim is checkable
 reference/               pinned snapshots of both Karpathy gists, fetched revision by revision
 PROGRESSION.md           the published ladder + the gist's own revision story (243 → 199 lines)
 ```
+
+Requirements: Python 3 (developed and verified on 3.12). Nothing else — no
+pip, no venv, ever.
 
 Every train file is self-contained on purpose — dataset, tokenizer, `Value`
 class repeated verbatim so adjacent files diff clean. The instruments are the
@@ -128,5 +133,9 @@ is the culmination of micrograd → makemore → nanoGPT, and this repo is a
 study of it, not a replacement for it. Read
 [PROGRESSION.md](PROGRESSION.md) for what his revision history itself
 teaches. The corpus is the record slugs of a personal db.md knowledge store (plain-file
-databases) — swap in your own list of short strings and the whole course
-retrains on *your* world in an hour.
+databases) — swap in your own list of short strings (`--from`) and the whole
+course retrains on *your* world in an hour.
+
+License: MIT for this repo's original material; the `reference/` snapshots
+remain Karpathy's, vendored for study with attribution — see
+[reference/README.md](reference/README.md) and [LICENSE](LICENSE).
