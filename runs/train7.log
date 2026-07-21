@@ -8,12 +8,12 @@ they raise val loss over baseline, and write your ranking down:
 
 The lab is now running (~minutes per surgery, pure Python)...
 
-baseline     | val loss 2.7444 | effective choices  15.6 | 234.6s | reange, cong-man-wentes-sis, weracal-sdonangl-mttennge, age-core-stimamonatitratinginar
-no-wpe       | val loss 2.7201 | effective choices  15.2 | 216.2s | re-den, apende-h-wenter-sior, cojage-tere-cepanvingein, age-corebringedind
-no-residual  | val loss 2.9102 | effective choices  18.4 | 210.3s | sianen, clenanan-wenon, aser, wao-cam-sareimdolis
-no-rmsnorm   | val loss 2.8007 | effective choices  16.5 | 197.1s | ricenn, cileblan-wente, arert, cicace-t-re-daran
-no-relu      | val loss 2.7572 | effective choices  15.8 | 162.5s | re-gen, cmancole-ventet-ser, warad-a-sere-denges, demam
-beta2=0.5    | val loss 2.7684 | effective choices  15.9 | 151.3s | ricemat-mararan-wontis-stiv, colace-satind-mar, semal-vagg-core-tingelong, pordond-me-lstes
+baseline     | val loss 2.7444 | effective choices  15.6 | 163.9s | reange, cong-man-wentes-sis, weracal-sdonangl-mttennge, age-core-stimamonatitratinginar
+no-wpe       | val loss 2.7201 | effective choices  15.2 | 168.1s | re-den, apende-h-wenter-sior, cojage-tere-cepanvingein, age-corebringedind
+no-residual  | val loss 2.9102 | effective choices  18.4 | 157.9s | sianen, clenanan-wenon, aser, wao-cam-sareimdolis
+no-rmsnorm   | val loss 2.8007 | effective choices  16.5 | 161.9s | ricenn, cileblan-wente, arert, cicace-t-re-daran
+no-relu      | val loss 2.7572 | effective choices  15.8 | 170.6s | re-gen, cmancole-ventet-ser, warad-a-sere-denges, demam
+beta2=0.5    | val loss 2.7684 | effective choices  15.9 | 165.8s | ricemat-mararan-wontis-stiv, colace-satind-mar, semal-vagg-core-tingelong, pordond-me-lstes
 
 --- damage report (val loss, lower is better) ---
   no-wpe       2.7201 |#########################################
@@ -24,4 +24,4 @@ beta2=0.5    | val loss 2.7684 | effective choices  15.9 | 151.3s | ricemat-mara
   no-residual  2.9102 |############################################
 
 baseline is 2.7444; every surgery above it is the price of a missing organ.
-interpretations live in notes/train7.md — but only after you've compared your predicted ranking.
+interpretations live in lessons/train7.md — but only after you've compared your predicted ranking.
