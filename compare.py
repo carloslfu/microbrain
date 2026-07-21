@@ -8,6 +8,7 @@ marked with * in the table.
 
 usage: python compare.py           # use existing full logs, fast-run the missing
        python compare.py --run     # fast-run everything fresh (cold ladder)
+lesson: README.md has the full ladder this table summarizes
 """
 
 import os         # os.path.exists

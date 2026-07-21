@@ -3,7 +3,7 @@ MIT License
 Copyright (c) 2026 Carlos Galarza
 
 This license covers the original material in this repository: the essays in
-notes/, the instrumentation and diagrams added to every rung, train6.py,
+lessons/, the instrumentation and diagrams added to every rung, train6.py,
 train7.py, namer.py, compare.py, data/make_dataset.py, and the documentation.
 
 The files in reference/ are unmodified snapshots of Andrej Karpathy's

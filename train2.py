@@ -22,6 +22,7 @@ microbrain deltas:
 - step 1 prints the same loss as train1.py step 1: same math, now automated
 
 usage: python train2.py [--fast]   (--fast: 300 steps instead of 1000)
+lesson: lessons/train2.md — run first, read second
 """
 
 import os       # os.path.exists

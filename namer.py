@@ -12,6 +12,7 @@ usage: python namer.py [-n 12] [-t 0.8] [--seed N] [--quiz]
   -t      temperature (default 0.8 — braver than training-time 0.5)
   --seed  fix the randomness (default: different every run)
   --quiz  mix hallucinations with real records — can you tell which is which?
+lesson: lessons/epilogue.md — the closing read once the tool works
 """
 
 import os       # os.path.exists

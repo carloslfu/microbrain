@@ -21,6 +21,7 @@ microbrain deltas:
   weight while holding the other 4,063 fixed — the valley SGD walked into
 
 usage: python train1.py [--fast]   (--fast: 300 steps instead of 1000)
+lesson: lessons/train1.md — run first, read second
 """
 
 import os       # os.path.exists

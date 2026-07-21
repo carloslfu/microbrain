@@ -40,6 +40,9 @@ model's *information* hasn't changed (still one character of context), only the
   builds. "Stochastic" because each step trusts one document's gradient
   rather than the whole dataset's.
 
+(Every term in the course, with its aliases, lives in the
+[glossary](../GLOSSARY.md) — one lookup away whenever a word goes fuzzy.)
+
 **The model.** A row of `wte` (the token's embedding, 16 numbers) → a linear
 layer to 64 hidden units → ReLU → a linear layer to 38 logits. `softmax` turns
 logits into probabilities: exponentiate (making everything positive, and gaps

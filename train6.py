@@ -19,6 +19,7 @@ Different from train5.py (all of it happens AFTER training):
 - a quiz: real brain record or hallucination?
 
 usage: python train6.py [--fast]   (--fast: 300 steps; full run is ~minutes, pure Python)
+lesson: lessons/train6.md — run first, read second
 """
 
 import os       # os.path.exists

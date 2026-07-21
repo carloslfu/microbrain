@@ -23,6 +23,7 @@ The surgeries:
 - beta2=0.5:   Adam's variance estimate turns twitchy
 
 usage: python train7.py [--fast]   (--fast: 100 steps per surgery instead of 300)
+lesson: lessons/train7.md — but only AFTER the run grades your predictions
 """
 
 import os       # os.path.exists
@@ -274,4 +275,4 @@ for name, vl, _ in sorted(results, key=lambda r: r[1]):
     print(f"  {name:12s} {vl:.4f} |{bar}")
 base = dict((n, v) for n, v, _ in results)['baseline']
 print(f"\nbaseline is {base:.4f}; every surgery above it is the price of a missing organ.")
-print("interpretations live in notes/train7.md — but only after you've compared your predicted ranking.")
+print("interpretations live in lessons/train7.md — but only after you've compared your predicted ranking.")

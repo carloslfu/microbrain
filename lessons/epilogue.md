@@ -69,4 +69,4 @@ Where to next, if you want more:
 
 Back to [README](../README.md) · the ladder: [0](train0.md) [1](train1.md)
 [2](train2.md) [3](train3.md) [4](train4.md) [5](train5.md) [6](train6.md)
-[7](train7.md)
+[7](train7.md) · [glossary](../GLOSSARY.md)
