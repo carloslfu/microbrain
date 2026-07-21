@@ -6,8 +6,9 @@ as *evidence*, because both halves of it teach something the final code can't.
 ## 1. The ladder (six revisions of one gist)
 
 Karpathy's blog post calls the build-up "layers of the onion" and publishes it
-as a gist — [build_microgpt.py](https://gist.github.com/karpathy/561ac2de12a47cc06a23691e1be9543a) —
-whose **six revisions are the six steps**. Each revision's docstring names its
+as a gist (GitHub's single-file sharing format) —
+[build_microgpt.py](https://gist.github.com/karpathy/561ac2de12a47cc06a23691e1be9543a) —
+whose **six revisions are the six steps**. Each revision's docstring (the file's opening description block) names its
 delta ("Same as trainN−1 / Different from trainN−1"). Vendored snapshots live
 in [`reference/`](reference/), fetched revision by revision:
 

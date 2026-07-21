@@ -98,7 +98,7 @@ about the math. It changes the work: with the keys/values lists kept between
 characters (as the training loop always did), producing token N costs one
 model call; throw the lists away and honesty requires replaying the whole
 prefix, so 22 characters cost 276 calls instead of 23. That's 1+2+...+23
-versus 23 — quadratic versus linear, a 12.6× wall-clock gap at name length,
+versus 23 — quadratic versus linear, a 12.6× real-time gap at name length,
 and the gap *grows with every character*. Scale the sequence to a chat
 history and you understand why serving systems obsess over KV-cache
 management.

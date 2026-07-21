@@ -3,7 +3,8 @@
 **Build a GPT you can hold in your head — trained on the names of your ideas.**
 
 This is [Karpathy's microgpt](https://gist.github.com/karpathy/8627fe009c40f57531cb18360106ce95)
-— a complete GPT in ~200 lines of dependency-free Python — unrolled into a
+— a complete GPT (the family of text-predicting models behind ChatGPT) in
+~200 lines of dependency-free Python — unrolled into a
 course you *walk*: his six published build-steps, ported onto a personal
 corpus, instrumented so every claim is a number you printed, illustrated with
 diagrams the code draws from its own weights, and extended with the two rungs
@@ -15,6 +16,12 @@ weekend. You leave holding the deep intuitions — what a loss *is*, why
 autograd exists, what attention buys, what an optimizer decides, why models
 memorize or don't — plus a 106 KB `model.json` you trained, killed,
 resurrected, and shipped as a working name-generator.
+
+(If that paragraph was a wall of unfamiliar words — good, that's the course.
+Every one of them is defined, in order, inside the lessons, with a
+[glossary](GLOSSARY.md) for lookups; this page is the view from the summit,
+not the first step. And if the Python-and-terminal side is new too, read with
+an AI agent alongside — it fills gaps on demand.)
 
 ## The ladder
 
@@ -37,7 +44,7 @@ Numbers below are from full runs on this repo's corpus (543 idea names,
 | 5 | [train5.py](train5.py) · [lesson](lessons/train5.md) | **Adam** — the count table finally falls | **2.6216** | **13.8** |
 | 6 | [train6.py](train6.py) · [lesson](lessons/train6.md) | *(ours)* save/load, temperature, the KV cache measured, the quiz | 2.6216 | 13.8 |
 | 7 | [train7.py](train7.py) · [lesson](lessons/train7.md) | *(ours)* the ablation lab: break it on purpose, organ by organ | — | — |
-| ∎ | [namer.py](namer.py) · [epilogue](lessons/epilogue.md) | your model as a tool; the bridge to production | — | — |
+| end | [namer.py](namer.py) · [epilogue](lessons/epilogue.md) | your model as a tool; the bridge to production | — | — |
 
 ¹ `e^(val loss)` — out of 38 possible next characters, how many is the model
 still effectively guessing among? Uniform = 38, perfect = 1 — and yes, an
@@ -71,19 +78,20 @@ author of this particular brain? Step 1 harvests *his* knowledge base, so
 bring your own corpus: `--names` downloads Karpathy's 32k human names, or
 `--from yourlist.txt` trains on any file of short strings, one per line.
 Worth doing from the start: `mkdir -p out` and run each rung as
-`python trainN.py | tee out/trainN.log` — `compare.py` builds the final
+`python trainN.py | tee out/trainN.log` (`tee` shows the output *and* saves
+it to the file) — `compare.py` builds the final
 ladder from those logs, and full-run numbers are nicer than the `--fast`
 reruns it falls back to.
 
-Then keep climbing. Honest timings on a laptop (pure-Python scalar autograd
-is the point, not a flaw): train2 ≈ 7 min, train3–train6 ≈ 10–12 min each,
+Then keep climbing. Honest timings on a laptop (pure-Python, one number
+at a time — the slowness is the point, not a flaw): train2 ≈ 7 min, train3–train6 ≈ 10–12 min each,
 train7 ≈ 20 min for all six runs (five surgeries plus the baseline). Every
 rung takes `--fast` (seconds on the early rungs, ~1–3 min on the heavy ones)
 when you want the shape without the wait; `python compare.py` prints the
 whole ladder from whatever logs you've produced and fast-runs the gaps.
 
 Each lesson ends with three exercises: **predict-then-run** (commit before the
-machine answers), **break it** (sabotage with a diagnosis — the NaNs are real
+machine answers), **break it** (sabotage with a diagnosis — the crashes are real
 and were observed), and **extend it** (the gradcheck grades your calculus).
 Do them. The course's actual thesis is that intuition comes from predictions
 you got wrong in private.
@@ -109,7 +117,7 @@ train0.py … train5.py    the canon — Karpathy's six build-steps, ported (blo
 train6.py  train7.py     ours — the inference toolkit and the ablation lab
 namer.py                 the payoff: out/model.json as a name-generating tool (try --quiz)
 compare.py               the ladder on one screen
-data/make_dataset.py     corpus harvester (data.txt stays gitignored — it's personal)
+data/make_dataset.py     corpus harvester (data.txt stays out of the repository — it's personal)
 lessons/                 one lesson per rung + the epilogue
 GLOSSARY.md              every term in plain words, with its aliases and the rung
                          where it's earned — for mid-course lookups
@@ -139,7 +147,7 @@ step 1000 | mianicov, reat-hivarsian, jang-tin-tining-avingantige, agan-folin, .
 ```
 
 That's one model, photographed at four ages, learning the shape of idea names
-from static — in about a minute of wall clock per photograph.
+from pure static (random noise) — in about a minute of real time per photograph.
 
 ## Credits
 

@@ -10,7 +10,7 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
 
 You've now *read* justifications for every organ: positions so attention can
 see order, residuals as the gradient highway, rmsnorm as the thermostat, relu
-as the nonlinearity, β₂ as Adam's memory of scale. Reading justifications is
+as the nonlinearity, β₂ (the code's `beta2`) as Adam's memory of scale. Reading justifications is
 how folklore spreads. This rung re-trains the model six times from the same
 init — baseline plus five surgeries — and prints what each removal actually
 cost. If you ran it as intended, your predicted ranking is written down and
@@ -80,8 +80,8 @@ it is a fact about an organ at a budget, a scale, and a dataset.** Every
 published ablation table you will ever read deserves this same suspicion.
 
 **Scandal #2: the nonlinearity is nearly free to remove.** +0.013 — noise.
-Fold the relu and `fc2 @ relu(fc1 @ x)` should collapse toward one linear
-map; why no damage? Because at this scale the *attention softmax* is already
+Remove the relu and the two stacked linear layers should collapse toward
+one linear map; why no damage? Because at this scale the *attention softmax* is already
 supplying nonlinearity, and the bigram-ish statistics being learned are
 mostly linear-reachable anyway. At production scale the MLP stack is where
 most parameters and (by current understanding) most stored knowledge live —

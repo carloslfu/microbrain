@@ -36,6 +36,9 @@ model's *information* hasn't changed (still one character of context), only the
 - **cross-entropy** — the textbook name for the loss you already know: rung
   0's "surprise," `-log P(the true next char)`, `avg_nll` in the code. One
   quantity, four names — they will not multiply further.
+- **MLP** — multi-layer perceptron: the sandwich this file builds (linear →
+  ReLU → linear). The generic word for it is a **neural network**; this is
+  the smallest useful one.
 - **SGD** — stochastic gradient descent: the update loop this whole file
   builds. "Stochastic" because each step trusts one document's gradient
   rather than the whole dataset's.
@@ -47,7 +50,8 @@ model's *information* hasn't changed (still one character of context), only the
 layer to 64 hidden units → ReLU → a linear layer to 38 logits. `softmax` turns
 logits into probabilities: exponentiate (making everything positive, and gaps
 multiplicative), then normalize. 4,064 parameters, initialized to small random
-noise, `gauss(0, 0.08)`. The whole network, from [train1.py](../train1.py):
+noise, `gauss(0, 0.08)` (bell-curve random numbers centered on 0, spread
+0.08). The whole network, from [train1.py](../train1.py):
 
 ```python
 def mlp(token_id):
@@ -152,8 +156,8 @@ near-zero logits?)
 `dlogits[target_id] += 1.0 / n`. Predict: does anything *detect* the bug? What
 does training do? Run it and watch closely.
 
-**3. Extend it.** Add a bias vector to the final layer:
-`logits = fc2 @ h + b`. You must (a) initialize it, (b) add it to `params`,
+**3. Extend it.** Add a bias vector `b` to the final layer: after
+`logits = linear(x, state_dict['mlp_fc2'])`, add `b[i]` to each logit. You must (a) initialize it, (b) add it to `params`,
 (c) use it in *both* forward passes, and (d) derive its gradient by hand. The
 gradient check grades your derivation automatically. That's the real lesson.
 

@@ -22,7 +22,7 @@ construct, mapped to what a frontier lab runs:
 | `wpe`, a 40-row table | RoPE: positions as rotations, no table | your rung 3 exercise hit the wall (`IndexError` at row 40); rotations don't have rows to run out of — that's "1M-token context" |
 | 1 layer, 4 heads, 16 dims, 4,928 params | ~10²-layer, mixture-of-experts, ~10¹¹–10¹² params | the `for li in range(n_layer)` loop, turned up; MoE = most of the MLP asleep per token |
 | `docs[step % len(train_docs)]`, one doc | batches of thousands of sequences, thousands of GPUs | your gradient was one document's opinion; theirs averages thousands per step |
-| Adam with `m`, `v`, decay | Adam with `m`, `v`, warmup + cosine decay | embarrassingly close to identical. Your rung 5 is the frontier optimizer |
+| Adam with `m`, `v`, decay | Adam with `m`, `v`, warmup + cosine decay (a gentler start and smoother landing for the learning rate) | embarrassingly close to identical. Your rung 5 is the frontier optimizer |
 | 488 training docs, ~2 epochs, memorization gauge | trillions of tokens, *less than one* epoch | the regime flips: frontier models barely repeat data. Your overfitting lab is the tabletop model of the field's data-wall debate |
 | `temperature`, `random.choices` | the same loop, plus top-p and friends | sampling in every chatbot is your rung 6 ladder, productionized |
 
@@ -31,7 +31,7 @@ Two things on that list deserve a last word.
 **The KV cache is the era's workhorse.** The two humble lists you appended to at rung 3 —
 and killed/resurrected at rung 6 — are, scaled up, the central object of the
 inference industry. Serving systems page them, share them across requests,
-quantize them. When a provider quotes you a price per token, the shape of that
+quantize them (store them in fewer bits). When a provider quotes you a price per token, the shape of that
 price is the shape of your `generate_kv_report(use_cache=False)` measurement.
 
 **What is genuinely *not* in this repo** is what happens after pretraining:

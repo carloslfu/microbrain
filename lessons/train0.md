@@ -26,7 +26,8 @@ becomes an id. One extra token, BOS, marks both the start and the end of a name
 — the model begins from it, and emitting it means "I'm done." Vocabulary: 38.
 
 **The model** is `state_dict[i][j]`: how many times token `j` followed token
-`i`. That's it. To predict, normalize row `i` into probabilities. We add one
+`i`. That's it — a **bigram** model, the two-token pattern: this character,
+next character, nothing else. To predict, normalize row `i` into probabilities. We add one
 imaginary count to every cell (Laplace smoothing) so nothing has probability
 exactly zero — "never say never," for reasons the break-it exercise makes vivid.
 The entire model, from [train0.py](../train0.py):
@@ -82,7 +83,9 @@ Three things worth staring at:
   ~14.5 characters instead of 38*. (The standard name for this is perplexity.)
   Counting alone cut the alphabet by more than half.
 
-The model also drew itself — run it and look at the heatmap. Two rows to find:
+The model also drew itself — run it and look at the heatmap (a grid where
+darker cell = higher probability; the shade ramp runs `.` `:` `-` `=` `+`
+`*` `#` `%` `@`, light to dark). Two rows to find:
 `q`, which is nearly a single dark cell (`u`, 0.25 — the corpus's `qwen`s and
 `quantization`s at work), and the BOS row, whose favorite openers are `c`, `a`,
 `m`. And the samples are glorious garbage: `o-cerot-g-ck-boncor-steave-...`,
@@ -93,7 +96,8 @@ tiny thing isn't parroting.
 
 ## The idea to keep
 
-Counting is the **closed-form solution**: for the question "what follows what,
+Counting is the **closed-form solution** — a direct, exact formula, no
+trial and error: for the question "what follows what,
 one character deep," the count table is provably the best possible answer, and
 one pass over the data computes it exactly. This is the only rung with that
 luxury. The moment the model gets more expressive — the moment we want it to

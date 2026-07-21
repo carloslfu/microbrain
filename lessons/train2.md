@@ -25,7 +25,8 @@ two things: which Values it was computed *from* (`_children`), and how sensitive
 it is to each of them (`_local_grads`). Multiplication knows its locals are
 "the other guy's data." `log` knows its local is `1/x`. Nobody knows anything
 global — each op knows only its own one-step derivative. Here is
-multiplication, whole, from [train2.py](../train2.py):
+multiplication, whole, from [train2.py](../train2.py) (`__mul__` is how a
+Python class defines what `*` means for its objects):
 
 ```python
     def __mul__(self, other):

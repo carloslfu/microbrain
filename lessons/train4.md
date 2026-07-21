@@ -48,7 +48,8 @@ to know "what came right before me" *and* "where did the current word start,"
 one distribution must average those needs into mush. Four heads are four
 independent spotlights: each can commit to its own criterion, because each has
 its own query-key match and its own softmax. Multi-head attention is
-portfolio diversification for lookups.
+portfolio diversification for lookups — never bet all 16 dimensions on one
+place to look.
 
 The layer loop is the other half of the diff, and it's shape-only: state_dict
 keys become `layer0.attn_wq`, the block body indents one level, and a
@@ -60,9 +61,9 @@ model," it is this loop.
 
 (The full diff against train3 runs long because each rung also swaps its own
 instruments — the single attention triangle becomes four. The blocks shown
-above *are* the lesson hunks. Terminal-comfortable? `diff train3.py
+above *are* the meaningful changes. Terminal-comfortable? `diff train3.py
 train4.py` shows them in place. Or hand both files to your agent and have it
-walk you through every hunk — that's what agents are for.)
+walk you through every change, block by block — that's what agents are for.)
 
 ## What the numbers said
 

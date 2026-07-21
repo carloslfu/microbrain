@@ -25,8 +25,9 @@ characters; the break-it exercise at rung 7 measures exactly what that costs.
 
 **Attention is a soft lookup.** Each position computes three vectors from its
 `x`: a **query** ("what I'm looking for"), a **key** ("what I contain"), and a
-**value** ("what I'll contribute if chosen"). The current query dots against
-every stored key; softmax turns those match-scores into weights; the output is
+**value** ("what I'll contribute if chosen"). The current query is dotted against
+every stored key (a dot product — multiply matching entries, add them up — is
+the cheapest possible "how similar are these two vectors?" score); softmax turns those match-scores into weights; the output is
 the weighted average of stored values. It's a dictionary lookup where every
 entry answers a little, in proportion to how well its key matches. The scores
 get divided by √16 first — dot products grow with dimension, and a saturated
@@ -65,6 +66,10 @@ of the LLM era — the KV cache — and measures what they save.
 `x = x + block(x)`, an *adjustment* to a stream that flows through untouched.
 This is also a gradient highway: through the `+`, blame reaches early layers
 undiminished (the local gradient of `+` is 1 — you verified that at rung 2).
+
+**`lm_head`: back to token-land.** After the blocks, one last linear layer
+turns the 16-number stream into 38 scores, one per token — the "language
+model head," the model's mouth.
 
 **rmsnorm: standard scale.** Before anything sensitive, rescale `x` to unit
 root-mean-square. Vectors that drift huge or tiny make training unstable;
