@@ -57,7 +57,7 @@ open notes/train0.md            # the essays assume you run first, read second
 
 Then keep climbing. Honest timings on a laptop (pure-Python scalar autograd
 is the point, not a flaw): train2 ≈ 7 min, train3–train6 ≈ 10–12 min each,
-train7 ≈ 25 min for all six surgeries. Every rung takes `--fast` (~1–3 min)
+train7 ≈ 20 min for all six surgeries. Every rung takes `--fast` (~1–3 min)
 when you want the shape without the wait; `python compare.py` prints the
 whole ladder from whatever logs you've produced and fast-runs the gaps.
 
