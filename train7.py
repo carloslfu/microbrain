@@ -123,7 +123,8 @@ def softmax(logits):
     max_val = max(val.data for val in logits)
     exps = [(val - max_val).exp() for val in logits]
     total = sum(exps)
-    return [e / total for e in exps]
+    probs = [e / total for e in exps]
+    return probs
 
 def rmsnorm(x):
     if not FLAGS['rmsnorm']:

@@ -7,10 +7,11 @@ Notice what is NOT in this file: no Value class, no backward(), no optimizer.
 Inference is just the forward pass. Gradients exist only so that training can
 happen; the shipped product never needs them. Plain floats, ~10x faster too.
 
-usage: python namer.py [-n 12] [-t 0.8] [--seed 1337]
+usage: python namer.py [-n 12] [-t 0.8] [--seed N] [--quiz]
   -n      how many novel names to generate (default 12)
   -t      temperature (default 0.8 — braver than training-time 0.5)
   --seed  fix the randomness (default: different every run)
+  --quiz  mix hallucinations with real records — can you tell which is which?
 """
 
 import os       # os.path.exists
@@ -102,13 +103,32 @@ def generate():
         sample.append(uchars[token_id])
     return ''.join(sample)
 
-print(f"microbrain namer | {count} novel idea names | T={temperature}")
-novel, attempts = [], 0
-while len(novel) < count and attempts < count * 50:
-    attempts += 1
-    name = generate()
-    if len(name) >= 4 and name not in known and name not in novel:
-        novel.append(name)
-for i, name in enumerate(novel):
-    print(f"  {i+1:2d}. {name}")
-print(f"({attempts} draws -> {len(novel)} survivors of the novelty filter)")
+def draw_novel(count, min_len=4, max_len=40):
+    out, attempts = [], 0
+    while len(out) < count and attempts < count * 50:
+        attempts += 1
+        name = generate()
+        if min_len <= len(name) <= max_len and name not in known and name not in out:
+            out.append(name)
+    return out, attempts
+
+if '--quiz' in sys.argv:
+    # the payoff, sharpened: three of these are records in the corpus,
+    # three came out of 4,928 floats. no peeking.
+    assert known, "the quiz needs data/data.txt — run: python data/make_dataset.py"
+    real = random.sample(sorted(k for k in known if 6 <= len(k) <= 30), 3)
+    fakes, _ = draw_novel(3, min_len=6, max_len=30)
+    quiz = real + fakes
+    random.shuffle(quiz)
+    print("microbrain namer — quiz | which are real records, which did the model invent?")
+    for i, q in enumerate(quiz):
+        print(f"  {i+1}. {q}")
+    print("\n" + " " * 8 + "(answers: " + ', '.join(
+        f"{i+1} {'real' if q in known else 'FAKE'}" for i, q in enumerate(quiz)) + ")")
+else:
+    print(f"microbrain namer | {count} novel idea names | T={temperature}")
+    novel, attempts = draw_novel(count)
+    for i, name in enumerate(novel):
+        print(f"  {i+1:2d}. {name}")
+    print(f"({attempts} draws -> {len(novel)} survivors of the novelty filter)")
+    print("(now try --quiz)")

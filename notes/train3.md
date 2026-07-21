@@ -13,7 +13,8 @@ ceiling is structural — no amount of training fixes it. This rung rebuilds the
 model box so that every position can consult every position before it, with
 learned judgment about where to look. After this file, the architecture is,
 in Karpathy's words, *structurally a GPT*. Only three gaps to microgpt remain:
-one head instead of four, and SGD instead of Adam.
+one head instead of four, one hard-wired layer instead of a layer loop, and
+SGD instead of Adam.
 
 ## Walk the code
 
@@ -28,8 +29,10 @@ characters; the break-it exercise at rung 7 measures exactly what that costs.
 every stored key; softmax turns those match-scores into weights; the output is
 the weighted average of stored values. It's a dictionary lookup where every
 entry answers a little, in proportion to how well its key matches. The scores
-get divided by √16 first — dot products grow with dimension, and saturated
-softmaxes learn slowly.
+get divided by √16 first — dot products grow with dimension, and a saturated
+softmax learns slowly (a near-one-hot distribution barely moves when its
+inputs nudge, so almost no gradient flows back through it; exercise 2 pokes
+at exactly this, with a twist).
 
 Note the two lists threaded through `gpt(token_id, pos_id, keys, values)`:
 every position appends its key and value. During training this looks like mere
@@ -43,7 +46,13 @@ undiminished (the local gradient of `+` is 1 — you verified that at rung 2).
 
 **rmsnorm: standard scale.** Before anything sensitive, rescale `x` to unit
 root-mean-square. Vectors that drift huge or tiny make training unstable;
-normalization is the thermostat.
+normalization is the thermostat. One thing you'll notice in the code: it
+normalizes right after the embedding and then *again* at the top of the
+attention block, back to back. At layer 1 the second call looks redundant
+(normalizing the just-normalized) — it isn't a mistake: residual adds will
+un-normalize the stream after every block, so each block re-norms on entry,
+and the pattern is kept uniform from layer 1. The original file carries a
+comment saying exactly this.
 
 ## What the numbers said
 
@@ -56,7 +65,7 @@ training took 627.8s
 ```
 
 - **It starts *worse* than the shrug** — 39.6 effective choices out of 38.
-  train1 began at exactly-uniform; this model begins *actively confused*,
+  train1 began a whisker from uniform; this model begins *actively confused*,
   because random attention pulls noise from random places into every
   prediction. More machinery, more ways to be wrong before training.
 - **Val 2.6886 (14.7 choices): still behind counting's 2.6774 (14.5).** Read
@@ -104,8 +113,9 @@ this file with the loop counter turned up.
 
 ## Exercises
 
-**1. Predict, then run.** train1 started at exactly ln(38). Will this file?
-Commit to a number and a reason; check against step 1.
+**1. Predict, then run.** train1's step 1 landed a whisker under ln(38)
+(3.6369 vs 3.6376). Will this file land as close? Commit to a number and a
+reason; check against step 1.
 
 **2. Break it.** Delete the `/ n_embd**0.5` scaling from the attention
 logits (rung 4 will spell it `head_dim**0.5`). Predict the *mechanism* of
@@ -121,10 +131,10 @@ BOS break. Predict the exact failure, line and error type, before running.
 <details>
 <summary>Solutions</summary>
 
-**1.** No — 3.7557, *above* 3.6376. Uniform is what you get from small-random
-logits alone (train1); attention at random init actively mixes irrelevant
-context into the prediction, which is worse than ignorance until the keys and
-queries learn to match sensibly.
+**1.** No — 3.7557, well above. Near-uniform is what small random logits
+alone buy you (train1's 3.6369); attention at random init actively mixes
+irrelevant context into the prediction, which is worse than ignorance until
+the keys and queries learn to match sensibly.
 
 **2.** The textbook mechanism: unscaled dot products grow with dimension,
 softmax saturates toward one-hot, and the gradient through a saturated

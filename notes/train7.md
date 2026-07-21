@@ -16,9 +16,12 @@ init — baseline plus five surgeries — and prints what each removal actually
 cost. If you ran it as intended, your predicted ranking is written down and
 it is about to be graded.
 
-A calibration note before the reveal: the val set is 55 documents, so
-differences under ~0.03 nats are coin-flips; differences over ~0.1 are real
-wounds. Read the chart with those error bars in your head.
+Two calibration notes before the reveal. First: the val set is 55 documents,
+so differences under ~0.03 nats are coin-flips; differences over ~0.1 are
+real wounds. Second: the baseline below reads 15.6 effective choices, not
+rung 5's 13.8 — the lab trains 300 steps per run, not 1,000 (six full-budget
+trainings would run well over an hour). Same architecture, smaller budget; by now
+that distinction should feel load-bearing.
 
 ## What the numbers said
 
@@ -84,8 +87,8 @@ four minutes.
 
 **1. Predict, then run** — you already did; the lab is structured around it.
 Grade your ranking now, in writing, including the direction of your no-wpe
-prediction. (Being wrong there in good company: the essay's author predicted
-wpe near the top of the damage chart.)
+prediction. (If you had wpe near the top of the damage chart, you're in good
+company — so did the author of this essay.)
 
 **2. Break it further.** The lab's most important dial is `num_steps`. Rerun
 at 600 or 1000 steps: does no-wpe still win? Does no-relu stay free? Commit

@@ -19,8 +19,7 @@ model's *information* hasn't changed (still one character of context), only the
 
 ## Walk the code
 
-**New words this rung** — the only vocabulary you need, and the last time
-these arrive undefined:
+**New words this rung** — defined here once, used freely afterward:
 
 - **embedding** — the 16 numbers the model gets to associate with each token:
   its learned representation, and the only thing the model knows about a

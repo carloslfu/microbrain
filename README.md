@@ -19,8 +19,10 @@ resurrected, and shipped as a working name-generator.
 ## The ladder
 
 Each rung is one runnable file and one short essay. One new idea per rung —
-everything else is frozen scaffold from the rung below, so `diff train3.py
-train4.py` *is* the lesson. Numbers below are from full runs of this repo's
+everything else is frozen scaffold from the rung below, so the diff between
+adjacent rungs carries the lesson (each rung also swaps its own instruments;
+the essays point at exactly the hunks that matter and license you to skim
+the rest — notice the instrument hunks never touch the model). Numbers below are from full runs of this repo's
 corpus (543 idea names, 38-token vocabulary, 10% held out):
 
 | rung | file | the one new idea | val loss | effective choices¹ |
@@ -37,8 +39,10 @@ corpus (543 idea names, 38-token vocabulary, 10% held out):
 | ∎ | [namer.py](namer.py) · [epilogue](notes/epilogue.md) | your model as a tool; the bridge to production | — | — |
 
 ¹ `e^(val loss)` — out of 38 possible next characters, how many is the model
-still effectively guessing among? Uniform = 38, perfect = 1. It's perplexity,
-wearing its plain-English name. Watch it fall down the ladder, 38 → 13.8 —
+still effectively guessing among? Uniform = 38, perfect = 1 — and yes, an
+untrained transformer can score *above* 38 by actively mixing noise into its
+guesses (rung 3 opens there). It's perplexity, wearing its plain-English
+name. Watch it fall down the ladder, 38 → 13.8 —
 not monotonically: the bumps at rungs 1 and 4 are lessons, and the essays
 own them.
 
@@ -46,6 +50,12 @@ The mid-ladder plot twist is real and deliberate: **a complete GPT loses to a
 count table for two straight rungs** (14.7, 14.8 vs 14.5) until the optimizer
 rung lands. The architecture was never the bottleneck. Rung 5's essay is
 where that sinks in.
+
+One honesty note: every number in the essays comes from *this* corpus with
+*these* seeds, and the runs are deterministic — walk the course on the same
+data and your logs will match the essays digit for digit. Bring your own
+corpus (`--names`, `--from`) and the numbers will differ; the shape of the
+story is what transfers.
 
 ## Quickstart
 
@@ -67,7 +77,7 @@ reruns it falls back to.
 
 Then keep climbing. Honest timings on a laptop (pure-Python scalar autograd
 is the point, not a flaw): train2 ≈ 7 min, train3–train6 ≈ 10–12 min each,
-train7 ≈ 20 min for all six surgeries. Every rung takes `--fast` (seconds on
+train7 ≈ 20 min for all six runs (five surgeries plus the baseline). Every rung takes `--fast` (seconds on
 the early rungs, ~1–3 min on the heavy ones) when you want the shape without
 the wait; `python compare.py` prints the
 whole ladder from whatever logs you've produced and fast-runs the gaps.

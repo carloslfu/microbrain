@@ -8,8 +8,10 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
         you are here: the steps get smart. this is microgpt.
 ```
 
-The diff is five lines of optimizer state and four lines of update rule. It is
-also the largest single improvement on the course's scoreboard. Sit with that
+In the diff against train4, the lesson is nine lines — five of optimizer
+state, four of update rule; the other hunks are this rung swapping its
+instruments (album and race chart in, attention tracing out). Nine lines,
+and the largest single improvement on the course's scoreboard. Sit with that
 asymmetry: rungs 3 and 4 rebuilt the entire model around attention and
 *couldn't beat counting*; this rung changes only how the parameters step, and
 wins. In deep learning, the optimizer is not plumbing. It's a protagonist.
@@ -21,9 +23,9 @@ averages *per parameter* and moves by their ratio:
 
 - **`m` — momentum, a memory of direction.** `m = 0.85·m + 0.15·grad`. Our
   batch size is one document; each gradient is one document's *opinion*, and
-  opinions swing wildly (watch the raw loss bounce: 3.65, 3.47, 3.55, 3.71 in
-  the first five steps). Momentum averages the last ~7 opinions into a
-  consensus direction before moving.
+  opinions swing wildly (watch the raw loss bounce across the first five
+  steps: 3.57, 3.65, 3.47, 3.55, 3.71). Momentum averages the last ~7
+  opinions (1/(1−0.85) ≈ 6.7) into a consensus direction before moving.
 - **`v` — a memory of scale.** `v = 0.99·v + 0.01·grad²`. Dividing the step
   by `√v` gives every parameter its *own* unit system: a rarely-touched
   embedding row (how often does `q` appear?) gets bold steps when its moment
@@ -58,10 +60,14 @@ The completed scoreboard, six files in the making:
 
 Same 4,928 parameters as train4. Same 1,000 documents in the same order. The
 only change is *how the steps were taken*: 14.8 → 13.8, and the count table
-finally falls. Note also step 1 is 3.5698 in both train4 and train5's logs —
-identical to the fourth decimal — because the first loss is computed before
-any optimizer has had a chance to differ. The twin-run trick from rung 2
-keeps paying: logs are proofs.
+finally falls. And step 1's printed line is worth a slow read, because its
+two fields tell time: the *train loss* is 3.5698 in both train4's and
+train5's logs — computed before the first update, when no optimizer
+difference existed yet — while the *val loss* on the very same line already
+differs (3.6733 vs 3.6669), because the panel evaluates after the update.
+One log line straddles the first step, and the right half already carries
+each optimizer's fingerprint. The twin-run trick from rung 2 keeps paying —
+read logs field by field, not line by line.
 
 The file draws the race (s = SGD from train4's saved curve, A = Adam):
 
@@ -75,7 +81,8 @@ The file draws the race (s = SGD from train4's saved curve, A = Adam):
    2.50 |                                        A
 ```
 
-`A` gets below `s` within the first tenth of training and stays there. And
+(Abridged — your run prints all fifteen rows.) `A` gets below `s` within the
+first tenth of training and stays there. And
 read the *band*, not just the trend: both curves live inside ±0.1 of jitter,
 because every point is a one-document quiz. Learning to see "noisy but
 descending" versus "flat" versus "diverging" at a glance is a working skill —
@@ -107,12 +114,13 @@ is chronically underestimated. A transformer under a weak optimizer *measured
 worse than counting* — imagine concluding, two rungs early, that attention
 doesn't work. Every capability claim you'll ever evaluate has an optimizer,
 a data recipe, and a step budget hiding inside it. This rung is the course's
-inoculation against architecture romance.
+inoculation: never judge an architecture apart from its training.
 
 ## Exercises
 
-**1. Predict, then run.** Before running train5: will its step-1 loss match
-train4's, given the optimizers differ? Reason it out, then diff the logs.
+**1. Predict, then run.** Before running train5: will its step-1 *line*
+match train4's, given the optimizers differ? Careful — the line has two
+loss fields. Reason out each, then diff the logs.
 
 **2. Break it.** Predict what `beta2 = 0.5` does — a variance estimate that
 only remembers the last couple of gradients. Commit to a direction and a
@@ -127,10 +135,13 @@ Then run `--fast` both ways and compare tails.
 <details>
 <summary>Solutions</summary>
 
-**1.** Identical (3.5698, both logs): step 1's loss is computed on the same
-init with the same document *before* the first update — optimizers can only
-diverge from step 2 onward. If your logs disagree at step 1, your seed or
-data order changed, not your optimizer.
+**1.** Split verdict, and that's the lesson. The train-loss field is
+identical (3.5698): computed on the same init and the same document *before*
+the first update, where no optimizer difference can exist. The val-loss
+field on that same line differs (3.6733 vs 3.6669): the panel evaluates
+*after* the update, so it already contains one step of SGD-versus-Adam. If
+you answered "identical" or "different" for the whole line, the log just
+taught you to read per-field.
 
 **2.** On file at rung 7 — compare the bar chart there against your committed
 magnitude, not the other way around.

@@ -41,8 +41,8 @@ has its own revision story, and it's the better lesson:
   nudges — on the 11th, the 12th, again on the 16th.
 - **The big one: a single revision removing 78 lines and adding 35** (net
   −43) in the launch-day cluster of edits — *after* the post had already
-  declared "I cannot simplify this any further." It turned out he could: with
-  the smaller nips around it, the file settled at 243 → 199.
+  declared "I cannot simplify this any further." It turned out he could: that
+  cut plus the small nips around it net −44, and the file settled at 243 → 199.
 - **Still breathing:** the gist was touched as recently as **July 21, 2026**
   — five months post-launch, single-line edits are still landing.
 

@@ -75,8 +75,8 @@ model call; throw the lists away and honesty requires replaying the whole
 prefix, so 22 characters cost 276 calls instead of 23. That's 1+2+...+23
 versus 23 — quadratic versus linear, a 12.6× wall-clock gap at name length,
 and the gap *grows with every character*. Scale the sequence to a chat
-history and you understand why the serving industry is, to first
-approximation, a KV-cache management industry.
+history and you understand why serving systems obsess over KV-cache
+management.
 
 ## 4. The novelty filter — and a confession
 
@@ -85,9 +85,10 @@ approximation, a KV-cache management industry.
 ```
 
 The memorization gauge has read 0 all course, and this rung's 30-sample census
-confirms it. Time to interrogate that: microgpt's launch thread on Hacker News
-caught *his* samples containing verbatim training names — with nearly the same
-parameter count. Why does ours not parrot? Because memorization pressure is
+confirms it. Time to interrogate that: microgpt's launch-day Hacker News
+thread reported spotting verbatim training names among *its* samples — a
+4,192-parameter model against our 4,928, same ballpark. Why does ours not
+parrot? Because memorization pressure is
 about the *density of the space*: 32,033 human names crowd a small space of
 short, convergent strings (many "kamon"s are near-inevitable), while 543
 hyphenated 20-character slugs rattle around an astronomically larger one. Our
@@ -108,8 +109,7 @@ gauge move.)
 Three are records in the brain; three came out of 4,928 floats. Commit to
 answers before peeking at the log's answer line. If you hesitated even once,
 consider what that means: at 106 KB, statistics-of-naming is already halfway
-to plausibility. Now recall your last encounter with a fluent paragraph from
-a model six orders of magnitude larger, and calibrate accordingly.
+to plausibility — and production models are six orders of magnitude larger.
 
 ## Exercises
 
@@ -117,11 +117,14 @@ a model six orders of magnitude larger, and calibrate accordingly.
 model calls with the cache? Without? What's the ratio, and is it constant in
 name length? Then check the printout.
 
-**2. Break it.** Open `out/model.json` in an editor. Find one weight in
-`lm_head` and set it to `1000000.0`. Reload with a small script (steal the
-load loop from this file) and sample. Diagnose what you observe from the
-mechanism — which single token dominates, and at which temperature does the
-damage hide?
+**2. Break it.** Corrupt one weight — not by hand-editing (the JSON is one
+long line) but with three lines of Python: `json.load` the checkpoint, set
+`m['state_dict']['lm_head'][36][0] = 1e6` (row 36 is `z`: token ids run
+`-`, then the ten digits, then `a`–`z`), `json.dump` it to
+`out/model_bad.json`. Reload with a small script (steal the load loop from
+this file) and sample. Diagnose what you observe from the
+mechanism — which single token dominates? Does raising the temperature hide
+the damage? Commit to answers before running.
 
 **3. Extend it.** Implement *prompting*. Feed the characters of a prefix —
 say `agent-` — through `gpt()` to warm the KV lists, then sample the

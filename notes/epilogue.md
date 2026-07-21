@@ -16,19 +16,19 @@ construct, mapped to what a frontier lab runs:
 | you ran | production runs | what changed |
 |---|---|---|
 | 38 characters, `uchars.index(ch)` | BPE tokenizers, ~100–200k tokens | chunks instead of chars: shorter sequences, more meaning per position. Your `q` → `u` row is their `" the"` |
-| scalar `Value`, one number each | tensors: the same graph over million-entry blocks | the 45× overhead you measured at rung 2 is what vanishes when bookkeeping amortizes over blocks — GPUs finish the job, ~10⁶× onward |
+| scalar `Value`, one number each | tensors: the same graph over million-entry blocks | the 45× overhead you measured at rung 2 is what vanishes when bookkeeping amortizes over blocks — and GPUs then add ~6 more orders of magnitude of arithmetic throughput over interpreted scalar Python |
 | `linear()`: two nested `for` loops | fused matmul kernels, FlashAttention | *identical mathematics*; the memory access order is redesigned so the chip never waits. Attention's formula — your rung 3 — is untouched |
 | `keys.append(k); values.append(v)` | paged KV caches serving thousands of chats | rung 6 measured why: without the cache, work per token grows with everything said so far |
 | `wpe`, a 40-row table | RoPE: positions as rotations, no table | your rung 3 exercise hit the wall (`IndexError` at row 40); rotations don't have rows to run out of — that's "1M-token context" |
 | 1 layer, 4 heads, 16 dims, 4,928 params | ~10²-layer, mixture-of-experts, ~10¹¹–10¹² params | the `for li in range(n_layer)` loop, turned up; MoE = most of the MLP asleep per token |
 | `docs[step % len(train_docs)]`, one doc | batches of thousands of sequences, thousands of GPUs | your gradient was one document's opinion; theirs averages thousands per step |
 | Adam with `m`, `v`, decay | Adam with `m`, `v`, warmup + cosine decay | embarrassingly close to identical. Your rung 5 is the frontier optimizer |
-| 543 docs, ~2 epochs, memorization gauge | trillions of tokens, *less than one* epoch | the regime flips: frontier models barely repeat data. Your overfitting lab is the tabletop model of the field's data-wall debate |
+| 488 training docs, ~2 epochs, memorization gauge | trillions of tokens, *less than one* epoch | the regime flips: frontier models barely repeat data. Your overfitting lab is the tabletop model of the field's data-wall debate |
 | `temperature`, `random.choices` | the same loop, plus top-p and friends | sampling in every chatbot is your rung 6 ladder, productionized |
 
 Two things on that list deserve a last word.
 
-**The KV cache is the era.** The two humble lists you appended to at rung 3 —
+**The KV cache is the era's workhorse.** The two humble lists you appended to at rung 3 —
 and killed/resurrected at rung 6 — are, scaled up, the central object of the
 inference industry. Serving systems page them, share them across requests,
 quantize them. When a provider quotes you a price per token, the shape of that

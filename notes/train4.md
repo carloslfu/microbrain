@@ -35,8 +35,17 @@ portfolio diversification for lookups.
 
 The layer loop is the other half of the diff, and it's shape-only: state_dict
 keys become `layer0.attn_wq`, the block body indents one level, and a
-transformer becomes "this, stacked." Set `n_layer = 2` and nothing else needs
-to know. When you hear "a 96-layer model," it is this loop.
+transformer becomes "this, stacked." The KV lists nest along with it —
+`keys[li].append(k)` — every layer keeps its *own* memory of the sequence,
+which is the right picture to carry into production models too. Set
+`n_layer = 2` and nothing else needs to know. When you hear "a 96-layer
+model," it is this loop.
+
+(On reading the diff: `diff train3.py train4.py` runs long because each rung
+also swaps its own instruments — the single attention triangle becomes four.
+The lesson lives in the hunks that touch `gpt()` and the state_dict: the head
+loop, the layer-prefixed keys, the nested KV lists. Read those; skim the
+rest.)
 
 ## What the numbers said
 
@@ -66,9 +75,9 @@ way it does.
 
 And the four heads, printed over `test-time-training`: at this scale, honesty
 compels the observation that they have **not** specialized into crisp,
-nameable roles. All four keep the BOS sink; head 0 leans hardest on it; head 3
-spreads more evenly across recent characters. They differ in texture, not in
-story. Expecting "head 2 tracks hyphens" from 4,928 parameters is
+nameable roles. All four keep the BOS sink — heads 0 and 2 most visibly, head 3
+spreading a bit more evenly across recent characters — but they differ in
+texture, not in story. Expecting "head 2 tracks hyphens" from 4,928 parameters is
 interpretability romance — what four heads reliably buy is four *chances*, and
 redundancy when some of them waste their slice. In production-scale models,
 crisp head roles (previous-token heads, induction heads) do emerge; here you

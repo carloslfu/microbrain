@@ -92,8 +92,9 @@ method work before we point it at problems that have no exact answer.
 often follows `-`? Which row of the table is closest to a single dark cell?
 Commit, then run `python train0.py` and check the "after" lines.
 
-**2. Break it.** Delete the smoothing: `total = sum(row)` and `(c) / total`.
-Predict what happens and *when*, precisely. Then run it.
+**2. Break it.** Delete the smoothing: `total = sum(row)`, and `c / total`
+instead of `(c + 1) / total`. Predict what happens and *when*, precisely.
+Then run it.
 
 **3. Extend it.** Make it a trigram model: condition on the previous *two*
 tokens. How big is the table now? How many of its rows did 488 training docs
