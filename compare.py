@@ -16,6 +16,8 @@ import sys        # sys.argv, sys.executable
 import subprocess # subprocess.run
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+assert os.path.exists(os.path.join(HERE, 'data', 'data.txt')), \
+    "no data/data.txt yet — run: python data/make_dataset.py"
 OUT = os.path.join(HERE, 'out')
 os.makedirs(OUT, exist_ok=True)
 FORCE = '--run' in sys.argv

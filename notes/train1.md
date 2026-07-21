@@ -19,6 +19,28 @@ model's *information* hasn't changed (still one character of context), only the
 
 ## Walk the code
 
+**New words this rung** — the only vocabulary you need, and the last time
+these arrive undefined:
+
+- **embedding** — the 16 numbers the model gets to associate with each token:
+  its learned representation, and the only thing the model knows about a
+  character. A row of the `wte` table.
+- **linear layer** — a matrix multiply: every output is a weighted sum of all
+  inputs. `linear()` in the code, four lines.
+- **hidden units** — the 64 numbers between the two linear layers; "hidden"
+  because they're neither input nor output, just workspace.
+- **ReLU** — `max(0, x)`: negatives become 0, positives pass through. The
+  cheapest nonlinearity; without one, two stacked linear layers collapse
+  into a single linear layer (rung 7 measures what that costs).
+- **logits** — the 38 raw scores the model outputs before softmax turns them
+  into probabilities.
+- **cross-entropy** — the textbook name for the loss you already know: rung
+  0's "surprise," `-log P(the true next char)`, `avg_nll` in the code. One
+  quantity, four names — they will not multiply further.
+- **SGD** — stochastic gradient descent: the update loop this whole file
+  builds. "Stochastic" because each step trusts one document's gradient
+  rather than the whole dataset's.
+
 **The model.** A row of `wte` (the token's embedding, 16 numbers) → a linear
 layer to 64 hidden units → ReLU → a linear layer to 38 logits. `softmax` turns
 logits into probabilities: exponentiate (making everything positive, and gaps
@@ -45,7 +67,8 @@ exercise, you will — this check is what stands between you and silently
 training garbage.
 
 One line inside the calculus deserves a pause:
-`dlogits = probs - one_hot(target)`. The gradient of softmax-plus-cross-entropy
+`dlogits = probs - one_hot(target)` (where `one_hot(target)` is 38 zeros with
+a single 1 at the true character). The gradient of softmax-plus-cross-entropy
 is just *what you predicted minus what was true*. The whole apparatus of
 backpropagation bottoms out in "the correction is the error." When people say
 neural networks learn from their mistakes, this line is the literal mechanism.
@@ -81,6 +104,9 @@ The rung also draws its own loss landscape — a 1-D slice through a
   loss  3.153 | *****************************************
   weight sweeps -3.03 .. +2.97, W = trained value -0.031, min loss 3.1535
 ```
+
+(Those specific numbers are from the full 1,000-step run; a `--fast` run
+settles this weight somewhere else and draws its own, equally valid valley.)
 
 `W` marks where SGD actually left this weight: on the floor of the valley. And
 a subtlety worth keeping: `W` is *near* the minimum of this curve, not on it —

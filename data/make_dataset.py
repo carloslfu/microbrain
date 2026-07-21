@@ -23,8 +23,9 @@ Filters (each drops a real failure mode, printed at the end — no silent caps):
   - slugs longer than 39 chars dropped: our context window is 40 (BOS + 39)
 
 Usage:
-    python data/make_dataset.py           # harvest the brain (default)
-    python data/make_dataset.py --names   # Karpathy's names dataset instead
+    python data/make_dataset.py                 # harvest the brain (default)
+    python data/make_dataset.py --names         # Karpathy's names dataset instead
+    python data/make_dataset.py --from list.txt # any file of short strings, one per line
 
 Output: data/data.txt (one doc per line, shuffled with a fixed seed so every
 train script sees the same order; the last 10% will serve as validation data).
@@ -62,21 +63,35 @@ def harvest_brain():
                     slugs.add(s)
     return sorted(slugs), raw, drops
 
+def harvest_file(path):
+    """Any newline-separated list of short strings becomes a corpus."""
+    raw_docs = [l.strip().lower() for l in open(path) if l.strip()]
+    drops = {"charset": 0, "too-long": 0}
+    docs = set()
+    for d in raw_docs:
+        if not re.fullmatch(r"[a-z0-9-]+", d):
+            drops["charset"] += 1
+        elif len(d) > MAX_LEN:
+            drops["too-long"] += 1
+        else:
+            docs.add(d)
+    return sorted(docs), len(raw_docs), drops
+
 def harvest_names():
     url = "https://raw.githubusercontent.com/karpathy/makemore/master/names.txt"
     path = os.path.join(HERE, "names.txt")
     if not os.path.exists(path):
         print(f"downloading {url} ...")
         urllib.request.urlretrieve(url, path)
-    docs = [l.strip().lower() for l in open(path) if l.strip()]
-    docs = sorted(set(d for d in docs if re.fullmatch(r"[a-z0-9-]+", d) and len(d) <= MAX_LEN))
-    return docs, len(docs), {}
+    return harvest_file(path)
 
 if __name__ == "__main__":
-    if "--names" in sys.argv:
+    if "--from" in sys.argv:
+        docs, raw, drops = harvest_file(sys.argv[sys.argv.index("--from") + 1])
+    elif "--names" in sys.argv:
         docs, raw, drops = harvest_names()
     else:
-        assert os.path.isdir(DB), f"brain not found at {DB}; try --names"
+        assert os.path.isdir(DB), f"brain not found at {DB}; try --names, or --from <your list of strings>"
         docs, raw, drops = harvest_brain()
 
     random.seed(42)
@@ -86,7 +101,7 @@ if __name__ == "__main__":
 
     lens = [len(d) for d in docs]
     charset = "".join(sorted(set("".join(docs))))
-    print(f"scanned {raw} files -> kept {len(docs)} unique docs -> {OUT}")
+    print(f"scanned {raw} inputs -> kept {len(docs)} unique docs -> {OUT}")
     if drops:
         print(f"dropped: {drops}")
     print(f"doc length min/median/max: {min(lens)}/{sorted(lens)[len(lens)//2]}/{max(lens)}")

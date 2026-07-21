@@ -8,6 +8,10 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
         you are here: the calculus writes itself
 ```
 
+(The map just grew a stage. `backward` existed inside train1 too — buried in
+forty lines of hand calculus inside the update. Automating it is what earns
+it a name on the pipeline.)
+
 train1's backward pass was forty lines of careful, architecture-specific
 calculus. It was also a dead end: change the model and you re-derive
 everything. This rung replaces it with a machine that derives it for you —

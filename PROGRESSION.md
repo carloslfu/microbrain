@@ -39,9 +39,10 @@ has its own revision story, and it's the better lesson:
   a decade-long obsession with simplifying LLMs to their bare essentials.
 - **A dozen revisions follow.** Small renames, docstring tuning, hyperparameter
   nudges — on the 11th, the 12th, again on the 16th.
-- **The big one: a net −43-line trim** in the launch-day cluster of edits —
-  *after* the post had already declared "I cannot simplify this any further."
-  It turned out he could: 243 → 199.
+- **The big one: a single revision removing 78 lines and adding 35** (net
+  −43) in the launch-day cluster of edits — *after* the post had already
+  declared "I cannot simplify this any further." It turned out he could: with
+  the smaller nips around it, the file settled at 243 → 199.
 - **Still breathing:** the gist was touched as recently as **July 21, 2026**
   — five months post-launch, single-line edits are still landing.
 

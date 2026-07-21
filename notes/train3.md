@@ -107,9 +107,9 @@ this file with the loop counter turned up.
 **1. Predict, then run.** train1 started at exactly ln(38). Will this file?
 Commit to a number and a reason; check against step 1.
 
-**2. Break it.** Delete the `/ head_dim**0.5`... wait, that's rung 4's
-spelling; here it's `/ n_embd**0.5`. Predict the *mechanism* of what goes
-wrong (what do big dot products do to a softmax? what does a saturated softmax
+**2. Break it.** Delete the `/ n_embd**0.5` scaling from the attention
+logits (rung 4 will spell it `head_dim**0.5`). Predict the *mechanism* of
+what goes wrong (what do big dot products do to a softmax? what does a saturated softmax
 do to gradients?), then run `--fast` with and without, same seed, and compare
 step-301 panels. Separately: predict what removing `wpe` entirely would do —
 then hold that prediction; rung 7 runs that surgery under lab conditions.
@@ -126,11 +126,16 @@ logits alone (train1); attention at random init actively mixes irrelevant
 context into the prediction, which is worse than ignorance until the keys and
 queries learn to match sensibly.
 
-**2.** Unscaled dot products grow like the dimension; softmax saturates to
-near-one-hot; the gradient through a saturated softmax approaches zero, so
-attention's *routing* stops learning while everything else limps on. Run both
-and compare — and notice this is the same underflow-of-learning signature as
-rung 2's frozen-gradient sabotage, arrived at through the front door.
+**2.** The textbook mechanism: unscaled dot products grow with dimension,
+softmax saturates toward one-hot, and the gradient through a saturated
+softmax goes quiet — attention's *routing* stops learning. Now the measured
+truth at *this* dimension: removing the scale changed val loss from 2.8149
+to 2.8146 at 300 steps. **Nothing.** Sixteen dimensions of rmsnorm'd
+activations against 0.08-scale weights simply never produce logits big
+enough to saturate. The 1/√d division is insurance written for large d — at
+d = 4,096 it's load-bearing; at d = 16 it's a formality. You just ran your
+first ablation whose honest result is "not at this scale" — rung 7 makes a
+whole lab out of that sentence.
 
 **3.** `IndexError: list index out of range` at `state_dict['wpe'][pos_id]`,
 the moment `pos_id` hits 40. The context window is not a suggestion or a

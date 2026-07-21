@@ -31,8 +31,9 @@ imaginary count to every cell (Laplace smoothing) so nothing has probability
 exactly zero — "never say never," for reasons the break-it exercise makes vivid.
 
 **The loss** is `-log P(the char that actually came next)`. Read it as
-*surprise*: probability 1 → surprise 0; probability 1/38 → surprise 3.6376;
-probability → 0 → surprise → ∞. A language model is a machine for being less
+*surprise*: probability 1 → surprise 0; probability 1/38 → surprise 3.6376 (measured in
+*nats* — bits' natural-log cousin: same idea, log base e); probability → 0 →
+surprise → ∞. A language model is a machine for being less
 surprised by what actually happens.
 
 **The loop** quizzes before it counts: each document's loss is computed with

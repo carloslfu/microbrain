@@ -137,11 +137,16 @@ chatbot era: conditioning a frozen model with context instead of training it.
 constant. Observed: 0.366s vs 4.601s.
 
 **2.** One row of `lm_head` is one token's scoring direction; a 10⁶ weight
-makes that token's logit explode whenever its input feature is nonzero, so
-sampling collapses toward one character. Low temperature *amplifies* the
-takeover (gaps multiply); high temperature partially hides it. If you picked
-a weight column whose feature is often near zero, the damage is intermittent
-— congratulations, you've built a flaky bug.
+makes that token's logit explode whenever its input feature is nonzero. Run
+and you'll see something like `azazezaz-czerizentizizengzen` — and, measured
+observation: it looks like that at *every* temperature. At |logit| ≈ 10⁶,
+dividing by T changes nothing; softmax is saturated either way, so the
+corruption is temperature-*proof* (the hide-it-with-heat intuition only works
+for mild corruption, ~10-scale). The finer puzzle is the *alternation* —
+`azaz`, not `zzzz`: the hijacked token wins only when its input feature is
+*positive*, and emitting `z` flips the next position's context enough to flip
+that sign. A single insane weight, an oscillator. Diagnose from mechanism
+before believing any single sample.
 
 **3.** Loop the prefix through `gpt(token_id, pos_id, keys, values)` exactly
 as the sampler does, but *ignore* the returned logits until the last prefix

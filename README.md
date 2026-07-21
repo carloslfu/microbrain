@@ -28,7 +28,7 @@ corpus (543 idea names, 38-token vocabulary, 10% held out):
 | — | — | uniform shrug (no model) | 3.6376 | 38.0 |
 | 0 | [train0.py](train0.py) · [essay](notes/train0.md) | bigram by **counting** | 2.6774 | 14.5 |
 | 1 | [train1.py](train1.py) · [essay](notes/train1.md) | **gradients, by hand** (SGD) | 2.7301 | 15.3 |
-| 2 | [train2.py](train2.py) · [essay](notes/train2.md) | **autograd** — same numbers, ~45× slower, file gets *shorter* | 2.7301 | 15.3 |
+| 2 | [train2.py](train2.py) · [essay](notes/train2.md) | **autograd** — same numbers, ~45× slower, Karpathy's file gets *shorter* | 2.7301 | 15.3 |
 | 3 | [train3.py](train3.py) · [essay](notes/train3.md) | **attention** + positions + residuals + rmsnorm | 2.6886 | 14.7 |
 | 4 | [train4.py](train4.py) · [essay](notes/train4.md) | **multi-head** — same param count, four spotlights | 2.6926 | 14.8 |
 | 5 | [train5.py](train5.py) · [essay](notes/train5.md) | **Adam** — the count table finally falls | **2.6216** | **13.8** |
@@ -38,8 +38,9 @@ corpus (543 idea names, 38-token vocabulary, 10% held out):
 
 ¹ `e^(val loss)` — out of 38 possible next characters, how many is the model
 still effectively guessing among? Uniform = 38, perfect = 1. It's perplexity,
-wearing its plain-English name. Watch it fall down the ladder: 38 → 14.5 →
-13.8. Every drop is attributable to exactly one idea.
+wearing its plain-English name. Watch it fall down the ladder, 38 → 13.8 —
+not monotonically: the bumps at rungs 1 and 4 are lessons, and the essays
+own them.
 
 The mid-ladder plot twist is real and deliberate: **a complete GPT loses to a
 count table for two straight rungs** (14.7, 14.8 vs 14.5) until the optimizer
@@ -52,13 +53,23 @@ where that sinks in.
 python data/make_dataset.py     # harvest the corpus (or: --names for Karpathy's 32k names)
 python train0.py                # instant
 python train1.py                # ~10 s
-open notes/train0.md            # the essays assume you run first, read second
 ```
+
+Then read `notes/train0.md` — the essays assume you run first, read second.
+(`python` here means your Python 3; some systems spell it `python3`.) Not the
+author of this particular brain? Step 1 harvests *his* knowledge base, so
+bring your own corpus: `--names` downloads Karpathy's 32k human names, or
+`--from yourlist.txt` trains on any file of short strings, one per line.
+Worth doing from the start: `mkdir -p out` and run each rung as
+`python trainN.py | tee out/trainN.log` — `compare.py` builds the final
+ladder from those logs, and full-run numbers are nicer than the `--fast`
+reruns it falls back to.
 
 Then keep climbing. Honest timings on a laptop (pure-Python scalar autograd
 is the point, not a flaw): train2 ≈ 7 min, train3–train6 ≈ 10–12 min each,
-train7 ≈ 20 min for all six surgeries. Every rung takes `--fast` (~1–3 min)
-when you want the shape without the wait; `python compare.py` prints the
+train7 ≈ 20 min for all six surgeries. Every rung takes `--fast` (seconds on
+the early rungs, ~1–3 min on the heavy ones) when you want the shape without
+the wait; `python compare.py` prints the
 whole ladder from whatever logs you've produced and fast-runs the gaps.
 
 Each essay ends with three exercises: **predict-then-run** (commit before the
@@ -91,8 +102,8 @@ maps, the SGD-vs-Adam race, and the childhood album:
 
 ```
 step    0 | m129o8dwl-x7nfi1o8kliw13m-uvwax1c7omlpp6, fpx3bbb2kk73p9lfqj3pl, iqz, ...
-step   50 | reva-ve, manrema-lalat-g-s, re-la-tonias, jadde-ag-lotinar, ...
-step  250 | menticarerenmiti-landiol-s, arore-agrenengerative-1, tenge-cingentra, ...
+step   50 | reva-ve, manrema-lalat-g-s, re-la-tonias, ...
+step  250 | menticarerenmiti-landiol-s, eorel-mesellarepe-patinstis-vacpong, ...
 step 1000 | mianicov, reat-hivarsian, jang-tin-tining-avingantige, agan-folin, ...
 ```
 
