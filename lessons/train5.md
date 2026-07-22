@@ -183,3 +183,5 @@ this solution deliberately states the mechanism, not your numbers.
 Next: [train6 — the inference toolkit](train6.md). The gist's ladder ends
 here; the model's life doesn't. Save it, resurrect it, tune its temperature,
 measure the cache, and quiz your friends.
+
+[← train4](train4.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train6 →](train6.md)

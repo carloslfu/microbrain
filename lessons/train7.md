@@ -156,3 +156,5 @@ You're done with the ladder. Two short reads remain: [train6](train6.md) if
 you skipped ahead, and the [epilogue](epilogue.md) — what separates your
 4,928 floats from the frontier, itemized. Then go run `python namer.py` and
 name something real.
+
+[← train6](train6.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [epilogue →](epilogue.md)

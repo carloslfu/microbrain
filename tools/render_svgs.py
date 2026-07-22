@@ -168,5 +168,127 @@ def damage():
     s.append(text(X(base), Hh - 8, f'baseline {base:.4f}', 11, MUTED, 'middle'))
     save('train7-damage.svg', s)
 
+
+
+# ---------------------------------------------------------- pipeline (train0)
+def pipeline():
+    stages = [('docs', '543 idea names'), ('tokenize', 'chars -> ids'), ('model', 'the box that grows'),
+              ('loss', 'surprise'), ('backward', 'assign blame'), ('update', 'step params'),
+              ('sample', 'babble new names')]
+    W, Hh, bw, bh, gap, y = 920, 214, 104, 46, 18, 96
+    s = svg_open(W, Hh)
+    s.append('<defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#6a737d"/></marker></defs>')
+    s.append(text(24, 32, 'the pipeline — every rung is this same machine, with one part upgraded', 15, INK, bold=True))
+    x = 24
+    for i, (name, gloss) in enumerate(stages):
+        color = BLUE if name == 'model' else INK
+        s.append(f'<rect x="{x}" y="{y}" width="{bw}" height="{bh}" fill="none" stroke="{color}" stroke-width="{2 if name == "model" else 1.3}" rx="8"/>')
+        s.append(text(x + bw / 2, y + 28, name, 13.5, color, 'middle', bold=(name == 'model')))
+        s.append(text(x + bw / 2, y + bh + 18, gloss, 10.5, MUTED, 'middle'))
+        if i < len(stages) - 1:
+            s.append(f'<line x1="{x+bw}" y1="{y+bh/2}" x2="{x+bw+gap-2}" y2="{y+bh/2}" stroke="{MUTED}" stroke-width="1.3" marker-end="url(#a)"/>')
+        x += bw + gap
+    ux = 24 + 5 * (bw + gap) + bw / 2   # update box center
+    mx = 24 + 2 * (bw + gap) + bw / 2   # model box center
+    s.append(f'<path d="M {ux} {y-8} C {ux} {y-38}, {mx} {y-38}, {mx} {y-8}" fill="none" stroke="{MUTED}" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#a)"/>')
+    s.append(text((ux + mx) / 2, y - 40, 'next document, x1000', 10.5, MUTED, 'middle'))
+    save('pipeline.svg', s)
+
+# ----------------------------------------------- computation graph (train2)
+def graph():
+    #        name      data    grad     x    y
+    nodes = [('L',      '+9',  '+1',   320,  64),
+             ('diff',   '-3',  '-6',   320, 146),
+             ('relu',   '+2',  '-6',   210, 228),
+             ('const',  '-5',  '-6',   430, 228),
+             ('sum',    '+2',  '-6',   210, 310),
+             ('a*b',    '-6',  '-6',   110, 392),
+             ('const',  '+8',  '-6',   320, 392),
+             ('a',      '+2', '+18',    60, 474),
+             ('b',      '-3', '-12',   190, 474)]
+    edges = [(0, 1), (1, 2), (1, 3), (2, 4), (4, 5), (4, 6), (5, 7), (5, 8)]
+    W, Hh, bw, bh = 560, 540, 106, 46
+    s = svg_open(W, Hh)
+    s.append(text(20, 26, 'the by-hand graph, drawn: L = (relu(a*b + 8) - 5)^2', 14.5, INK, bold=True))
+    s.append(text(20, 44, 'black: value computed forward · red: gradient dL/dnode, filled by one backward()', 11.5, MUTED))
+    for i, j in edges:
+        x1, y1 = nodes[i][3], nodes[i][4] + bh / 2
+        x2, y2 = nodes[j][3], nodes[j][4] - bh / 2 + 2
+        s.append(f'<line x1="{x1}" y1="{y1+18}" x2="{x2}" y2="{y2+18}" stroke="{GRID}" stroke-width="1.6"/>')
+    for name, d, g, x, y in nodes:
+        leaf = name in ('a', 'b') or name == 'const'
+        s.append(f'<rect x="{x-bw/2}" y="{y}" width="{bw}" height="{bh}" fill="#ffffff" stroke="{BLUE if name in ("a","b") else INK}" stroke-width="{2 if name in ("a","b","L") else 1.2}" rx="8"/>')
+        s.append(text(x - bw / 2 + 10, y + 19, f'{name} {d}', 12.5, INK, bold=(name in ('a', 'b', 'L'))))
+        s.append(text(x - bw / 2 + 10, y + 37, f'grad {g}', 12, RED))
+    save('graph.svg', s)
+
+# ------------------------------------------------- architecture (train3/4/5)
+def architecture():
+    W, Hh = 780, 1010
+    cx, bw = 300, 300
+    s = svg_open(W, Hh)
+    s.append('<defs><marker id="m" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#6a737d"/></marker></defs>')
+    s.append(text(24, 30, 'the whole architecture — gpt() from train3.py to train5.py', 15, INK, bold=True))
+    s.append(text(24, 50, "this course's dials: vocab 38 · dims 16 · context 40 · 4 heads · 1 layer · 4,928 params", 12, MUTED))
+    def box(y, h, title, sub=None, stroke=INK, wd=1.3, dash=''):
+        d = f' stroke-dasharray="{dash}"' if dash else ''
+        s.append(f'<rect x="{cx-bw/2}" y="{y}" width="{bw}" height="{h}" fill="#ffffff" stroke="{stroke}" stroke-width="{wd}" rx="9"{d}/>')
+        s.append(text(cx, y + 22, title, 13, stroke if stroke != GRID else INK, 'middle', bold=True))
+        if sub: s.append(text(cx, y + 40, sub, 11, MUTED, 'middle'))
+    def arrow(y1, y2, x=None):
+        x = cx if x is None else x
+        s.append(f'<line x1="{x}" y1="{y1}" x2="{x}" y2="{y2-3}" stroke="{MUTED}" stroke-width="1.4" marker-end="url(#m)"/>')
+    def plus(y):
+        s.append(f'<circle cx="{cx}" cy="{y}" r="11" fill="#ffffff" stroke="{INK}" stroke-width="1.4"/>')
+        s.append(text(cx, y + 4.5, '+', 14, INK, 'middle', bold=True))
+    def note(y, t):
+        s.append(text(cx + bw / 2 + 62, y, t, 11.5, MUTED))
+    # inputs
+    s.append(f'<rect x="{cx-bw/2}" y="76" width="140" height="40" fill="#ffffff" stroke="{INK}" stroke-width="1.2" rx="8"/>')
+    s.append(text(cx - bw / 2 + 70, 100, 'token id', 12.5, INK, 'middle'))
+    s.append(f'<rect x="{cx+bw/2-140}" y="76" width="140" height="40" fill="#ffffff" stroke="{INK}" stroke-width="1.2" rx="8"/>')
+    s.append(text(cx + bw / 2 - 70, 100, 'position id', 12.5, INK, 'middle'))
+    arrow(116, 142, cx - bw / 2 + 70); arrow(116, 142, cx + bw / 2 - 70)
+    s.append(f'<rect x="{cx-bw/2}" y="144" width="140" height="40" fill="#ffffff" stroke="{INK}" stroke-width="1.2" rx="8"/>')
+    s.append(text(cx - bw / 2 + 70, 168, 'wte row (16)', 12, INK, 'middle'))
+    s.append(f'<rect x="{cx+bw/2-140}" y="144" width="140" height="40" fill="#ffffff" stroke="{INK}" stroke-width="1.2" rx="8"/>')
+    s.append(text(cx + bw / 2 - 70, 168, 'wpe row (16)', 12, INK, 'middle'))
+    note(168, 'wte 608 + wpe 640 params')
+    s.append(f'<line x1="{cx-bw/2+70}" y1="184" x2="{cx-4}" y2="216" stroke="{MUTED}" stroke-width="1.3" marker-end="url(#m)"/>')
+    s.append(f'<line x1="{cx+bw/2-70}" y1="184" x2="{cx+4}" y2="216" stroke="{MUTED}" stroke-width="1.3" marker-end="url(#m)"/>')
+    plus(228); arrow(239, 260)
+    box(262, 34, 'rmsnorm'); arrow(296, 318)
+    # transformer block container
+    s.append(f'<rect x="{cx-bw/2-40}" y="320" width="{bw+80}" height="420" fill="none" stroke="{MUTED}" stroke-width="1.1" stroke-dasharray="6,4" rx="12"/>')
+    s.append(text(cx, 344, 'transformer block — the for-li layer loop (x1 here, x96 in production)', 11, MUTED, 'middle'))
+    bypass_x = cx + bw / 2 + 20
+    # attention half
+    box(360, 34, 'rmsnorm'); arrow(394, 416)
+    box(418, 74, 'attention — communicate', 'q-k match -> softmax -> weighted v')
+    s.append(text(cx, 476, '4 heads · keys/values lists = the KV cache', 10.5, BLUE, 'middle'))
+    note(452, 'wq wk wv wo: 1,024 params')
+    arrow(492, 514); plus(526)
+    s.append(f'<path d="M {cx} 356 C {bypass_x} 356, {bypass_x} 526, {cx+12} 526" fill="none" stroke="{BLUE}" stroke-width="1.4" marker-end="url(#m)"/>')
+    s.append(text(bypass_x + 6, 530, 'residual', 10.5, BLUE))
+    arrow(537, 558)
+    # mlp half
+    box(560, 34, 'rmsnorm'); arrow(594, 616)
+    box(618, 74, 'MLP — compute', 'linear 16->64 -> ReLU -> linear 64->16')
+    note(652, 'fc1 + fc2: 2,048 params')
+    arrow(692, 712); plus(724)
+    s.append(f'<path d="M {cx} 556 C {bypass_x} 556, {bypass_x} 724, {cx+12} 724" fill="none" stroke="{BLUE}" stroke-width="1.4" marker-end="url(#m)"/>')
+    s.append(text(bypass_x + 6, 728, 'residual', 10.5, BLUE))
+    arrow(735, 762)
+    box(764, 40, 'lm_head', '16 -> 38 scores, one per token')
+    note(788, 'lm_head: 608 params')
+    arrow(804, 826)
+    box(828, 40, 'softmax -> probabilities')
+    arrow(868, 890)
+    box(892, 40, 'sample the next token', 'append it, move to the next position')
+    s.append(f'<path d="M {cx+bw/2} 912 C {W-46} 912, {W-46} 96, {cx+bw/2+2} 96" fill="none" stroke="{MUTED}" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#m)"/>')
+    s.append(text(W - 40, 500, 'repeat', 11, MUTED, 'end'))
+    s.append(text(cx, 980, 'total: 4,928 parameters — every box above is a list of plain Python floats', 12, INK, 'middle', bold=True))
+    save('architecture.svg', s)
+
 if __name__ == '__main__':
-    ladder(); heatmap(); attention(); race(); damage()
+    ladder(); heatmap(); attention(); race(); damage(); pipeline(); graph(); architecture()

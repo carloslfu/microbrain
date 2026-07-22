@@ -16,6 +16,8 @@ data in, predictions out, a number that says how wrong we were, an update that
 makes us less wrong, and sampling that babbles something new. Hold onto this
 shape. Nothing else will be added — only upgraded.
 
+![the seven-stage pipeline every rung shares](../assets/pipeline.svg)
+
 ## Walk the code
 
 **The data** is 543 idea names from a personal knowledge base, one per line —
@@ -151,3 +153,5 @@ is why the rest of this course exists.
 
 Next: [train1 — gradient descent, by hand](train1.md). Same bigram question,
 but the table becomes a neural network and learning becomes calculus.
+
+[← home](../README.md) · [glossary](../GLOSSARY.md) · [train1 →](train1.md)

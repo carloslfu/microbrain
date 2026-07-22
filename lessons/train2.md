@@ -76,6 +76,10 @@ L     data +9.0000 | grad +1.0000
         const data -5.0000 | grad -6.0000
 ```
 
+The same graph, drawn:
+
+![the by-hand computation graph with every value and gradient](../assets/graph.svg)
+
 Trace one path yourself: dL/ddiff = 2·diff = −6; the adds and the (positive)
 relu pass it through untouched; at the product, `a` inherits −6 times *b's*
 data: −6 × −3 = **+18**. The printout agrees. Every gradient you will ever
@@ -171,3 +175,5 @@ sign or a factor of 2, you now know how to find out which line lied.
 ---
 
 Next: [train3 — attention](train3.md). The model finally gets to look left.
+
+[← train1](train1.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train3 →](train3.md)

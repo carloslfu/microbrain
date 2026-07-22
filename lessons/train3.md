@@ -140,7 +140,10 @@ A transformer block is two phases with a clean division of labor:
 Both write adjustments onto a shared residual stream. That's the whole
 architecture — rung 4 just multiplies the communication channels, and rung 5
 tunes the learning. When you read a 96-layer production model, you are reading
-this file with the loop counter turned up.
+this file with the loop counter turned up. Here is the whole thing, drawn to
+match the code:
+
+![the complete architecture, from token id to sampled token](../assets/architecture.svg)
 
 ## Exercises
 
@@ -190,3 +193,5 @@ attention over it unaffordable.
 
 Next: [train4 — multi-head](train4.md). Same parameter count, four places to
 look at once.
+
+[← train2](train2.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train4 →](train4.md)
