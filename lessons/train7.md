@@ -8,9 +8,9 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
         you are here: six trainings, five wounds, one bar chart
 ```
 
-You've now *read* justifications for every organ: positions so attention can
-see order, residuals as the gradient highway, rmsnorm as the thermostat, relu
-as the nonlinearity, β₂ (the code's `beta2`) as Adam's memory of scale. Reading justifications is
+You've now *read* justifications for every organ: positions so attention
+can see order; residuals as the gradient highway; rmsnorm the thermostat;
+relu the nonlinearity; β₂ (the code's `beta2`) Adam's memory of scale. Reading justifications is
 how folklore spreads. This rung re-trains the model six times from the same
 init — baseline plus five surgeries — and prints what each removal actually
 cost. If you ran it as intended, your predicted ranking is written down and
@@ -57,9 +57,9 @@ Two confirmations, two scandals, one shrug:
 **Confirmed: residuals are the most load-bearing organ.** +0.17 nats, 15.6 →
 18.4 effective choices — the only wound far outside the noise floor. Without
 `x = x + block(x)`, every block must *re-derive* its input instead of
-adjusting it, and blame reaching the embeddings is filtered through every
-intervening matrix (rung 2 taught you the `+`'s local gradient is 1 — that
-was the highway; you just closed it). This is why "just stack more layers"
+adjusting it. And blame reaching the embeddings now filters through every
+intervening matrix — rung 2 taught you the `+`'s local gradient is 1; that
+was the highway, and you just closed it. This is why "just stack more layers"
 only became possible after 2015-era architectures made identity the default.
 
 **Confirmed: normalization is quietly important.** +0.06. Not a
@@ -69,10 +69,10 @@ with depth. (Your `n_layer = 2` exercise from rung 4 is where to see that.)
 
 **Scandal #1: no-wpe *won*.** Lower val loss than baseline (−0.024 — a
 coin-flip's width, but the organ you'd have defended to the death just
-measured *free to remove*). Sit with the discomfort before explaining it
-away, because the explanation is the course's sharpest lesson: at 300 steps
-and bigram-ish loss levels, nearly all predictive power is *which characters
-tend to follow which* — knowledge that needs no notion of position. The 640
+measured *free to remove*). The explanation is the course's sharpest lesson.
+At 300 steps and bigram-ish loss levels, nearly all predictive power is
+*which characters tend to follow which* — knowledge that needs no notion of
+position. The 640
 wpe parameters are, at this budget, noise the model must learn around. Order
 information pays rent at the margins (endings, boundary rhythm) that this
 training run hasn't reached yet. **An ablation is not a fact about an organ;
@@ -95,11 +95,11 @@ fatal at this size. Adam's defaults are robust plumbing, not a knife edge.
 The lab's method outlives its findings: **same init, same data order, one
 change, honest error bars.** That's the entire experimental method of deep
 learning, miniaturized. And its two scandals generalize better than its
-confirmations: when a component "doesn't matter," the first question is never
-"remove it?" but "*at what budget would it start mattering?*" — and when a
-paper says "X improves Y," the silent suffix is always "at our scale, on our
-data, for our step count." You now own a lab where checking such claims costs
-four minutes.
+confirmations. When a component "doesn't matter," the first question is
+never "remove it?" — it's "*at what budget would it start mattering?*" When
+a paper says "X improves Y," the silent suffix is always "at our scale, on
+our data, for our step count." You now own a lab where checking such claims
+costs four minutes.
 
 ## Exercises
 
@@ -115,11 +115,14 @@ whole point of owning the lab is that the answer is four minutes away and
 *yours*.
 
 **3. Extend it.** Add a seventh surgery of your own to `SURGERIES`. Good
-candidates, in ascending ambition: `no-attention` (make `x_attn = x` — is
-attention even helping at this loss level?), `no-scale` (drop the
-`/ head_dim**0.5` from rung 3's exercise, now under lab conditions),
-`tied-embeddings` (reuse `wte` as `lm_head` — production models do this;
-what does it do at 4,928 params?).
+candidates, in ascending ambition:
+
+- `no-attention` — make `x_attn = x`. Is attention even helping at this
+  loss level?
+- `no-scale` — drop the `/ head_dim**0.5`, rung 3's exercise under lab
+  conditions.
+- `tied-embeddings` — reuse `wte` as `lm_head`, like production models do.
+  What does it change at 4,928 params?
 
 <details>
 <summary>Solutions</summary>

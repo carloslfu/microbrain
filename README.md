@@ -3,11 +3,11 @@
 **Build a GPT you can hold in your head — trained on the names of your ideas.**
 
 This is [Karpathy's microgpt](https://gist.github.com/karpathy/8627fe009c40f57531cb18360106ce95)
-— a complete GPT (the family of text-predicting models behind ChatGPT) in
-~200 lines of dependency-free Python — unrolled into a
-course you *walk*: his six published build-steps, ported onto a personal
-corpus, instrumented so every claim is a number you printed, illustrated with
-diagrams the code draws from its own weights, and extended with the two rungs
+— a complete GPT in ~200 lines of dependency-free Python — unrolled into a
+course you *walk*. (GPT: the family of text-predicting models behind
+ChatGPT.) His six published build-steps, ported onto a personal corpus.
+Instrumented, so every claim is a number you printed. Illustrated, with
+diagrams the code draws from its own weights. Extended, with the two rungs
 readers always ask for next. Pure Python standard library, beginning to end.
 No pip install. Ever.
 
@@ -17,52 +17,9 @@ autograd exists, what attention buys, what an optimizer decides, why models
 memorize or don't — plus a 106 KB `model.json` you trained, killed,
 resurrected, and shipped as a working name-generator.
 
-(If that paragraph was a wall of unfamiliar words — good, that's the course.
-Every one of them is defined, in order, inside the lessons, with a
-[glossary](GLOSSARY.md) for lookups; this page is the view from the summit,
-not the first step. And if the Python-and-terminal side is new too, read with
-an AI agent alongside — it fills gaps on demand.)
-
-## The ladder
-
-Each rung is one runnable file and one short lesson. One new idea per rung —
-everything else is frozen scaffold from the rung below, and **every lesson
-shows the exact new lines inline**, verbatim from the file, with the full
-file one click away. You never need a terminal diff to follow the idea (the
-files stay adjacent and diffable for those who like it, or for your agent).
-Numbers below are from full runs on this repo's corpus (543 idea names,
-38-token vocabulary, 10% held out):
-
-| rung | file | the one new idea | val loss | effective choices¹ |
-|---|---|---|---|---|
-| — | — | uniform shrug (no model) | 3.6376 | 38.0 |
-| 0 | [train0.py](train0.py) · [lesson](lessons/train0.md) | bigram by **counting** | 2.6774 | 14.5 |
-| 1 | [train1.py](train1.py) · [lesson](lessons/train1.md) | **gradients, by hand** (SGD) | 2.7301 | 15.3 |
-| 2 | [train2.py](train2.py) · [lesson](lessons/train2.md) | **autograd** — same numbers, ~45× slower, Karpathy's file gets *shorter* | 2.7301 | 15.3 |
-| 3 | [train3.py](train3.py) · [lesson](lessons/train3.md) | **attention** + positions + residuals + rmsnorm | 2.6886 | 14.7 |
-| 4 | [train4.py](train4.py) · [lesson](lessons/train4.md) | **multi-head** — same param count, four spotlights | 2.6926 | 14.8 |
-| 5 | [train5.py](train5.py) · [lesson](lessons/train5.md) | **Adam** — the count table finally falls | **2.6216** | **13.8** |
-| 6 | [train6.py](train6.py) · [lesson](lessons/train6.md) | *(ours)* save/load, temperature, the KV cache measured, the quiz | 2.6216 | 13.8 |
-| 7 | [train7.py](train7.py) · [lesson](lessons/train7.md) | *(ours)* the ablation lab: break it on purpose, organ by organ | — | — |
-| end | [namer.py](namer.py) · [epilogue](lessons/epilogue.md) | your model as a tool; the bridge to production | — | — |
-
-¹ `e^(val loss)` — out of 38 possible next characters, how many is the model
-still effectively guessing among? Uniform = 38, perfect = 1 — and yes, an
-untrained transformer can score *above* 38 by actively mixing noise into its
-guesses (rung 3 opens there). It's perplexity, wearing its plain-English
-name. Watch it fall down the ladder, 38 → 13.8 — not monotonically: the
-bumps at rungs 1 and 4 are lessons, and the lessons own them.
-
-The mid-ladder plot twist is real and deliberate: **a complete GPT loses to a
-count table for two straight rungs** (14.7, 14.8 vs 14.5) until the optimizer
-rung lands. The architecture was never the bottleneck. Rung 5's lesson is
-where that sinks in.
-
-One honesty note: every number in the lessons comes from *this* corpus with
-*these* seeds, and the runs are deterministic — walk the course on the same
-data and your logs will match the lessons digit for digit. Bring your own
-corpus (`--names`, `--from`) and the numbers will differ; the shape of the
-story is what transfers.
+Every term above is defined, in order, inside the lessons — with a
+[glossary](GLOSSARY.md) for lookups. If the Python-and-terminal side is new
+too, read with an AI agent alongside; it fills gaps on demand.
 
 ## Quickstart
 
@@ -72,16 +29,17 @@ python train0.py                # instant
 python train1.py                # ~10 s
 ```
 
-Then read `lessons/train0.md` — the lessons assume you run first, read second.
-(`python` here means your Python 3; some systems spell it `python3`.) Not the
-author of this particular brain? Step 1 harvests *his* knowledge base, so
-bring your own corpus: `--names` downloads Karpathy's 32k human names, or
-`--from yourlist.txt` trains on any file of short strings, one per line.
-Worth doing from the start: `mkdir -p out` and run each rung as
-`python trainN.py | tee out/trainN.log` (`tee` shows the output *and* saves
-it to the file) — `compare.py` builds the final
-ladder from those logs, and full-run numbers are nicer than the `--fast`
-reruns it falls back to.
+Then read `lessons/train0.md` — the lessons assume you run first, read
+second. Three practical notes:
+
+- `python` means your Python 3; some systems spell it `python3`.
+- Not the author of this particular brain? Step 1 harvests *his* knowledge
+  base. Bring your own corpus instead: `--names` downloads Karpathy's 32k
+  human names, or `--from yourlist.txt` trains on any file of short strings,
+  one per line.
+- Worth doing from the start: `mkdir -p out`, then run each rung as
+  `python trainN.py | tee out/trainN.log` (`tee` shows the output *and*
+  saves it). `compare.py` builds the final ladder from those saved logs.
 
 Then keep climbing. Honest timings on a laptop (pure-Python, one number
 at a time — the slowness is the point, not a flaw): train2 ≈ 7 min, train3–train6 ≈ 10–12 min each,
@@ -110,6 +68,45 @@ pinned canon in `reference/`, deterministic seeds, the author's logs in
 course* never requires running anything at all — though training your own
 and hitting the quiz is the whole fun.
 
+## The ladder
+
+Each rung is one runnable file and one short lesson. One new idea per rung —
+everything else is frozen scaffold from the rung below, and **every lesson
+shows the exact new lines inline**, verbatim from the file, with the full
+file one click away. You never need a terminal diff to follow the idea (the
+files stay adjacent and diffable for those who like it, or for your agent).
+Numbers below are from full runs on this repo's corpus (543 idea names,
+38-token vocabulary, 10% held out):
+
+| rung | file | the one new idea | val loss | effective choices¹ |
+|---|---|---|---|---|
+| — | — | uniform shrug (no model) | 3.6376 | 38.0 |
+| 0 | [train0.py](train0.py) · [lesson](lessons/train0.md) | bigram by **counting** | 2.6774 | 14.5 |
+| 1 | [train1.py](train1.py) · [lesson](lessons/train1.md) | **gradients, by hand** (SGD) | 2.7301 | 15.3 |
+| 2 | [train2.py](train2.py) · [lesson](lessons/train2.md) | **autograd** — same numbers, ~45× slower, Karpathy's file gets *shorter* | 2.7301 | 15.3 |
+| 3 | [train3.py](train3.py) · [lesson](lessons/train3.md) | **attention** + positions + residuals + rmsnorm | 2.6886 | 14.7 |
+| 4 | [train4.py](train4.py) · [lesson](lessons/train4.md) | **multi-head** — same param count, four spotlights | 2.6926 | 14.8 |
+| 5 | [train5.py](train5.py) · [lesson](lessons/train5.md) | **Adam** — the count table finally falls | **2.6216** | **13.8** |
+| 6 | [train6.py](train6.py) · [lesson](lessons/train6.md) | *(ours)* save/load, temperature, the KV cache measured, the quiz | 2.6216 | 13.8 |
+| 7 | [train7.py](train7.py) · [lesson](lessons/train7.md) | *(ours)* the ablation lab: break it on purpose, organ by organ | — | — |
+| end | [namer.py](namer.py) · [epilogue](lessons/epilogue.md) | your model as a tool; the bridge to production | — | — |
+
+¹ `e^(val loss)`: out of 38 possible next characters, how many is the model
+still effectively guessing among? Uniform = 38, perfect = 1. (An untrained
+model can even score *above* 38 — rung 3 opens there.) The standard name is
+perplexity. Watch it fall down the ladder, 38 → 13.8 — the bumps at rungs 1
+and 4 are lessons, and the lessons own them.
+
+The mid-ladder plot twist is real and deliberate: **a complete GPT loses to a
+count table for two straight rungs** (14.7, 14.8 vs 14.5) until the optimizer
+rung lands. The architecture was never the bottleneck. Rung 5's lesson is
+where that sinks in.
+
+Every number in the lessons comes from *this* corpus with *these* seeds,
+and the runs are deterministic: on the same data, your logs match the
+lessons digit for digit. Your own corpus (`--names`, `--from`) gives
+different numbers; the shape of the story is what transfers.
+
 ## What's in the box
 
 ```
@@ -132,10 +129,10 @@ pip, no venv, ever.
 
 Every train file is self-contained on purpose — dataset, tokenizer, `Value`
 class repeated verbatim so adjacent files diff clean. The instruments are the
-other constant: train/val loss, effective choices, a memorization gauge
+other constant: train/val loss, effective choices, and a memorization gauge
 (what fraction of samples are verbatim training docs — it reads 0/20 all
-course, and train6 explains why that's the *interesting* outcome), and one
-diagram per rung drawn from the live model: the count table as a heatmap, a
+course, and train6 explains why that's the *interesting* outcome). Plus one
+diagram per rung, drawn from the live model: the count table as a heatmap, a
 loss valley, a computation graph with grades you can check by eye, attention
 maps, the SGD-vs-Adam race, and the childhood album:
 
@@ -152,9 +149,9 @@ from pure static (random noise) — in about a minute of real time per photograp
 ## Credits
 
 The algorithm, the ladder, and the aesthetic are
-[Andrej Karpathy's](http://karpathy.github.io/2026/02/12/microgpt/): microgpt
-is the culmination of micrograd → makemore → nanoGPT, and this repo is a
-study of it, not a replacement for it. Read
+[Andrej Karpathy's](http://karpathy.github.io/2026/02/12/microgpt/). microgpt
+is the culmination of micrograd → makemore → nanoGPT; this repo is a study
+of it, not a replacement. Read
 [PROGRESSION.md](PROGRESSION.md) for what his revision history itself
 teaches. The corpus is the record slugs of a personal db.md knowledge store (plain-file
 databases) — swap in your own list of short strings (`--from`) and the whole

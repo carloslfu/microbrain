@@ -85,10 +85,10 @@ Then the same class, at scale:
 one document ('cscg-george-2021') builds a graph of 126,664 Value nodes
 ```
 
-One sixteen-character idea name → a hundred twenty-six thousand recorded
-multiplications and additions, each with its local derivative, and one
-`backward()` sweeps blame through all of them in milliseconds of code you can
-read in a sitting.
+One sixteen-character idea name becomes a hundred twenty-six thousand
+recorded operations, each carrying its own local derivative. One
+`backward()` sweeps blame through all of them — with code you can read in a
+sitting.
 
 ## What the numbers said
 
@@ -149,10 +149,10 @@ against the `.grad` your method produced.
 nodes grow linearly with document length: 9 × ~7,200 + 4,064 + change.
 
 **2.** Observed, both parts. The by-hand graph becomes a diagnosis you can
-read: `L` grad +1, `diff` grad −6 — correct, it's L's direct child and L got
-processed... last, no: in forward order every node hands out its blame
-*before* receiving any, so exactly one layer of the graph gets a correct
-gradient and everything deeper stays 0.0000. And training? It runs without
+read: `L` grad +1, `diff` grad −6, everything deeper 0.0000. The reason:
+walked forward, every node gives out its blame *before* it has received any.
+`diff` gets its −6 only after its own turn has already passed, so the blame
+stops there — one layer deep. And training? It runs without
 any error — 300 steps, 199 seconds of flawless forward passes — and learns
 nothing: val loss 3.6405, effective choices 38.1, at step 1, at step 151, and
 at step 300. Frozen at the shrug. This is the nastiest failure mode in the

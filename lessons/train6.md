@@ -109,14 +109,14 @@ management.
 4) novelty filter: 30 samples -> 0 verbatim training docs, 0 empty -> 30 genuinely new
 ```
 
-The memorization gauge has read 0 all course, and this rung's 30-sample census
-confirms it. Time to interrogate that: microgpt's launch-day Hacker News
-thread reported spotting verbatim training names among *its* samples — a
-4,192-parameter model against our 4,928, same ballpark. Why does ours not
-parrot? Because memorization pressure is
-about the *density of the space*: 32,033 human names crowd a small space of
-short, convergent strings (many "kamon"s are near-inevitable), while 543
-hyphenated 20-character slugs rattle around an astronomically larger one. Our
+The memorization gauge has read 0 all course, and this rung's 30-sample
+census confirms it. That deserves a hard look: readers of microgpt's own
+launch thread reported verbatim training names among *its* samples, at
+nearly our parameter count (4,192 vs 4,928). Why does ours not parrot?
+Memorization pressure is about the *density of the space*. His 32,033 human
+names crowd a small space of short, convergent strings — many "kamon"s are
+near-inevitable. Our 543 hyphenated 20-character slugs rattle around an
+astronomically larger one. Our
 model lacks the capacity to store paths to specific training docs, so it
 stores *statistics* — morphemes, hyphen rhythm, endings. Generalization isn't
 a virtue here; it's what's left when memorizing is unaffordable. (Rung 4's
@@ -142,12 +142,12 @@ to plausibility — and production models are six orders of magnitude larger.
 model calls with the cache? Without? What's the ratio, and is it constant in
 name length? Then check the printout.
 
-**2. Break it.** Corrupt one weight — not by hand-editing (the JSON is one
-long line) but with three lines of Python: `json.load` the checkpoint, set
-`m['state_dict']['lm_head'][36][0] = 1e6` (row 36 is `z`: token ids run
-`-`, then the ten digits, then `a`–`z`), `json.dump` it to
-`out/model_bad.json`. Reload with a small script (steal the load loop from
-this file) and sample. Diagnose what you observe from the
+**2. Break it.** Corrupt one weight. Not by hand-editing — the JSON is one
+long line — but with three lines of Python: `json.load` the checkpoint, set
+`m['state_dict']['lm_head'][36][0] = 1e6`, and `json.dump` it to
+`out/model_bad.json`. (Row 36 is `z`: token ids run `-`, then the ten
+digits, then `a`–`z`.) Reload with a small script — steal the load loop
+from this file — and sample. Diagnose what you observe from the
 mechanism — which single token dominates? Does raising the temperature hide
 the damage? Commit to answers before running.
 

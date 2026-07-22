@@ -16,7 +16,7 @@ construct, mapped to what a frontier lab runs:
 | you ran | production runs | what changed |
 |---|---|---|
 | 38 characters, `uchars.index(ch)` | BPE tokenizers, ~100–200k tokens | chunks instead of chars: shorter sequences, more meaning per position. Your `q` → `u` row is their `" the"` |
-| scalar `Value`, one number each | tensors: the same graph over million-entry blocks | the 45× overhead you measured at rung 2 is what vanishes when bookkeeping amortizes over blocks — and GPUs then add ~6 more orders of magnitude of arithmetic throughput over interpreted scalar Python |
+| scalar `Value`, one number each | tensors: the same graph over million-entry blocks | the 45× overhead from rung 2 vanishes when the bookkeeping spreads over blocks; GPUs then add ~10⁶× more arithmetic speed |
 | `linear()`: two nested `for` loops | fused matmul kernels, FlashAttention | *identical mathematics*; the memory access order is redesigned so the chip never waits. Attention's formula — your rung 3 — is untouched |
 | `keys.append(k); values.append(v)` | paged KV caches serving thousands of chats | rung 6 measured why: without the cache, work per token grows with everything said so far |
 | `wpe`, a 40-row table | RoPE: positions as rotations, no table | your rung 3 exercise hit the wall (`IndexError` at row 40); rotations don't have rows to run out of — that's "1M-token context" |

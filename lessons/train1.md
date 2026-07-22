@@ -120,13 +120,12 @@ The rung also draws its own loss landscape — a 1-D slice through a
   weight sweeps -3.03 .. +2.97, W = trained value -0.031, min loss 3.1535
 ```
 
-(Those specific numbers are from the full 1,000-step run; a `--fast` run
-settles this weight somewhere else and draws its own, equally valid valley.)
+(Numbers from the full run; `--fast` draws its own, equally valid valley.)
 
-`W` marks where SGD actually left this weight: on the floor of the valley. And
-a subtlety worth keeping: `W` is *near* the minimum of this curve, not on it —
-because this curve is the loss on **one** document, while training minimized
-the **average** over 488. Every parameter lives where hundreds of documents'
+`W` marks where SGD actually left this weight: on the floor of the valley.
+One subtlety worth keeping: `W` is *near* the minimum of this curve, not on
+it. This curve is the loss on **one** document; training minimized the
+**average** over 488. Every parameter lives where hundreds of documents'
 tugs cancel out. "The model" is a negotiated settlement.
 
 ## The idea to keep

@@ -25,15 +25,16 @@ characters; the break-it exercise at rung 7 measures exactly what that costs.
 
 **Attention is a soft lookup.** Each position computes three vectors from its
 `x`: a **query** ("what I'm looking for"), a **key** ("what I contain"), and a
-**value** ("what I'll contribute if chosen"). The current query is dotted against
-every stored key (a dot product — multiply matching entries, add them up — is
-the cheapest possible "how similar are these two vectors?" score); softmax turns those match-scores into weights; the output is
-the weighted average of stored values. It's a dictionary lookup where every
+**value** ("what I'll contribute if chosen"). The current query is dotted against every
+stored key. (A dot product — multiply matching entries, add them up — is the
+cheapest "how similar are these two vectors?" score.) Softmax turns the
+match scores into weights. The output is the weighted average of the stored
+values. It's a dictionary lookup where every
 entry answers a little, in proportion to how well its key matches. The scores
-get divided by √16 first — dot products grow with dimension, and a saturated
-softmax learns slowly (a near-one-hot distribution barely moves when its
-inputs nudge, so almost no gradient flows back through it; exercise 2 pokes
-at exactly this, with a twist).
+get divided by √16 first: dot products grow with dimension, and a saturated
+softmax learns slowly — a near-one-hot distribution barely moves when its
+inputs nudge, so almost no gradient flows back through it. (Exercise 2 pokes
+at exactly this, with a twist.)
 
 The whole mechanism, from [train3.py](../train3.py) (the two `attn_trace`
 lines are this repo's instrument for drawing the heatmap later — not part of
@@ -73,13 +74,10 @@ model head," the model's mouth.
 
 **rmsnorm: standard scale.** Before anything sensitive, rescale `x` to unit
 root-mean-square. Vectors that drift huge or tiny make training unstable;
-normalization is the thermostat. One thing you'll notice in the code: it
-normalizes right after the embedding and then *again* at the top of the
-attention block, back to back. At layer 1 the second call looks redundant
-(normalizing the just-normalized) — it isn't a mistake: residual adds will
-un-normalize the stream after every block, so each block re-norms on entry,
-and the pattern is kept uniform from layer 1. The original file carries a
-comment saying exactly this.
+normalization is the thermostat. The code normalizes twice back-to-back at
+the start; that's deliberate, not a bug. Residual adds un-normalize the
+stream after every block, so every block re-norms on entry — uniformly,
+starting from layer 1.
 
 ## What the numbers said
 

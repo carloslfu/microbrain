@@ -24,7 +24,8 @@ averages *per parameter* and moves by their ratio:
   batch size is one document; each gradient is one document's *opinion*, and
   opinions swing wildly (watch the raw loss bounce across the first five
   steps: 3.57, 3.65, 3.47, 3.55, 3.71). Momentum averages the last ~7
-  opinions (1/(1−0.85) ≈ 6.7) into a consensus direction before moving.
+  opinions into a consensus direction before moving. The 7 comes from
+  1/(1−0.85).
 - **`v` — a memory of scale.** `v = 0.99·v + 0.01·grad²`. Dividing the step
   by `√v` gives every parameter its *own* unit system: a rarely-touched
   embedding row (how often does `q` appear?) gets bold steps when its moment
@@ -82,14 +83,10 @@ The completed scoreboard, six files in the making:
 
 Same 4,928 parameters as train4. Same 1,000 documents in the same order. The
 only change is *how the steps were taken*: 14.8 → 13.8, and the count table
-finally falls. And step 1's printed line is worth a slow read, because its
-two fields tell time: the *train loss* is 3.5698 in both train4's and
-train5's logs — computed before the first update, when no optimizer
-difference existed yet — while the *val loss* on the very same line already
-differs (3.6733 vs 3.6669), because the panel evaluates after the update.
-One log line straddles the first step, and the right half already carries
-each optimizer's fingerprint. The twin-run trick from rung 2 keeps paying —
-read logs field by field, not line by line.
+finally falls. And before you compare this log to train4's, a warning: step 1's printed
+line is a trap with a lesson inside. Its two loss fields disagree about
+whether the optimizers have diverged yet — exercise 1 makes you predict
+which, so no spoilers here.
 
 The file draws the race (s = SGD from train4's saved curve, A = Adam):
 
@@ -157,13 +154,13 @@ Then run `--fast` both ways and compare tails.
 <details>
 <summary>Solutions</summary>
 
-**1.** Split verdict, and that's the lesson. The train-loss field is
-identical (3.5698): computed on the same init and the same document *before*
-the first update, where no optimizer difference can exist. The val-loss
-field on that same line differs (3.6733 vs 3.6669): the panel evaluates
-*after* the update, so it already contains one step of SGD-versus-Adam. If
-you answered "identical" or "different" for the whole line, the log just
-taught you to read per-field.
+**1.** Split verdict, and that's the lesson. The *train loss* is identical
+(3.5698): computed on the same init and document *before* the first update,
+where no optimizer difference can exist. The *val loss* on the same line
+differs (3.6733 vs 3.6669): the panel evaluates *after* the update, so it
+already contains one step of SGD-versus-Adam. One printed line straddles
+the first step. If you answered "identical" or "different" for the whole
+line, the log just taught you to read per-field.
 
 **2.** On file at rung 7 — compare the bar chart there against your committed
 magnitude, not the other way around.

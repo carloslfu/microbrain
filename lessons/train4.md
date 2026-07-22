@@ -51,19 +51,16 @@ its own query-key match and its own softmax. Multi-head attention is
 portfolio diversification for lookups — never bet all 16 dimensions on one
 place to look.
 
-The layer loop is the other half of the diff, and it's shape-only: state_dict
-keys become `layer0.attn_wq`, the block body indents one level, and a
-transformer becomes "this, stacked." The KV lists nest along with it —
-`keys[li].append(k)` — every layer keeps its *own* memory of the sequence,
-which is the right picture to carry into production models too. Set
-`n_layer = 2` and nothing else needs to know. When you hear "a 96-layer
-model," it is this loop.
+The layer loop is the other half of the diff, and it's shape-only:
+state_dict keys become `layer0.attn_wq`, the block body indents one level,
+and a transformer becomes "this, stacked." The KV lists nest along with it
+(`keys[li].append(k)`): every layer keeps its *own* memory of the sequence —
+the right picture for production models too. Set `n_layer = 2` and nothing
+else needs to know. When you hear "a 96-layer model," it is this loop.
 
-(The full diff against train3 runs long because each rung also swaps its own
-instruments — the single attention triangle becomes four. The blocks shown
-above *are* the meaningful changes. Terminal-comfortable? `diff train3.py
-train4.py` shows them in place. Or hand both files to your agent and have it
-walk you through every change, block by block — that's what agents are for.)
+(The full diff against train3 runs long only because each rung also swaps
+its instruments — the single attention triangle becomes four. The blocks
+shown above *are* the meaningful changes.)
 
 ## What the numbers said
 
@@ -95,9 +92,9 @@ And the four heads, printed over `test-time-training`: at this scale, honesty
 compels the observation that they have **not** specialized into crisp,
 nameable roles. All four keep the BOS sink — heads 0 and 2 most visibly, head 3
 spreading a bit more evenly across recent characters — but they differ in
-texture, not in story. Expecting "head 2 tracks hyphens" from 4,928 parameters is
-interpretability romance — what four heads reliably buy is four *chances*, and
-redundancy when some of them waste their slice. In production-scale models,
+texture, not in story. Expecting "head 2 tracks hyphens" from 4,928 parameters is romance. What
+four heads reliably buy is four *chances* — and redundancy when some of
+them waste their slice. In production-scale models,
 crisp head roles (previous-token heads, induction heads) do emerge; here you
 are seeing their primordial soup.
 

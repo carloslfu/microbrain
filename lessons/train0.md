@@ -96,17 +96,14 @@ tiny thing isn't parroting.
 
 ## The idea to keep
 
-Counting is the **closed-form solution** — a direct, exact formula, no
-trial and error: for the question "what follows what,
-one character deep," the count table is provably the best possible answer, and
-one pass over the data computes it exactly. This is the only rung with that
-luxury. The moment the model gets more expressive — the moment we want it to
-notice *two* characters back, or the shape of the whole word — there is no
-formula to fill the table. Karpathy's line, and the course's hinge: *counting
-is the closed-form solution; gradient descent is what you need when the model
-is too expressive for exact solutions.* Rung 1 rebuilds today's exact answer
-with an approximate method — on purpose, so you can watch the approximate
-method work before we point it at problems that have no exact answer.
+Counting is a **closed-form solution**: a direct, exact formula. One pass
+over the data computes the provably best possible bigram table. This is the
+only rung with that luxury. The moment the model gets more expressive — two
+characters back, the shape of a whole word — no formula can fill the table.
+That is the course's hinge, in Karpathy's words: *gradient descent is what
+you need when the model is too expressive for exact solutions.* Rung 1
+rebuilds today's exact answer with the approximate method, on purpose — so
+you can watch the method work before it faces problems with no exact answer.
 
 ## Exercises
 
