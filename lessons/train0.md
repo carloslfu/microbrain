@@ -8,6 +8,8 @@ docs -> tokenize -> model -> loss -> update -> sample
 you are here: the whole machine, smallest possible version
 ```
 
+*New this rung:* [bigram](../GLOSSARY.md#bigram) · [BOS](../GLOSSARY.md#bos) · [closed-form](../GLOSSARY.md#closed-form) · [corpus](../GLOSSARY.md#corpus) · [cross-entropy](../GLOSSARY.md#cross-entropy) · [effective choices](../GLOSSARY.md#effective-choices) · [heatmap](../GLOSSARY.md#heatmap) · [Laplace smoothing](../GLOSSARY.md#laplace-smoothing) · [loss](../GLOSSARY.md#loss) · [nats](../GLOSSARY.md#nats) · [parameters](../GLOSSARY.md#parameters) · [sampling](../GLOSSARY.md#sampling) · [state_dict](../GLOSSARY.md#state_dict) · [token](../GLOSSARY.md#token) · [val / validation set](../GLOSSARY.md#val--validation-set) · [vocabulary](../GLOSSARY.md#vocabulary) — every term links to the [glossary](../GLOSSARY.md).
+
 Every rung of this course is this same pipeline. Only the `model` box will grow.
 Today it is a table of counts, and yet the whole loop is already present:
 data in, predictions out, a number that says how wrong we were, an update that
@@ -83,9 +85,13 @@ Three things worth staring at:
   ~14.5 characters instead of 38*. (The standard name for this is perplexity.)
   Counting alone cut the alphabet by more than half.
 
-The model also drew itself — run it and look at the heatmap (a grid where
-darker cell = higher probability; the shade ramp runs `.` `:` `-` `=` `+`
-`*` `#` `%` `@`, light to dark). Two rows to find:
+The model also drew itself. Here is the entire model as a picture, rendered
+from the run's log (your terminal prints the same grid in ASCII, shade ramp
+`.` `:` `-` `=` `+` `*` `#` `%` `@`, light to dark):
+
+![the whole bigram model: P(next char | current char)](../assets/train0-heatmap.svg)
+
+Two rows to find:
 `q`, which is nearly a single dark cell (`u`, 0.25 — the corpus's `qwen`s and
 `quantization`s at work), and the BOS row, whose favorite openers are `c`, `a`,
 `m`. And the samples are glorious garbage: `o-cerot-g-ck-boncor-steave-...`,

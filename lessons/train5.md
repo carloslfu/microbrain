@@ -8,6 +8,8 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
         you are here: the steps get smart. this is microgpt.
 ```
 
+*New this rung:* [Adam](../GLOSSARY.md#adam) · [bias correction](../GLOSSARY.md#bias-correction) · [epoch](../GLOSSARY.md#epoch) · [momentum](../GLOSSARY.md#momentum) — every term links to the [glossary](../GLOSSARY.md).
+
 The change from train4 is nine lines — five of optimizer state, four of
 update rule, shown complete below — and it is the largest single improvement
 on the course's scoreboard. Sit with that
@@ -100,8 +102,12 @@ The file draws the race (s = SGD from train4's saved curve, A = Adam):
    2.50 |                                        A
 ```
 
-(Abridged — your run prints all fifteen rows.) `A` gets below `s` within the
-first tenth of training and stays there. And
+(Abridged — your run prints all fifteen rows. The same two curves, drawn
+from the saved loss files:)
+
+![SGD vs Adam, same model, same data — only the steps differ](../assets/train5-race.svg)
+
+`A` gets below `s` within the first tenth of training and stays there. And
 read the *band*, not just the trend: both curves live inside ±0.1 of jitter,
 because every point is a one-document quiz. Learning to see "noisy but
 descending" versus "flat" versus "diverging" at a glance is a working skill —

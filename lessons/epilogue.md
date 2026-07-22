@@ -8,6 +8,8 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
 you are here: all of it — this pipeline IS the production pipeline
 ```
 
+*New this rung:* [BPE](../GLOSSARY.md#bpe) · [matmul / kernel](../GLOSSARY.md#matmul--kernel) · [MoE](../GLOSSARY.md#moe) · [RoPE](../GLOSSARY.md#rope) · [SFT / RL](../GLOSSARY.md#sft--rl) · [top-p](../GLOSSARY.md#top-p) — every term links to the [glossary](../GLOSSARY.md).
+
 microgpt's header makes a big claim: *"This file is the complete algorithm.
 Everything else is just efficiency."* Having now run every line of it, you've
 earned the itemized version of that claim. Here is your code, construct by

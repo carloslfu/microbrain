@@ -8,6 +8,8 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
         you are here: six trainings, five wounds, one bar chart
 ```
 
+*New this rung:* [ablation](../GLOSSARY.md#ablation) — every term links to the [glossary](../GLOSSARY.md).
+
 You've now *read* justifications for every organ: positions so attention
 can see order; residuals as the gradient highway; rmsnorm the thermostat;
 relu the nonlinearity; β₂ (the code's `beta2`) Adam's memory of scale. Reading justifications is
@@ -51,6 +53,8 @@ no-rmsnorm   | val loss 2.8007 | effective choices  16.5
 no-relu      | val loss 2.7572 | effective choices  15.8
 beta2=0.5    | val loss 2.7684 | effective choices  15.9
 ```
+
+![the damage report, drawn from the log](../assets/train7-damage.svg)
 
 Two confirmations, two scandals, one shrug:
 

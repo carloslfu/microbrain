@@ -8,6 +8,8 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
         you are here: same box, four places to look at once
 ```
 
+*New this rung:* [head / multi-head](../GLOSSARY.md#head--multi-head) — every term links to the [glossary](../GLOSSARY.md).
+
 This is the quietest rung on the ladder — and that's its lesson. The diff from
 train3 does two things: it slices attention into four heads, and it wraps the
 block in a `for li in range(n_layer)` loop (set to 1). No new mathematics. And
@@ -88,7 +90,31 @@ architecture is finished; the *optimizer* is the bottleneck — which is
 precisely why Adam gets its own rung next, and why its result will land the
 way it does.
 
-And the four heads, printed over `test-time-training`: at this scale, honesty
+And the four heads, printed over `test-time-training` — here are the first
+rows of head 0 and head 3, verbatim from the run:
+
+```
+head 0:
+      ^test-time-training
+    ^ | @
+    t | @@
+    e | @@#
+    s | @%@@
+    t | @@@@@
+    - | @%%@%@
+```
+```
+head 3:
+      ^test-time-training
+    ^ | @
+    t | @@
+    e | %@@
+    s | #*%@
+    t | #@%%@
+    - | @#@@%@
+```
+
+At this scale, honesty
 compels the observation that they have **not** specialized into crisp,
 nameable roles. All four keep the BOS sink — heads 0 and 2 most visibly, head 3
 spreading a bit more evenly across recent characters — but they differ in

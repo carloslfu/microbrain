@@ -8,6 +8,8 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
         you are here: past the gist — everything after the last gradient
 ```
 
+*New this rung:* [argmax](../GLOSSARY.md#argmax) · [checkpoint](../GLOSSARY.md#checkpoint) · [inference](../GLOSSARY.md#inference) · [KV cache](../GLOSSARY.md#kv-cache) · [memorization](../GLOSSARY.md#memorization) · [temperature](../GLOSSARY.md#temperature) — every term links to the [glossary](../GLOSSARY.md).
+
 Karpathy's ladder ends at Adam. This rung and the next are microbrain's own,
 built from the questions every reader asks the moment train5 finishes: *where
 does the model live? what's temperature? why is serving fast?* — questions

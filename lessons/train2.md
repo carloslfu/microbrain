@@ -8,6 +8,8 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
         you are here: the calculus writes itself
 ```
 
+*New this rung:* [autograd](../GLOSSARY.md#autograd) · [computation graph](../GLOSSARY.md#computation-graph) · [tensor / scalar](../GLOSSARY.md#tensor--scalar) — every term links to the [glossary](../GLOSSARY.md).
+
 (The map just grew a stage. `backward` existed inside train1 too — buried in
 forty lines of hand calculus inside the update. Automating it is what earns
 it a name on the pipeline.)

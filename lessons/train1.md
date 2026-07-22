@@ -9,6 +9,8 @@ docs -> tokenize -> model -> loss -> update -> sample
         and "count it" becomes "descend the loss"
 ```
 
+*New this rung:* [backward pass](../GLOSSARY.md#backward-pass) · [chain rule](../GLOSSARY.md#chain-rule) · [derivative](../GLOSSARY.md#derivative) · [embedding](../GLOSSARY.md#embedding) · [gradient](../GLOSSARY.md#gradient) · [gradient check](../GLOSSARY.md#gradient-check) · [hidden units](../GLOSSARY.md#hidden-units) · [init](../GLOSSARY.md#init) · [learning rate](../GLOSSARY.md#learning-rate) · [linear layer](../GLOSSARY.md#linear-layer) · [logits](../GLOSSARY.md#logits) · [MLP](../GLOSSARY.md#mlp) · [neural network](../GLOSSARY.md#neural-network) · [one-hot](../GLOSSARY.md#one-hot) · [optimizer](../GLOSSARY.md#optimizer) · [overfitting / underfitting](../GLOSSARY.md#overfitting--underfitting) · [ReLU](../GLOSSARY.md#relu) · [SGD](../GLOSSARY.md#sgd) · [softmax](../GLOSSARY.md#softmax) — every term links to the [glossary](../GLOSSARY.md).
+
 Rung 0 had a formula. This rung throws the formula away and rebuilds the same
 bigram model with the only tool that scales: define a loss, compute which
 direction each parameter should move to reduce it, take a small step, repeat.

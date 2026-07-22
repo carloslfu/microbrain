@@ -8,6 +8,8 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
         you are here: the box learns to look left
 ```
 
+*New this rung:* [attention](../GLOSSARY.md#attention) · [attention sink](../GLOSSARY.md#attention-sink) · [context window](../GLOSSARY.md#context-window) · [dot product](../GLOSSARY.md#dot-product) · [lm_head](../GLOSSARY.md#lm_head) · [position embeddings](../GLOSSARY.md#position-embeddings) · [query / key / value](../GLOSSARY.md#query--key--value) · [residual stream](../GLOSSARY.md#residual-stream) · [rmsnorm](../GLOSSARY.md#rmsnorm) · [transformer](../GLOSSARY.md#transformer) — every term links to the [glossary](../GLOSSARY.md).
+
 Everything so far predicted the next character from *one* character. That
 ceiling is structural — no amount of training fixes it. This rung rebuilds the
 model box so that every position can consult every position before it, with
@@ -119,6 +121,10 @@ columns = where its attention went:
     ...
     n | @#%**%#@#%%*#%@%
 ```
+
+The same weights, drawn properly:
+
+![where trained attention looked, rendered from the log](../assets/train3-attention.svg)
 
 The steady dark column under `^` is the find: every position keeps weight
 parked on BOS. That's an **attention sink** — a token that carries no content

@@ -2,6 +2,8 @@
 
 **Build a GPT you can hold in your head — trained on the names of your ideas.**
 
+![effective choices falling down the ladder — the whole course in one chart](assets/ladder.svg)
+
 This is [Karpathy's microgpt](https://gist.github.com/karpathy/8627fe009c40f57531cb18360106ce95)
 — a complete GPT in ~200 lines of dependency-free Python — unrolled into a
 course you *walk*. (GPT: the family of text-predicting models behind
