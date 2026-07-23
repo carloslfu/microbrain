@@ -135,6 +135,12 @@ def attention():
 
 # --------------------------------------------------------- train5 SGD vs Adam
 def race():
+    # needs the author's saved loss curves (out/ is gitignored); assets/ ships
+    # the committed render, so a fresh clone can skip this one gracefully.
+    if not (os.path.exists(os.path.join(OUT, 'train4_losses.txt'))
+            and os.path.exists(os.path.join(OUT, 'train5_losses.txt'))):
+        print('race: skipped (no out/train4_losses.txt + out/train5_losses.txt — run train4 and train5 first)')
+        return
     def load(p):
         return [float(x) for x in open(os.path.join(OUT, p))]
     def smooth(ys, a=0.05):
