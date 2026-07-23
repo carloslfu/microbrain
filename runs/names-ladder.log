@@ -1,0 +1,617 @@
+microbrain — names-ladder.log: the full ladder (train0-train5) re-run on Karpathy's names corpus
+provenance: fresh clone of this repo; python data/make_dataset.py --names (32,033 names -> 29,494 unique docs, vocab 27); then python trainN.py for n=0..5, full budgets, same seeds
+purpose: measure which parts of the course's story are corpus-independent — see the README's corpus paragraph
+
+=== train0 start 17:46:18 ===
+num docs: 26544 train / 2950 val
+vocab size: 27
+uniform loss: ln(27) = 3.2958 -> effective choices: 27
+step    1 / 26544 | loss 3.2958
+step    2 / 26544 | loss 3.3078
+step    3 / 26544 | loss 3.3460
+step  100 / 26544 | loss 2.2077
+step  200 / 26544 | loss 3.2838
+step  300 / 26544 | loss 2.2190
+step  400 / 26544 | loss 2.4862
+step  500 / 26544 | loss 2.4347
+step  600 / 26544 | loss 2.3050
+step  700 / 26544 | loss 2.5864
+step  800 / 26544 | loss 2.6950
+step  900 / 26544 | loss 2.5337
+step 1000 / 26544 | loss 2.8933
+step 1100 / 26544 | loss 3.3127
+step 1200 / 26544 | loss 2.3437
+step 1300 / 26544 | loss 2.4317
+step 1400 / 26544 | loss 2.3670
+step 1500 / 26544 | loss 1.8635
+step 1600 / 26544 | loss 2.1552
+step 1700 / 26544 | loss 2.4565
+step 1800 / 26544 | loss 2.1380
+step 1900 / 26544 | loss 1.8681
+step 2000 / 26544 | loss 2.1118
+step 2100 / 26544 | loss 2.3465
+step 2200 / 26544 | loss 2.2058
+step 2300 / 26544 | loss 2.5001
+step 2400 / 26544 | loss 2.7953
+step 2500 / 26544 | loss 2.7351
+step 2600 / 26544 | loss 1.8520
+step 2700 / 26544 | loss 3.3756
+step 2800 / 26544 | loss 2.6300
+step 2900 / 26544 | loss 2.2308
+step 3000 / 26544 | loss 2.2340
+step 3100 / 26544 | loss 2.2411
+step 3200 / 26544 | loss 2.3192
+step 3300 / 26544 | loss 2.2965
+step 3400 / 26544 | loss 2.3888
+step 3500 / 26544 | loss 3.1385
+step 3600 / 26544 | loss 2.3355
+step 3700 / 26544 | loss 2.5603
+step 3800 / 26544 | loss 2.3537
+step 3900 / 26544 | loss 2.4954
+step 4000 / 26544 | loss 2.5234
+step 4100 / 26544 | loss 2.2749
+step 4200 / 26544 | loss 2.8956
+step 4300 / 26544 | loss 2.4531
+step 4400 / 26544 | loss 3.0302
+step 4500 / 26544 | loss 2.5149
+step 4600 / 26544 | loss 2.5904
+step 4700 / 26544 | loss 2.3448
+step 4800 / 26544 | loss 2.6260
+step 4900 / 26544 | loss 2.1452
+step 5000 / 26544 | loss 2.5867
+step 5100 / 26544 | loss 2.4209
+step 5200 / 26544 | loss 2.4352
+step 5300 / 26544 | loss 2.2082
+step 5400 / 26544 | loss 2.2512
+step 5500 / 26544 | loss 2.1474
+step 5600 / 26544 | loss 2.5479
+step 5700 / 26544 | loss 3.0465
+step 5800 / 26544 | loss 2.6854
+step 5900 / 26544 | loss 2.2263
+step 6000 / 26544 | loss 1.9750
+step 6100 / 26544 | loss 2.5757
+step 6200 / 26544 | loss 2.3927
+step 6300 / 26544 | loss 2.3937
+step 6400 / 26544 | loss 2.3466
+step 6500 / 26544 | loss 2.3339
+step 6600 / 26544 | loss 2.4311
+step 6700 / 26544 | loss 2.6115
+step 6800 / 26544 | loss 2.2174
+step 6900 / 26544 | loss 2.7315
+step 7000 / 26544 | loss 2.7941
+step 7100 / 26544 | loss 2.3005
+step 7200 / 26544 | loss 2.4101
+step 7300 / 26544 | loss 2.5794
+step 7400 / 26544 | loss 2.6608
+step 7500 / 26544 | loss 2.0238
+step 7600 / 26544 | loss 2.6526
+step 7700 / 26544 | loss 2.3680
+step 7800 / 26544 | loss 2.4755
+step 7900 / 26544 | loss 2.3181
+step 8000 / 26544 | loss 2.5083
+step 8100 / 26544 | loss 2.3369
+step 8200 / 26544 | loss 2.7218
+step 8300 / 26544 | loss 2.6584
+step 8400 / 26544 | loss 2.4657
+step 8500 / 26544 | loss 2.0944
+step 8600 / 26544 | loss 2.6939
+step 8700 / 26544 | loss 2.1848
+step 8800 / 26544 | loss 2.3145
+step 8900 / 26544 | loss 2.2906
+step 9000 / 26544 | loss 2.5506
+step 9100 / 26544 | loss 1.9178
+step 9200 / 26544 | loss 3.1569
+step 9300 / 26544 | loss 2.2836
+step 9400 / 26544 | loss 2.4099
+step 9500 / 26544 | loss 2.2098
+step 9600 / 26544 | loss 3.9123
+step 9700 / 26544 | loss 2.7612
+step 9800 / 26544 | loss 2.8268
+step 9900 / 26544 | loss 2.5067
+step 10000 / 26544 | loss 2.5407
+step 10100 / 26544 | loss 2.2812
+step 10200 / 26544 | loss 2.1487
+step 10300 / 26544 | loss 1.9626
+step 10400 / 26544 | loss 2.0588
+step 10500 / 26544 | loss 2.7444
+step 10600 / 26544 | loss 2.7083
+step 10700 / 26544 | loss 2.2565
+step 10800 / 26544 | loss 2.4961
+step 10900 / 26544 | loss 2.1307
+step 11000 / 26544 | loss 2.2666
+step 11100 / 26544 | loss 2.1906
+step 11200 / 26544 | loss 2.8521
+step 11300 / 26544 | loss 2.4685
+step 11400 / 26544 | loss 3.1416
+step 11500 / 26544 | loss 2.4616
+step 11600 / 26544 | loss 2.7699
+step 11700 / 26544 | loss 2.5346
+step 11800 / 26544 | loss 2.8640
+step 11900 / 26544 | loss 2.3158
+step 12000 / 26544 | loss 2.8982
+step 12100 / 26544 | loss 2.9888
+step 12200 / 26544 | loss 1.8960
+step 12300 / 26544 | loss 2.0453
+step 12400 / 26544 | loss 2.4702
+step 12500 / 26544 | loss 2.2365
+step 12600 / 26544 | loss 3.1018
+step 12700 / 26544 | loss 2.0206
+step 12800 / 26544 | loss 2.7576
+step 12900 / 26544 | loss 2.6343
+step 13000 / 26544 | loss 2.4274
+step 13100 / 26544 | loss 2.5885
+step 13200 / 26544 | loss 2.1608
+step 13300 / 26544 | loss 2.8762
+step 13400 / 26544 | loss 2.6989
+step 13500 / 26544 | loss 2.7248
+step 13600 / 26544 | loss 2.3132
+step 13700 / 26544 | loss 2.3238
+step 13800 / 26544 | loss 2.7570
+step 13900 / 26544 | loss 3.2403
+step 14000 / 26544 | loss 2.2107
+step 14100 / 26544 | loss 4.2962
+step 14200 / 26544 | loss 2.1067
+step 14300 / 26544 | loss 3.4156
+step 14400 / 26544 | loss 2.3485
+step 14500 / 26544 | loss 2.3500
+step 14600 / 26544 | loss 2.6423
+step 14700 / 26544 | loss 2.1469
+step 14800 / 26544 | loss 3.8565
+step 14900 / 26544 | loss 2.1491
+step 15000 / 26544 | loss 2.4036
+step 15100 / 26544 | loss 2.3171
+step 15200 / 26544 | loss 2.0293
+step 15300 / 26544 | loss 2.7133
+step 15400 / 26544 | loss 1.9483
+step 15500 / 26544 | loss 2.6387
+step 15600 / 26544 | loss 2.0920
+step 15700 / 26544 | loss 2.4652
+step 15800 / 26544 | loss 2.3146
+step 15900 / 26544 | loss 2.7795
+step 16000 / 26544 | loss 2.2031
+step 16100 / 26544 | loss 3.2919
+step 16200 / 26544 | loss 2.5612
+step 16300 / 26544 | loss 2.2644
+step 16400 / 26544 | loss 2.5816
+step 16500 / 26544 | loss 2.2581
+step 16600 / 26544 | loss 2.4579
+step 16700 / 26544 | loss 3.2041
+step 16800 / 26544 | loss 2.1969
+step 16900 / 26544 | loss 2.4298
+step 17000 / 26544 | loss 2.3783
+step 17100 / 26544 | loss 2.2130
+step 17200 / 26544 | loss 2.9073
+step 17300 / 26544 | loss 2.3253
+step 17400 / 26544 | loss 2.4880
+step 17500 / 26544 | loss 2.2468
+step 17600 / 26544 | loss 2.6929
+step 17700 / 26544 | loss 2.3411
+step 17800 / 26544 | loss 2.4860
+step 17900 / 26544 | loss 2.6070
+step 18000 / 26544 | loss 2.7165
+step 18100 / 26544 | loss 2.0229
+step 18200 / 26544 | loss 2.8214
+step 18300 / 26544 | loss 2.4486
+step 18400 / 26544 | loss 2.3001
+step 18500 / 26544 | loss 2.6950
+step 18600 / 26544 | loss 3.0256
+step 18700 / 26544 | loss 3.0251
+step 18800 / 26544 | loss 2.3683
+step 18900 / 26544 | loss 2.3290
+step 19000 / 26544 | loss 2.2399
+step 19100 / 26544 | loss 2.0375
+step 19200 / 26544 | loss 2.4379
+step 19300 / 26544 | loss 2.6751
+step 19400 / 26544 | loss 2.2733
+step 19500 / 26544 | loss 2.0652
+step 19600 / 26544 | loss 2.6539
+step 19700 / 26544 | loss 2.2277
+step 19800 / 26544 | loss 2.0979
+step 19900 / 26544 | loss 2.9314
+step 20000 / 26544 | loss 2.1380
+step 20100 / 26544 | loss 2.2793
+step 20200 / 26544 | loss 2.1315
+step 20300 / 26544 | loss 2.1834
+step 20400 / 26544 | loss 1.9151
+step 20500 / 26544 | loss 3.2406
+step 20600 / 26544 | loss 2.4355
+step 20700 / 26544 | loss 2.3684
+step 20800 / 26544 | loss 2.5217
+step 20900 / 26544 | loss 2.2633
+step 21000 / 26544 | loss 3.2036
+step 21100 / 26544 | loss 2.0799
+step 21200 / 26544 | loss 2.8093
+step 21300 / 26544 | loss 2.2521
+step 21400 / 26544 | loss 2.6446
+step 21500 / 26544 | loss 1.9112
+step 21600 / 26544 | loss 2.8243
+step 21700 / 26544 | loss 2.1821
+step 21800 / 26544 | loss 2.2979
+step 21900 / 26544 | loss 2.5247
+step 22000 / 26544 | loss 2.3629
+step 22100 / 26544 | loss 2.7923
+step 22200 / 26544 | loss 1.9319
+step 22300 / 26544 | loss 2.8189
+step 22400 / 26544 | loss 3.0138
+step 22500 / 26544 | loss 2.6015
+step 22600 / 26544 | loss 2.3203
+step 22700 / 26544 | loss 2.0228
+step 22800 / 26544 | loss 1.9997
+step 22900 / 26544 | loss 2.1302
+step 23000 / 26544 | loss 3.5274
+step 23100 / 26544 | loss 2.2485
+step 23200 / 26544 | loss 2.7159
+step 23300 / 26544 | loss 2.7120
+step 23400 / 26544 | loss 1.9849
+step 23500 / 26544 | loss 2.3211
+step 23600 / 26544 | loss 2.3909
+step 23700 / 26544 | loss 2.0504
+step 23800 / 26544 | loss 2.4541
+step 23900 / 26544 | loss 2.7121
+step 24000 / 26544 | loss 2.4412
+step 24100 / 26544 | loss 2.3071
+step 24200 / 26544 | loss 2.7040
+step 24300 / 26544 | loss 2.6879
+step 24400 / 26544 | loss 2.2999
+step 24500 / 26544 | loss 2.7938
+step 24600 / 26544 | loss 2.5226
+step 24700 / 26544 | loss 2.4566
+step 24800 / 26544 | loss 2.6726
+step 24900 / 26544 | loss 2.1157
+step 25000 / 26544 | loss 2.6958
+step 25100 / 26544 | loss 2.2393
+step 25200 / 26544 | loss 2.5097
+step 25300 / 26544 | loss 2.1250
+step 25400 / 26544 | loss 2.6009
+step 25500 / 26544 | loss 2.2965
+step 25600 / 26544 | loss 2.0714
+step 25700 / 26544 | loss 2.0690
+step 25800 / 26544 | loss 2.1817
+step 25900 / 26544 | loss 2.4090
+step 26000 / 26544 | loss 2.4081
+step 26100 / 26544 | loss 2.4643
+step 26200 / 26544 | loss 2.3380
+step 26300 / 26544 | loss 2.0542
+step 26400 / 26544 | loss 2.2205
+step 26500 / 26544 | loss 2.1180
+step 26544 / 26544 | loss 2.2550
+
+train loss 2.4538 | val loss 2.4605 | effective choices 11.7 of 27
+
+--- the model itself: P(next | current), one row per current token ---
+    abcdefghijklmnopqrstuvwxyz^
+  a    ..  -:  -:#   =.  .  : @
+  b =   %   :  .  .  @        .
+  c @   *  %- =.  =         . .
+  d @  .@   +     :  -      : -
+  e .  .-   :  %.*   =:. .  : @
+  f @   =.  *     :  =        -
+  g %   %  @=     :  +  :     :
+  h @   :   -     .           @
+  i @ :.* .   .+.%:  -+: .  -.@
+  j @   :         -     .      
+  k @   +  .:     .         : :
+  l @   @   %  =  :     .   + =
+  m @   -   =     .         . .
+  n =  .:   :    -            @
+  o            :.@   =: .     -
+  p @   @  @:     :. #        .
+  q                     @     .
+  r %   +   @  .  :  .      : =
+  s @   *  @+  :  -   -+.   . %
+  t @   *  *+  .  *  - -    -.=
+  u -:.:-  .: .*-+   #@.  .   -
+  v #   +   @     .         .  
+  w @   +   +    :.     .   : .
+  x %   -   %  .  -   :+   -:.@
+  y @  ..      = #.  ..       %
+  z @   =   =  .  .         . .
+  ^ @:--- ...+*-+: . -=:    .: 
+after '^': 'a' 0.14, 'k' 0.09, 'm' 0.08
+after 'a': '^' 0.20, 'n' 0.16, 'r' 0.09
+after 'q': 'u' 0.69, '^' 0.09, 'a' 0.05
+
+--- inference (new, hallucinated idea names) ---
+sample  1: malevi
+sample  2: anainairierua
+sample  3: mah
+sample  4: fae  <- verbatim training doc
+sample  5: lysl
+sample  6: hovizisajaelallemal
+sample  7: mickan
+sample  8: misyugalel
+sample  9: shyl
+sample 10: jalier
+sample 11: ie
+sample 12: kadasthan
+sample 13: k
+sample 14: saxxserann
+sample 15: sencryerkayn
+sample 16: kama
+sample 17: syha
+sample 18: wanaytanon
+sample 19: jarole
+sample 20: menajarelase
+memorization: 1/20 samples are verbatim training docs
+=== train0 exit 0 17:46:18 ===
+=== train1 start 17:46:18 ===
+num docs: 26544 train / 2950 val
+vocab size: 27
+num params: 3184
+gradient check on 'aukai' | loss_n 3.295959 | loss_a 3.295959 | max diff 0.00000000
+step    1 / 1000 | loss 3.2960 | val loss 3.2966 | effective choices 27.0 of 27
+step    2 / 1000 | loss 3.2945
+step    3 / 1000 | loss 3.2923
+step    4 / 1000 | loss 3.2967
+step    5 / 1000 | loss 3.2925
+step  501 / 1000 | loss 2.5403 | val loss 2.6057 | effective choices 13.5 of 27
+step 1000 / 1000 | loss 2.6814 | val loss 2.5299 | effective choices 12.6 of 27
+training took 10.2s
+
+--- the loss valley for one weight (doc: 'aukai') ---
+  loss  2.806 |                     W                   *
+  loss  2.802 |                     W                  * 
+  loss  2.798 |                     W                **  
+  loss  2.794 |                     W               *    
+  loss  2.789 |                     W             **     
+  loss  2.785 |                     W           **       
+  loss  2.781 |                     W        ***         
+  loss  2.777 |                     W      **            
+  loss  2.772 |                     W   ***              
+  loss  2.768 |                     ****                 
+  loss  2.764 |                *****                     
+  loss  2.760 |          ******                          
+  loss  2.755 | *****************************************
+  weight sweeps -3.04 .. +2.96, W = trained value -0.041, min loss 2.7553
+
+--- inference (new, hallucinated idea names) ---
+sample  1: hia
+sample  2: kan
+sample  3: men
+sample  4: a
+sample  5: toridea
+sample  6: ma  <- verbatim training doc
+sample  7: kada  <- verbatim training doc
+sample  8: d
+sample  9: karema
+sample 10: mama
+sample 11: n
+sample 12: kanal
+sample 13: kidi
+sample 14: da
+sample 15: smin
+sample 16: lin  <- verbatim training doc
+sample 17: cara  <- verbatim training doc
+sample 18: ka
+sample 19: a
+sample 20: min  <- verbatim training doc
+memorization: 5/20 samples are verbatim training docs
+=== train1 exit 0 17:46:31 ===
+=== train2 start 17:46:31 ===
+num docs: 26544 train / 2950 val
+vocab size: 27
+
+--- autograd on a graph small enough to check by hand ---
+L     data +9.0000 | grad +1.0000
+    diff  data -3.0000 | grad -6.0000
+        relu  data +2.0000 | grad -6.0000
+            sum   data +2.0000 | grad -6.0000
+                a*b   data -6.0000 | grad -6.0000
+                    a     data +2.0000 | grad +18.0000
+                    b     data -3.0000 | grad -12.0000
+                const data +8.0000 | grad -6.0000
+        const data -5.0000 | grad -6.0000
+e.g. dL/da: 2*diff * 1 * 1 * b = 2*(-3) * (-3) = +18 — matches the printout
+
+num params: 3184
+one document ('aukai') builds a graph of 37,479 Value nodes
+backward() applies the same by-eye chain rule to every one of them
+step    1 / 1000 | loss 3.2960 | val loss 3.2966 | effective choices 27.0 of 27
+step    2 / 1000 | loss 3.2945
+step    3 / 1000 | loss 3.2923
+step    4 / 1000 | loss 3.2967
+step    5 / 1000 | loss 3.2925
+step  501 / 1000 | loss 2.5403 | val loss 2.6057 | effective choices 13.5 of 27
+step 1000 / 1000 | loss 2.6814 | val loss 2.5299 | effective choices 12.6 of 27
+training took 240.1s (train1.py did the same math faster — abstraction costs a constant factor)
+
+--- inference (new, hallucinated idea names) ---
+sample  1: hia
+sample  2: kan
+sample  3: men
+sample  4: a
+sample  5: toridea
+sample  6: ma  <- verbatim training doc
+sample  7: kada  <- verbatim training doc
+sample  8: d
+sample  9: karema
+sample 10: mama
+sample 11: n
+sample 12: kanal
+sample 13: kidi
+sample 14: da
+sample 15: smin
+sample 16: lin  <- verbatim training doc
+sample 17: cara  <- verbatim training doc
+sample 18: ka
+sample 19: a
+sample 20: min  <- verbatim training doc
+memorization: 5/20 samples are verbatim training docs
+=== train2 exit 0 17:50:32 ===
+=== train3 start 17:50:32 ===
+num docs: 26544 train / 2950 val
+vocab size: 27
+num params: 4576
+step    1 / 1000 | loss 3.4985 | val loss 3.2793 | effective choices 26.6 of 27
+step    2 / 1000 | loss 3.5409
+step    3 / 1000 | loss 3.3602
+step    4 / 1000 | loss 3.3802
+step    5 / 1000 | loss 3.2450
+step  501 / 1000 | loss 2.4117 | val loss 2.4567 | effective choices 11.7 of 27
+step 1000 / 1000 | loss 2.7230 | val loss 2.3816 | effective choices 10.8 of 27
+training took 377.3s
+
+--- attention over 'aukai' (row = current position, cols = looked-at positions) ---
+      ^aukai
+    ^ | @
+    a | @@
+    u | @@@
+    k | %@@%
+    a | %%%@%
+    i | %%@@%@
+
+--- inference (new, hallucinated idea names) ---
+sample  1: cyan  <- verbatim training doc
+sample  2: jaria
+sample  3: sayari
+sample  4: ka
+sample  5: calla  <- verbatim training doc
+sample  6: lapiyel
+sample  7: anie
+sample  8: ansin
+sample  9: arin  <- verbatim training doc
+sample 10: karian
+sample 11: delo
+sample 12: aria  <- verbatim training doc
+sample 13: elana  <- verbatim training doc
+sample 14: ahele
+sample 15: jamana
+sample 16: anan  <- verbatim training doc
+sample 17: alilia
+sample 18: maise
+sample 19: arile
+sample 20: amyl
+memorization: 6/20 samples are verbatim training docs
+=== train3 exit 0 17:56:50 ===
+=== train4 start 17:56:50 ===
+num docs: 26544 train / 2950 val
+vocab size: 27
+num params: 4576 (same as train3.py — heads are a split, not new capacity)
+step    1 / 1000 | loss 3.1132 | val loss 3.2849 | effective choices 26.7 of 27
+step    2 / 1000 | loss 3.1884
+step    3 / 1000 | loss 3.4347
+step    4 / 1000 | loss 3.2622
+step    5 / 1000 | loss 3.3754
+step  501 / 1000 | loss 2.4452 | val loss 2.4506 | effective choices 11.6 of 27
+step 1000 / 1000 | loss 2.6516 | val loss 2.3833 | effective choices 10.8 of 27
+training took 408.3s
+
+--- attention over 'aukai', per head (row = position, cols = looked-at) ---
+head 0:
+      ^aukai
+    ^ | @
+    a | @@
+    u | %%@
+    k | %%@@
+    a | @@%@@
+    i | @%%%@@
+head 1:
+      ^aukai
+    ^ | @
+    a | @%
+    u | %%@
+    k | %@@@
+    a | @%@@%
+    i | @@@@@@
+head 2:
+      ^aukai
+    ^ | @
+    a | @@
+    u | ##@
+    k | @%@@
+    a | %@@%@
+    i | %@@%%#
+head 3:
+      ^aukai
+    ^ | @
+    a | @%
+    u | @%#
+    k | @@@@
+    a | @@%%@
+    i | @@@@@@
+
+--- inference (new, hallucinated idea names) ---
+sample  1: cyan  <- verbatim training doc
+sample  2: jaria
+sample  3: saya  <- verbatim training doc
+sample  4: mond
+sample  5: caloly
+sample  6: arisan
+sample  7: anidia
+sample  8: shera
+sample  9: lesha
+sample 10: kahan
+sample 11: ison
+sample 12: karela
+sample 13: arece
+sample 14: janan
+sample 15: aima
+sample 16: arian  <- verbatim training doc
+sample 17: jalinny
+sample 18: colile
+sample 19: kamyn
+sample 20: jahan  <- verbatim training doc
+memorization: 4/20 samples are verbatim training docs
+=== train4 exit 0 18:03:39 ===
+=== train5 start 18:03:39 ===
+num docs: 26544 train / 2950 val
+vocab size: 27
+num params: 4576
+step    1 / 1000 | loss 3.1132 | val loss 3.2753 | effective choices 26.5 of 27
+step    2 / 1000 | loss 3.1680
+step    3 / 1000 | loss 3.4421
+step    4 / 1000 | loss 3.1569
+step    5 / 1000 | loss 3.3160
+step  501 / 1000 | loss 2.3319 | val loss 2.4113 | effective choices 11.1 of 27
+step 1000 / 1000 | loss 2.7026 | val loss 2.3516 | effective choices 10.5 of 27
+training took 418.1s
+
+--- SGD (s, train4) vs Adam (A, train5), smoothed loss over 1000 steps ---
+   3.17 |                                                                 
+   3.10 | *s                                                              
+   3.03 |  A                                                              
+   2.97 |   s                                                             
+   2.90 |   A                                                             
+   2.84 |                                                                 
+   2.77 |    *                                                            
+   2.70 |     *s                                                          
+   2.64 |      A A s   *                                                  
+   2.57 |       *s*A*   *       *    s*                A                  
+   2.50 |            **       *     *A *               s A*               
+   2.44 |                *     * **s    *Ass s***  *  s *s **s      **** s
+   2.37 |                 ***s     A     sAA*A   ** A*A      A**s ss    *A
+   2.30 |                    A                      s           A*AA      
+   2.24 |                                                                 
+        +----------------------------------------------------------------
+         step 1                                                  step 1000
+
+--- the childhood album: samples through training ---
+step    0 | i, iiuktopivzhymnx, rm, ifhvawrjpm, fajdkqgtblytttewsrzpjvscbuitlxxhsqbwijao, flhbtjntoiijccobmcoxbgpmteptfbwjzbtljloa
+step   50 | ayr, aab, aiose, urrna, alain, ean
+step  250 | caan, aaisha, alare, arele, cavele, uajan
+step 1000 | amele, jaris, areis, anyile, aysenn, javeria
+
+--- inference (new, hallucinated idea names) ---
+sample  1: taxse
+sample  2: samin
+sample  3: rana
+sample  4: rieran
+sample  5: karan  <- verbatim training doc
+sample  6: eneli
+sample  7: eriana  <- verbatim training doc
+sample  8: amio
+sample  9: mayy
+sample 10: janara
+sample 11: elin  <- verbatim training doc
+sample 12: jeren
+sample 13: a
+sample 14: jariish
+sample 15: garie
+sample 16: apere
+sample 17: aryna
+sample 18: jaria
+sample 19: aron  <- verbatim training doc
+sample 20: alien
+memorization: 4/20 samples are verbatim training docs
+=== train5 exit 0 18:10:38 ===
+NAMES LADDER COMPLETE

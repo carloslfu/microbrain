@@ -114,7 +114,14 @@ where that sinks in.
 Every number in the lessons comes from *this* corpus with *these* seeds,
 and the runs are deterministic: on the same data, your logs match the
 lessons digit for digit. Your own corpus (`--names`, `--from`) gives
-different numbers; the shape of the story is what transfers.
+different numbers — and, measured, a partly different plot
+([runs/names-ladder.log](runs/names-ladder.log)): on Karpathy's 32k names
+the mechanisms replay exactly (train1 and train2 still match to the digit;
+gradient descent still loses to counting; Adam still wins the ladder,
+11.7 → 10.5 of 27) — but attention beats the count table under plain SGD
+already, because ~55× the data moves the optimizer bottleneck. Rung 5's
+moral survives either way: an outcome belongs to architecture *and*
+training *and* data, never one alone.
 
 ## What's in the box
 
