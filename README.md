@@ -121,7 +121,9 @@ gradient descent still loses to counting; Adam still wins the ladder,
 11.7 → 10.5 of 27) — but attention beats the count table under plain SGD
 already, because ~55× the data moves the optimizer bottleneck. Rung 5's
 moral survives either way: an outcome belongs to architecture *and*
-training *and* data, never one alone.
+training *and* data, never one alone. That names track doubles as the
+anyone-can-reproduce lane: no brain required — run `--names`, walk the same
+rungs, and set your panels against that committed log.
 
 ## What's in the box
 
