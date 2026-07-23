@@ -13,7 +13,7 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
 This is the quietest rung on the ladder — and that's its lesson. The diff from
 train3 does two things: it slices attention into four heads, and it wraps the
 block in a `for li in range(n_layer)` loop (set to 1). No new mathematics. And
-crucially, as the very first line of output insists:
+as the very first line of output insists:
 
 ```
 num params: 4928 (same as train3.py — heads are a split, not new capacity)
@@ -131,18 +131,21 @@ are seeing their primordial soup.
 
 Attention capacity isn't one number. Width-of-lookup and number-of-lookups
 trade off inside the same parameter budget, and the field's empirical answer —
-many narrow heads beat one wide one — is baked into every model you'll ever
-use, at zero marginal cost. When a design choice is free and helps, it becomes
+many narrow heads beat one wide one — is baked into every production model,
+at zero marginal cost. When a design choice is free and helps, it becomes
 invisible infrastructure. This rung is where you watch one get installed.
 
 ## Exercises
 
-**1. Predict, then run.** Before running: can the val loss *get worse* going
-from one head to four, given identical parameter counts? What would that tell
-you? Then compare your train3 and train4 panels.
+**1. Predict, then run.** The scoreboard above already showed the outcome:
+14.7 → 14.8, a statistical tie. The question worth committing to *before
+reading the solution*: could you have ruled that tie out in advance? Given
+identical parameter counts, what would a big win — or a big loss — have told
+you?
 
-**2. Break it.** Rung 7's lab includes two surgeries aimed at this rung's
-additions (`no-residual`, `no-rmsnorm`). Write down now which of the two you
+**2. Break it.** Rung 7's lab includes two surgeries aimed at the
+transformer block's organs (`no-residual`, `no-rmsnorm` — both installed at
+rung 3). Write down now which of the two you
 expect to hurt more, and by roughly how much in effective choices. You have
 skin in the game when the bar chart prints.
 

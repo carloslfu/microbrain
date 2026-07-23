@@ -82,8 +82,8 @@ The same graph, drawn:
 
 Trace one path yourself: dL/ddiff = 2·diff = −6; the adds and the (positive)
 relu pass it through untouched; at the product, `a` inherits −6 times *b's*
-data: −6 × −3 = **+18**. The printout agrees. Every gradient you will ever
-compute in this course is this move, repeated.
+data: −6 × −3 = **+18**. The printout agrees. Every gradient in this course
+is this move, repeated.
 
 Then the same class, at scale:
 
@@ -160,12 +160,13 @@ read: `L` grad +1, `diff` grad −6, everything deeper 0.0000. The reason:
 walked forward, every node gives out its blame *before* it has received any.
 `diff` gets its −6 only after its own turn has already passed, so the blame
 stops there — one layer deep. And training? It runs without
-any error — 300 steps, 199 seconds of flawless forward passes — and learns
+any error — 300 steps, 135 seconds of flawless forward passes — and learns
 nothing: val loss 3.6405, effective choices 38.1, at step 1, at step 151, and
 at step 300. Frozen at the shrug. This is the nastiest failure mode in the
 course: *no crash, plausible logs, zero learning.* Real-world variants of
 "the gradients silently don't flow" have eaten whole research weeks; now
-you've seen one from the inside.
+you've seen one from the inside. Captured in
+[runs/exercises.log](../runs/exercises.log).
 
 **3.** `def tanh(self): t = math.tanh(self.data); return Value(t, (self,), (1 - t*t,))`.
 The numerical check should agree to ~7 decimals; if it's off by exactly a

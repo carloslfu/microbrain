@@ -46,10 +46,11 @@ second. Three practical notes:
 Then keep climbing. Honest timings on a laptop (pure-Python, one number
 at a time — the slowness is the point, not a flaw): train2 ≈ 7 min, train3–train6 ≈ 10–12 min each,
 train7 ≈ 18 min for all six runs (five surgeries plus the baseline). Every
-training rung takes `--fast` — 300 steps instead of the full 1,000; train7's
-lab drops to 100 per surgery — seconds on the early rungs, a few minutes on
-the heavy ones, when you want the shape without the wait; `python compare.py` prints the
-whole ladder from whatever logs you've produced and fast-runs the gaps.
+rung from train1 up takes `--fast`: 300 steps instead of the full 1,000
+(train7's lab drops to 100 per surgery). That's seconds on the early rungs
+and a few minutes on the heavy ones — the shape without the wait. And
+`python compare.py` prints the whole ladder from whatever logs you've
+produced and fast-runs the gaps.
 
 Each lesson ends with three exercises: **predict-then-run** (commit before the
 machine answers), **break it** (sabotage with a diagnosis — the crashes are real
@@ -68,10 +69,9 @@ and explain the diff between any two files, referee your exercise
 predictions, or chase a tangent. Everything an agent needs is in-repo:
 pinned canon in `reference/`, deterministic seeds, the author's logs in
 `runs/` — and `python tools/check.py` verifies the repo's consistency gates
-(every link, every quoted number) in one command. The lessons show every
-load-bearing line inline, so *following the
-course* never requires running anything at all — though training your own
-and hitting the quiz is the whole fun.
+(every link, every code snippet, the core evidence lines) in one command.
+*Following the course* never requires running anything at all — though
+training your own and hitting the quiz is the whole fun.
 
 ## The ladder
 
@@ -127,8 +127,8 @@ data/make_dataset.py     corpus harvester (data.txt stays out of the repository 
 lessons/                 one lesson per rung + the epilogue
 GLOSSARY.md              every term in plain words, with its aliases and the rung
                          where it's earned — for mid-course lookups
-runs/                    the author's full logs — every excerpt in the lessons is quoted
-                         verbatim from these files, so every claim is checkable
+runs/                    the author's full logs, plus exercises.log from the break-it runs —
+                         lesson excerpts are quoted verbatim from these files
 tools/                   render_svgs.py draws assets/ from the logs; check.py runs the
                          repo's eight consistency gates (links, snippets, quoted numbers)
 reference/               pinned snapshots of both Karpathy gists, fetched revision by revision

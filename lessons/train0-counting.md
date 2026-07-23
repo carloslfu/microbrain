@@ -16,7 +16,7 @@ data in, predictions out, a number that says how wrong we were, an update that
 makes us less wrong, and sampling that babbles something new. Hold onto this
 shape. Nothing else will be added — only upgraded.
 
-![the seven-stage pipeline every rung shares](../assets/pipeline.svg)
+![the pipeline, drawn — the same machine every rung upgrades](../assets/pipeline.svg)
 
 ## Walk the code
 
@@ -121,8 +121,8 @@ you can watch the method work before it faces problems with no exact answer.
 ## Exercises
 
 **1. Predict, then run.** Before opening the heatmap: which character most
-often follows `-`? Which row of the table is closest to a single dark cell?
-Commit, then run `python train0.py` and check the "after" lines.
+often follows `-`? And which character most often comes right *before* a
+digit? Commit to both, then run `python train0.py` and check the rows.
 
 **2. Break it.** Delete the smoothing: `total = sum(row)`, and `c / total`
 instead of `(c + 1) / total`. Predict what happens and *when*, precisely.
@@ -135,16 +135,17 @@ actually visit? At what n-gram size does counting stop being a viable plan?
 <details>
 <summary>Solutions</summary>
 
-**1.** After `-`: `a` (0.11), then `s`, `m`. The near-single-cell row is `q` →
-`u` at 0.25 — with row-max shading it renders as one `@`.
+**1.** After `-`: `a` (0.11), then `s`, `m`. Before a digit: `-` (49 times
+in the training docs), then `2` and `0` — digits follow hyphens and other
+digits (`gpt-4`, `2025`); a letter almost never touches a digit directly.
 
 **2.** It dies *instantly* — `ZeroDivisionError` at the very first `bigram()`
 call of step 1. Not eventually: the quiz-before-counting loop asks the model
 about document 1 while the table is still all zeros, so the first row it
 normalizes sums to 0. Smoothing isn't numerical hygiene bolted on later; it's
-what lets a model answer questions about things it hasn't seen. (Keep this
-crash in mind at rung 1, where a broken gradient produces the same
-`math domain error` flavor — models die at log-of-zero.)
+what lets a model answer questions about things it hasn't seen. (Models die
+at log-of-zero — remember the flavor of this crash.) Captured in
+[runs/exercises.log](../runs/exercises.log).
 
 **3.** Rows multiply by 38 per character of context. A trigram table
 conditions on the previous *two* tokens: 38×38 = 1,444 rows of 38 numbers

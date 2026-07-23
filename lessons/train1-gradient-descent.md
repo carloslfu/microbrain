@@ -21,20 +21,10 @@ model's *information* hasn't changed (still one character of context), only the
 
 ## Walk the code
 
-**New words this rung** — defined here once, used freely afterward:
+**Three names to have before the walk** (the mechanics — embedding, linear
+layer, ReLU, logits — are defined in the walk itself, the moment each
+appears):
 
-- **embedding** — the 16 numbers the model gets to associate with each token:
-  its learned representation, and the only thing the model knows about a
-  character. A row of the `wte` table.
-- **linear layer** — a matrix multiply: every output is a weighted sum of all
-  inputs. `linear()` in the code, four lines.
-- **hidden units** — the 64 numbers between the two linear layers; "hidden"
-  because they're neither input nor output, just workspace.
-- **ReLU** — `max(0, x)`: negatives become 0, positives pass through. The
-  cheapest nonlinearity; without one, two stacked linear layers collapse
-  into a single linear layer (rung 7 measures what that costs).
-- **logits** — the 38 raw scores the model outputs before softmax turns them
-  into probabilities.
 - **cross-entropy** — the textbook name for the loss you already know: rung
   0's "surprise," `-log P(the true next char)`, `avg_nll` in the code. One
   quantity, four names — they will not multiply further.
@@ -48,20 +38,29 @@ model's *information* hasn't changed (still one character of context), only the
 (Every term in the course, with its aliases, lives in the
 [glossary](../GLOSSARY.md) — one lookup away whenever a word goes fuzzy.)
 
-**The model.** A row of `wte` (the token's embedding, 16 numbers) → a linear
-layer to 64 hidden units → ReLU → a linear layer to 38 logits. `softmax` turns
-logits into probabilities: exponentiate (making everything positive, and gaps
+**The model.** A row of `wte` (the token's **embedding** — the 16 numbers
+the model gets to associate with that character) → a **linear layer** (a
+matrix multiply: every output a weighted sum of all inputs) to 64 **hidden
+units** (in-between workspace, neither input nor output) → **ReLU**
+(`max(0, x)`: negatives become 0 — the cheapest nonlinearity) → a linear
+layer to 38 **logits** (raw scores, one per token). `softmax` turns logits
+into probabilities: exponentiate (making everything positive, and gaps
 multiplicative), then normalize. 4,064 parameters, initialized to small random
 noise, `gauss(0, 0.08)` (bell-curve random numbers centered on 0, spread
 0.08). That's nearly 3× the count table's 1,444 cells, to do the same
 one-character job approximately — the price of the differentiable form. What
 the overhead buys: every number is now *nudgeable* by a gradient, and
-nudgeable is what scales. And notice what one document's update *touches*:
-rung 0's three-line training incremented a single cell and left the other
-1,443 alone; here the same document reaches into the two linear layers that
-every character flows through (3,456 of the 4,064 numbers are those shared
-layers). No context owns a private row anymore — that sharing is where
-generalization will come from, and rung 5 collects on it. The whole network, from [train1.py](../train1.py):
+nudgeable is what scales.
+
+Notice also what one document's update *touches*. Rung 0's three-line
+training bumped one cell per character — a 20-character doc adjusts ~21 of
+the 1,444 and leaves the rest alone. Here the same document reaches into the
+two linear layers that every character flows through (3,456 of the 4,064
+numbers are those shared layers). No context owns a private row anymore —
+that sharing is where generalization will come from, and rung 5 collects on
+it.
+
+The whole network, from [train1.py](../train1.py):
 
 ```python
 def mlp(token_id):
@@ -157,9 +156,10 @@ lines:
 
 ## Exercises
 
-**1. Predict, then run.** Before running: what loss will step 1 print, and
-why can you know it without running anything? (Hint: what does softmax do to
-near-zero logits?)
+**1. Predict, then run.** train0's step 1 printed exactly 3.6376 — the shrug
+to four decimals. This file's step 1 prints 3.6369, a whisker *off* it.
+Predict the mechanism of that tiny gap before running: what does rung 0 do
+at init that this file's random weights can't?
 
 **2. Break it.** In `analytic_gradient`, flip the sign:
 `dlogits[target_id] += 1.0 / n`. Predict: does anything *detect* the bug? What
@@ -173,8 +173,12 @@ gradient check grades your derivation automatically. That's the real lesson.
 <details>
 <summary>Solutions</summary>
 
-**1.** ≈ 3.6369 ≈ ln(38): init weights are gauss(0, 0.08), so logits are all
-nearly zero, so softmax is nearly uniform, so surprise is the shrug price.
+**1.** Rung 0's smoothing makes every row *exactly* uniform before any
+counts arrive, so its first quiz costs exactly ln(38). Here the init weights
+are gauss(0, 0.08): logits are nearly zero but not zero, so softmax is
+nearly uniform but not quite — the 0.0007 gap is whatever tilt those random
+weights happen to give the first document, and it could have landed on
+either side of 3.6376.
 
 **2.** Two-act failure, both acts observed live: first, the referee catches it
 immediately — `max diff 0.01862396` where a healthy run prints `0.00000000`.
@@ -184,6 +188,7 @@ probability underflows to exact zero and the run dies with
 `ValueError: math domain error` at `-math.log(probs[target_id])` — the same
 log-of-zero death as rung 0's smoothing exercise. Moral: the gradient check is
 not ceremony. It's the difference between a subtle bug and a crash you notice.
+Captured in [runs/exercises.log](../runs/exercises.log).
 
 **3.** `d(loss)/d(b) = dlogits` — the bias feeds the logits directly, so its
 gradient is the error itself, accumulated across positions:
@@ -197,6 +202,6 @@ that number is a map to your bug.
 
 Next: [train2 — autograd](train2-autograd.md). The forty lines of hand calculus you
 just verified become obsolete — replaced by forty lines that derive them
-automatically, for any architecture you'll ever write.
+automatically, for any architecture.
 
 [← train0](train0-counting.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train2 →](train2-autograd.md)

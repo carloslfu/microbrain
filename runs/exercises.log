@@ -1,0 +1,240 @@
+microbrain — exercises.log: the break-it runs, captured
+
+Each section states the one-line sabotage (always applied to a copy of the
+rung's file), then the command and its full output. Same seeds as the course,
+so the loss numbers reproduce exactly; wall-clock times vary run to run.
+
+== train0 · exercise 2 — smoothing deleted ==
+change (in a copy, _ex0.py):  total = sum(row) + vocab_size  ->  total = sum(row)
+                              return [(c + 1) / total ...]   ->  return [c / total ...]
+
+$ python3 _ex0.py
+num docs: 488 train / 55 val
+vocab size: 38
+uniform loss: ln(38) = 3.6376 -> effective choices: 38
+Traceback (most recent call last):
+  File "_ex0.py", line 84, in <module>
+    probs = bigram(token_id)
+            ^^^^^^^^^^^^^^^^
+  File "_ex0.py", line 58, in bigram
+    return [c / total for c in row]
+            ~~^~~~~~~
+ZeroDivisionError: division by zero
+
+[exit 1, 0.0s]
+
+
+== train1 · exercise 2 — gradient sign flipped ==
+change (in a copy, _ex1.py):  dlogits[target_id] -= 1.0 / n  ->  dlogits[target_id] += 1.0 / n
+
+$ python3 _ex1.py
+num docs: 488 train / 55 val
+vocab size: 38
+num params: 4064
+gradient check on 'cscg-george-2021' | loss_n 3.636937 | loss_a 3.636937 | max diff 0.01862396
+step    1 / 1000 | loss 3.6369 | val loss 3.6406 | effective choices 38.1 of 38
+step    2 / 1000 | loss 3.6406
+step    3 / 1000 | loss 3.6444
+step    4 / 1000 | loss 3.6436
+step    5 / 1000 | loss 3.6396
+Traceback (most recent call last):
+  File "_ex1.py", line 176, in <module>
+    loss, grad = analytic_gradient(tokens, n)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "_ex1.py", line 128, in analytic_gradient
+    loss_t = -math.log(probs[target_id])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: math domain error
+
+[exit 1, 11.1s]
+
+
+== train2 · exercise 2 — backward() walks the topo order forward ==
+change (in a copy, _ex2.py):  for v in reversed(topo):  ->  for v in topo:
+
+$ python3 _ex2.py --fast
+num docs: 488 train / 55 val
+vocab size: 38
+
+--- autograd on a graph small enough to check by hand ---
+L     data +9.0000 | grad +1.0000
+    diff  data -3.0000 | grad -6.0000
+        relu  data +2.0000 | grad +0.0000
+            sum   data +2.0000 | grad +0.0000
+                a*b   data -6.0000 | grad +0.0000
+                    a     data +2.0000 | grad +0.0000
+                    b     data -3.0000 | grad +0.0000
+                const data +8.0000 | grad +0.0000
+        const data -5.0000 | grad +0.0000
+e.g. dL/da: 2*diff * 1 * 1 * b = 2*(-3) * (-3) = +18 — matches the printout
+
+num params: 4064
+one document ('cscg-george-2021') builds a graph of 126,664 Value nodes
+backward() applies the same by-eye chain rule to every one of them
+step    1 /  300 | loss 3.6369 | val loss 3.6405 | effective choices 38.1 of 38
+step    2 /  300 | loss 3.6400
+step    3 /  300 | loss 3.6438
+step    4 /  300 | loss 3.6416
+step    5 /  300 | loss 3.6379
+step  151 /  300 | loss 3.6467 | val loss 3.6405 | effective choices 38.1 of 38
+step  300 /  300 | loss 3.6409 | val loss 3.6405 | effective choices 38.1 of 38
+training took 135.4s (train1.py did the same math faster — abstraction costs a constant factor)
+
+--- inference (new, hallucinated idea names) ---
+sample  1: ebjpp5z-24yf1710d
+sample  2: miplyunf6nt90li7508-4
+sample  3: scdliq129uxcz9m6yk8e31aytzwtkpzksrzggl03
+sample  4: 1n
+sample  5: o7azi-u82ou1yhcw9ypxh6qw668m43xoomrj0hmh
+sample  6: 
+sample  7: xvh
+sample  8: x97k1thjidp5
+sample  9: pgp-6lbm8j7gmch6pdv953k7297fd4z4t5h
+sample 10: viqsakkep1thmgbcky8-3vz6kn5scohqwd9m45tb
+memorization: 0/10 samples are verbatim training docs
+
+[exit 0, 138.5s]
+
+
+== train3 · exercise 2 — attention scaling removed (paired --fast runs, same seed) ==
+run A: train3.py --fast, untouched
+run B (in a copy, _ex3.py): the '/ n_embd**0.5' deleted from the attention logits
+
+$ python3 train3.py --fast
+num docs: 488 train / 55 val
+vocab size: 38
+num params: 4928
+step    1 /  300 | loss 3.7557 | val loss 3.6776 | effective choices 39.6 of 38
+step    2 /  300 | loss 3.5595
+step    3 /  300 | loss 3.6431
+step    4 /  300 | loss 3.6108
+step    5 /  300 | loss 3.6784
+step  151 /  300 | loss 3.0866 | val loss 2.8796 | effective choices 17.8 of 38
+step  300 /  300 | loss 2.7546 | val loss 2.8149 | effective choices 16.7 of 38
+training took 180.9s
+
+--- attention over 'test-time-training' (row = current position, cols = looked-at positions) ---
+      ^test-time-training
+    ^ | @
+    t | @@
+    e | #@#
+    s | @@%%
+    t | @@%%@
+    - | @@%@@%
+    t | @@%%@%@
+    i | #@##%*@#
+    m | @@#%@#%%%
+    e | #@#%@#@#%%
+    - | @@%@@@@@@@@
+    t | %@%%@%@%@%%@
+    r | @%#%#%#@%#%#%
+    a | #@#@@#@%%%#@%%
+    i | %@#@@#@%#%#@%%%
+    n | @#%##%#@#%%##%%@
+    i | #@#%@*@##%*@%###%
+    n | %##*###@##%##%%#@%
+    g | @%%#%@%@%%@#@@@%@@%
+
+--- inference (new, hallucinated idea names) ---
+sample  1: maele-mon-s-memarenter-ck-s
+sample  2: ses-l-mentiemit-man-men-nentin-pg
+sample  3: lit
+sample  4: deme
+sample  5: faonte-miu-arato
+sample  6: henr-catane-mder-cecotontis
+sample  7: ererilien-oron
+sample  8: d-verelerere-meletan-s
+sample  9: te-me-s
+sample 10: molorti-pere-tin-m-meinated-hee-d-mimene
+memorization: 0/10 samples are verbatim training docs
+
+[exit 0, 185.6s]
+
+$ python3 _ex3.py --fast
+num docs: 488 train / 55 val
+vocab size: 38
+num params: 4928
+step    1 /  300 | loss 3.7566 | val loss 3.6778 | effective choices 39.6 of 38
+step    2 /  300 | loss 3.5579
+step    3 /  300 | loss 3.6426
+step    4 /  300 | loss 3.6109
+step    5 /  300 | loss 3.6810
+step  151 /  300 | loss 3.0807 | val loss 2.8795 | effective choices 17.8 of 38
+step  300 /  300 | loss 2.7548 | val loss 2.8146 | effective choices 16.7 of 38
+training took 192.4s
+
+--- attention over 'test-time-training' (row = current position, cols = looked-at positions) ---
+      ^test-time-training
+    ^ | @
+    t | @%
+    e | -@:
+    s | @*==
+    t | @+-==
+    - | @%-%#+
+    t | @%++#*#
+    i | -@:=*:*-
+    m | @#:=+-===
+    e | =@-+%-%-++
+    - | @%=%%###%+%
+    t | #%+=%*%+@+*#
+    r | @-:-:-:*-:=:-
+    a | =%-%%-%==+-@+=
+    i | %@-%*:**-*-%=++
+    n | #-+-:=:@-=+--*+#
+    i | =@:+#:#--=:@=--==
+    n | #--::-:#-:=:-+*=@*
+    g | @-=--*-%+-#:++@+@*=
+
+--- inference (new, hallucinated idea names) ---
+sample  1: mad-m-mon-s-memarenter-cias
+sample  2: ses-l-mentient
+sample  3: aman-me-blarere-re
+sample  4: lit
+sample  5: deme
+sample  6: fanhen-miu-arato
+sample  7: henr-catane-mder-cecotontis
+sample  8: ererimien-oron
+sample  9: d-verelerere-meletan-s
+sample 10: te-me-s
+memorization: 0/10 samples are verbatim training docs
+
+[exit 0, 195.3s]
+
+
+== train6 · exercise 2 — lm_head[36][0] = 1e6 (row 36 = z), sampled at three temperatures ==
+change: out/model.json json-loaded, corrupted, saved as out/model_bad.json;
+        sampled via a namer.py copy (_exnamer.py) pointed at the bad checkpoint
+
+$ python3 _exnamer.py -n 4 -t 0.5 --seed 42
+microbrain namer | 4 novel idea names | T=0.5
+   1. nazzezoze-bzazender-stiztid-stize
+   2. fznizen-bzanazize-czizazaz
+   3. nizzezazag
+   4. serzozaze-mzen
+(4 draws -> 4 survivors of the novelty filter)
+(now try --quiz)
+
+[exit 0]
+
+$ python3 _exnamer.py -n 4 -t 1.0 --seed 42
+microbrain namer | 4 novel idea names | T=1.0
+   1. ozezozs-fzdizcziziz-ssed
+   2. gzazizmzy-mzizizaze-czerfzdzy
+   3. nczzezizizrd-fzbzserizekepzizegziczarti-
+   4. gzizrzlzhar-gzy
+(4 draws -> 4 survivors of the novelty filter)
+(now try --quiz)
+
+[exit 0]
+
+$ python3 _exnamer.py -n 4 -t 2.0 --seed 42
+microbrain namer | 4 novel idea names | T=2.0
+   1. ozezrzual-cz-czjzmz-srfzyeaztzssn
+   2. gztztzozcz3-4zozfzexpzazaz
+   3. ozpzsbzeeczwzolykd4izlxbz
+   4. lz1-ntizfzizt-qzizoziz
+(4 draws -> 4 survivors of the novelty filter)
+(now try --quiz)
+
+[exit 0]
+

@@ -41,18 +41,21 @@ so differences under ~0.03 nats are coin-flips; differences over ~0.1 are
 real wounds. Second: the baseline below reads 15.6 effective choices, not
 rung 5's 13.8 — the lab trains 300 steps per run, not 1,000 (six full-budget
 trainings would run about an hour). Same architecture, smaller budget; by now
-that distinction should feel load-bearing.
+you know that distinction is never small.
 
 ## What the numbers said
 
 ```
-baseline     | val loss 2.7444 | effective choices  15.6
-no-wpe       | val loss 2.7201 | effective choices  15.2   <- ?!
-no-residual  | val loss 2.9102 | effective choices  18.4
-no-rmsnorm   | val loss 2.8007 | effective choices  16.5
-no-relu      | val loss 2.7572 | effective choices  15.8
-beta2=0.5    | val loss 2.7684 | effective choices  15.9
+baseline     | val loss 2.7444 | effective choices  15.6 ...
+no-wpe       | val loss 2.7201 | effective choices  15.2 ...
+no-residual  | val loss 2.9102 | effective choices  18.4 ...
+no-rmsnorm   | val loss 2.8007 | effective choices  16.5 ...
+no-relu      | val loss 2.7572 | effective choices  15.8 ...
+beta2=0.5    | val loss 2.7684 | effective choices  15.9 ...
 ```
+
+(Rows abridged — the log adds each run's time and four samples. And that
+no-wpe row is not a typo; Scandal #1 below.)
 
 ![the damage report, drawn from the log](../assets/train7-damage.svg)
 
@@ -73,7 +76,7 @@ with depth. (Your `n_layer = 2` exercise from rung 4 is where to see that.)
 
 **Scandal #1: no-wpe *won*.** Lower val loss than baseline (−0.024 — a
 coin-flip's width, but the organ you'd have defended to the death just
-measured *free to remove*). The explanation is the course's sharpest lesson.
+measured *free to remove*).
 At 300 steps and bigram-ish loss levels, nearly all predictive power is
 *which characters tend to follow which* — knowledge that needs no notion of
 position. The 640

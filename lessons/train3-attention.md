@@ -81,6 +81,10 @@ the start; that's deliberate, not a bug. Residual adds un-normalize the
 stream after every block, so every block re-norms on entry — uniformly,
 starting from layer 1.
 
+**Checkpoint, before the numbers.** train1's step 1 landed a whisker from
+ln(38) = 3.6376. Commit now: will this file's step 1 land as close? A number
+and a reason — exercise 1 grades you.
+
 ## What the numbers said
 
 ```
@@ -147,9 +151,10 @@ match the code:
 
 ## Exercises
 
-**1. Predict, then run.** train1's step 1 landed a whisker under ln(38)
-(3.6369 vs 3.6376). Will this file land as close? Commit to a number and a
-reason; check against step 1.
+**1. Score the checkpoint.** You committed before the panel — the first
+bullet under the numbers grades you. If you predicted "close to the shrug":
+what does the miss teach about what random *attention* does that random
+*linear layers* don't?
 
 **2. Break it.** Delete the `/ n_embd**0.5` scaling from the attention
 logits (rung 4 will spell it `head_dim**0.5`). Predict the *mechanism* of
@@ -173,13 +178,14 @@ the keys and queries learn to match sensibly.
 **2.** The textbook mechanism: unscaled dot products grow with dimension,
 softmax saturates toward one-hot, and the gradient through a saturated
 softmax goes quiet — attention's *routing* stops learning. Now the measured
-truth at *this* dimension: removing the scale changed val loss from 2.8149
-to 2.8146 at 300 steps. **Nothing.** Sixteen dimensions of rmsnorm'd
+truth at *this* dimension: removing the scale changed val loss from 2.8146
+to 2.8149 at 300 steps. **Nothing.** Sixteen dimensions of rmsnorm'd
 [activations](../GLOSSARY.md#activations) against 0.08-scale weights simply never produce logits big
 enough to saturate. The 1/√d division is insurance written for large d — at
 d = 4,096 it's load-bearing; at d = 16 it's a formality. You just ran your
 first ablation whose honest result is "not at this scale" — rung 7 makes a
-whole lab out of that sentence.
+whole lab out of that sentence. Both runs are captured in
+[runs/exercises.log](../runs/exercises.log).
 
 **3.** `IndexError: list index out of range` at `state_dict['wpe'][pos_id]`,
 the moment `pos_id` hits 40. The context window is not a suggestion or a

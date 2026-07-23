@@ -234,9 +234,9 @@ one wide lookup is a bet of exactly this kind. Rung 4.
 #### inference
 
 running a trained model to get outputs; no gradients, no
-learning. *Serving* is doing inference for many users at once. Every rung's
-output prints the word (the "--- inference ---" header); rung 6 makes it
-the topic. Rung 6.
+learning. *Serving* is doing inference for many users at once. Rungs 0–5
+print the word as their output header ("--- inference ---"); the toolkit
+rung makes it the topic. Rung 6.
 
 #### init
 

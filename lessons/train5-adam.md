@@ -15,7 +15,7 @@ five-line update rule, shown complete below — and it lands the biggest
 single move on the scoreboard since counting. Sit with that
 asymmetry: rungs 3 and 4 rebuilt the entire model around attention and
 *couldn't beat counting*; this rung changes only how the parameters step, and
-wins. In deep learning, the optimizer is not plumbing. It's a protagonist.
+wins.
 
 ## Walk the code
 
@@ -90,8 +90,8 @@ Same 4,928 parameters as train4. Same 1,000 documents in the same order. The
 only change is *how the steps were taken*: 14.8 → 13.8, and the count table
 finally falls.
 
-Worth pausing on how a table that was *provably optimal* got beaten at all.
-It was optimal per row — one character of context, every row learning alone.
+The table was *provably optimal* — so how did it fall? It was optimal per
+row: one character of context, every row learning alone.
 The transformer's 4,928 **shared** parameters cover a 40-character context
 no table could hold (38^40 ≈ 10^63 rows) or fill (488 documents); sharing means
 evidence transfers — what the weights learn from `training` helps with
@@ -100,7 +100,7 @@ compression, and compression is [generalization](../GLOSSARY.md#generalization).
 Adam didn't add that capacity; it's the first optimizer on the ladder strong
 enough to cash it in.
 
-And before you compare this log to train4's, a warning: step 1's printed
+Before you compare this log to train4's, a warning: step 1's printed
 line is a trap with a lesson inside. Its two loss fields disagree about
 whether the optimizers have diverged yet — exercise 1 makes you predict
 which, so no spoilers here.
@@ -128,8 +128,8 @@ because every point is a one-document quiz. Learning to see "noisy but
 descending" versus "flat" versus "diverging" at a glance is a working skill —
 this chart is your first calibration.
 
-And the course's promised centerpiece, the childhood album — four ages of the
-same model, straight from the log:
+And the childhood album — four ages of the same model, straight from the
+log:
 
 ```
 step    0 | m129o8dwl-x7nfi1o8kliw13m-uvwax1c7omlpp6, fpx3bbb2kk73p9lfqj3pl, iqz, ...
@@ -152,7 +152,7 @@ naked eye, in a minute, on a laptop.
 "Better model" and "better training" are separable axes, and the second one
 is chronically underestimated. A transformer under a weak optimizer *measured
 worse than counting* — imagine concluding, two rungs early, that attention
-doesn't work. Every capability claim you'll ever evaluate has an optimizer,
+doesn't work. Every capability claim has an optimizer,
 a data recipe, and a step budget hiding inside it. This rung is the course's
 inoculation: never judge an architecture apart from its training.
 

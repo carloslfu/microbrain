@@ -200,13 +200,15 @@ def damage():
 
 # ---------------------------------------------------------- pipeline (train0)
 def pipeline():
+    # rung 0's map: six stages. backward earns its box at rung 2 (this SVG
+    # is embedded only in train0's lesson, whose ASCII map matches).
     stages = [('docs', '543 idea names'), ('tokenize', 'chars -> ids'), ('model', 'the box that grows'),
-              ('loss', 'surprise'), ('backward', 'assign blame'), ('update', 'step params'),
+              ('loss', 'surprise'), ('update', 'step params'),
               ('sample', 'babble new names')]
-    W, Hh, bw, bh, gap, y = 920, 214, 104, 46, 18, 96
+    W, Hh, bw, bh, gap, y = 800, 214, 104, 46, 18, 96
     s = svg_open(W, Hh)
     s.append('<defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#6a737d"/></marker></defs>')
-    s.append(text(24, 32, 'the pipeline — every rung is this same machine, with one part upgraded', 15, INK, bold=True))
+    s.append(text(24, 32, 'the pipeline — data in, babble out; every rung upgrades one part', 15, INK, bold=True))
     x = 24
     for i, (name, gloss) in enumerate(stages):
         color = BLUE if name == 'model' else INK
@@ -216,10 +218,10 @@ def pipeline():
         if i < len(stages) - 1:
             s.append(f'<line x1="{x+bw}" y1="{y+bh/2}" x2="{x+bw+gap-2}" y2="{y+bh/2}" stroke="{MUTED}" stroke-width="1.3" marker-end="url(#a)"/>')
         x += bw + gap
-    ux = 24 + 5 * (bw + gap) + bw / 2   # update box center
+    ux = 24 + 4 * (bw + gap) + bw / 2   # update box center
     mx = 24 + 2 * (bw + gap) + bw / 2   # model box center
     s.append(f'<path d="M {ux} {y-8} C {ux} {y-38}, {mx} {y-38}, {mx} {y-8}" fill="none" stroke="{MUTED}" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#a)"/>')
-    s.append(text((ux + mx) / 2, y - 40, 'next document, x1000', 10.5, MUTED, 'middle'))
+    s.append(text((ux + mx) / 2, y - 40, 'next document', 10.5, MUTED, 'middle'))
     save('pipeline.svg', s)
 
 # ----------------------------------------------- computation graph (train2)

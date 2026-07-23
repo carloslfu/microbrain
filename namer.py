@@ -7,7 +7,7 @@ Notice what is NOT in this file: no Value class, no backward(), no optimizer.
 Inference is just the forward pass. Gradients exist only so that training can
 happen; the shipped product never needs them. Plain floats, ~10x faster too.
 
-usage: python namer.py [-n 12] [-t 0.8] [--seed N] [--quiz]
+usage: python namer.py [-n 12] [-t 0.8] [--seed N] [--quiz [--answers]]
   -n      how many novel names to generate (default 12)
   -t      temperature (default 0.8 — braver than training-time 0.5)
   --seed  fix the randomness (default: different every run)
@@ -121,11 +121,15 @@ if '--quiz' in sys.argv:
     fakes, _ = draw_novel(3, min_len=6, max_len=30)
     quiz = real + fakes
     random.shuffle(quiz)
-    print("microbrain namer — quiz | which are real records, which did the model invent?")
+    tag = f" | seed {seed}" if seed is not None else ""
+    print(f"microbrain namer — quiz{tag} | which are real records, which did the model invent?")
     for i, q in enumerate(quiz):
         print(f"  {i+1}. {q}")
-    print("\n" + " " * 8 + "(answers: " + ', '.join(
-        f"{i+1} {'real' if q in known else 'FAKE'}" for i, q in enumerate(quiz)) + ")")
+    if '--answers' in sys.argv:
+        print("\n" + " " * 8 + "(answers: " + ', '.join(
+            f"{i+1} {'real' if q in known else 'FAKE'}" for i, q in enumerate(quiz)) + ")")
+    else:
+        print("\n" + " " * 8 + "(committed? rerun with --answers for the key)")
 else:
     print(f"microbrain namer | {count} novel idea names | T={temperature}")
     novel, attempts = draw_novel(count)

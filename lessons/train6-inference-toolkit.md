@@ -17,8 +17,7 @@ about the half of the lifecycle the training gist doesn't cover. The training
 in this file is identical to train5's, and the panel agrees; everything
 interesting happens after `training took 705.1s — now the toolkit`.
 
-First, note what training itself delivered, because it's the course's
-turning point:
+First, note what training itself delivered:
 
 ```
 step 1000 / 1000 | loss 2.4283 | val loss 2.6216 | effective choices 13.8 of 38
@@ -99,7 +98,7 @@ product is this division.
 Same seed, same name, character for character — the cache changes *nothing*
 about the math. It changes the work: with the keys/values lists kept between
 characters (as the training loop always did), producing token N costs one
-model call; throw the lists away and honesty requires replaying the whole
+model call; throw the lists away and you must replay the whole
 prefix, so 22 characters cost 276 calls instead of 23. That's 1+2+...+23
 versus 23 — quadratic versus linear, a 12.6× real-time gap at name length,
 and the gap *grows with every character*. Scale the sequence to a chat
@@ -113,8 +112,9 @@ management.
 ```
 
 The memorization gauge has read 0 all course, and this rung's 30-sample
-census confirms it. That deserves a hard look: readers of microgpt's own
-launch thread reported verbatim training names among *its* samples, at
+census confirms it. Readers of microgpt's own
+[launch thread](https://gist.github.com/karpathy/8627fe009c40f57531cb18360106ce95)
+reported verbatim training names among *its* samples, at
 nearly our parameter count (4,192 vs 4,928). Why does ours not parrot?
 Memorization pressure is about the *density of the space*. His 32,033 human
 names crowd a small space of short, convergent strings — many "kamon"s are
@@ -122,11 +122,12 @@ near-inevitable. Our 543 hyphenated 20-character slugs rattle around an
 astronomically larger one. Our
 model lacks the capacity to store paths to specific training docs, so it
 stores *statistics* — morphemes, hyphen rhythm, endings. Generalization isn't
-a virtue here; it's what's left when memorizing is unaffordable. Flip that
-around and the gauge earns its keep: a rung-0-style count table with the
-full 40-character context would score a perfect 30/30 here — at that context
-length every training context occurs once, so "counting" *is* verbatim
-replay, and static for everything else. This gauge is the instrument that
+a virtue here; it's what's left when memorizing is unaffordable.
+
+Flip that around and the gauge earns its keep: an *unsmoothed* count table
+with the full 40-character context would score a perfect 30/30 here — at
+that depth essentially every training context occurs once, so "counting"
+*is* verbatim replay of the training set. This gauge is the instrument that
 tells a compressed model from a giant lookup; 0 is the compression working. (Rung 4's
 `n_layer = 2` exercise is where you can start to buy it back and watch the
 gauge move.)
@@ -140,15 +141,18 @@ gauge move.)
 ```
 
 Three are records in the brain; three came out of 4,928 floats. Commit to
-answers before peeking at the log's answer line. If you hesitated even once,
+answers before peeking at the log's answer line. (For a quiz that can't
+spoil you, `namer.py --quiz` withholds the key until you rerun with
+`--answers`.) If you hesitated even once,
 consider what that means: at 106 KB, statistics-of-naming is already halfway
 to plausibility — and production models are six orders of magnitude larger.
 
 ## Exercises
 
-**1. Predict, then run.** Before running: for a 22-character name, how many
-model calls with the cache? Without? What's the ratio, and is it constant in
-name length? Then check the printout.
+**1. Predict, then run.** Section 3 measured a 22-character name. For a
+39-character name — the block limit — how many model calls with the cache?
+Without? Write the ratio as a formula in the name length N before computing
+either.
 
 **2. Break it.** Corrupt one weight. Not by hand-editing — the JSON is one
 long line — but with three lines of Python: `json.load` the checkpoint, set
@@ -168,13 +172,14 @@ chatbot era: conditioning a frozen model with context instead of training it.
 <details>
 <summary>Solutions</summary>
 
-**1.** 23 with cache (one per generated token incl. the closing BOS draw),
-1+2+...+23 = 276 without: the ratio is (N+1)/2 — *linear in length*, not
-constant. Observed: 0.366s vs 4.601s.
+**1.** The pattern from §3: a length-N name costs N+1 calls with the cache,
+1+2+…+(N+1) without, so the ratio is (N+2)/2 — *linear in length*. At the
+39-character limit: 40 calls versus 820, a 20.5× gap (the measured 22-char
+case was 23 vs 276, 12.6× wall-clock).
 
 **2.** One row of `lm_head` is one token's scoring direction; a 10⁶ weight
 makes that token's logit explode whenever its input feature is nonzero. Run
-and you'll see something like `azazezaz-czerizentizizengzen` — and, measured
+and you'll see something like `fznizen-bzanazize-czizazaz` — and, measured
 observation: it looks like that at *every* temperature. At |logit| ≈ 10⁶,
 dividing by T changes nothing; softmax is saturated either way, so the
 corruption is temperature-*proof* (the hide-it-with-heat intuition only works
@@ -182,7 +187,8 @@ for mild corruption, ~10-scale). The finer puzzle is the *alternation* —
 `azaz`, not `zzzz`: the hijacked token wins only when its input feature is
 *positive*, and emitting `z` flips the next position's context enough to flip
 that sign. A single insane weight, an oscillator. Diagnose from mechanism
-before believing any single sample.
+before believing any single sample. Captured at all three temperatures in
+[runs/exercises.log](../runs/exercises.log).
 
 **3.** Loop the prefix through `gpt(token_id, pos_id, keys, values)` exactly
 as the sampler does, but *ignore* the returned logits until the last prefix
