@@ -154,7 +154,7 @@ course exists.
 
 ---
 
-Next: [train1 — gradient descent, by hand](train1.md). Same bigram question,
+Next: [train1 — gradient descent, by hand](train1-gradient-descent.md). Same bigram question,
 but the table becomes a neural network and learning becomes calculus.
 
-[← home](../README.md) · [glossary](../GLOSSARY.md) · [train1 →](train1.md)
+[← home](../README.md) · [glossary](../GLOSSARY.md) · [train1 →](train1-gradient-descent.md)

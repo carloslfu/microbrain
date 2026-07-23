@@ -19,7 +19,7 @@ crucially, as the very first line of output insists:
 num params: 4928 (same as train3.py — heads are a split, not new capacity)
 ```
 
-(The full block diagram is in [rung 3's lesson](train3.md) — this rung only
+(The full block diagram is in [rung 3's lesson](train3-attention.md) — this rung only
 splits the attention box four ways and wraps everything in the layer loop.)
 
 Four heads cost *nothing*. The same 16 query dimensions are cut into four
@@ -174,8 +174,8 @@ the val-direction question is the interesting one on a corpus this small
 
 ---
 
-Next: [train5 — Adam](train5.md). The architecture stops changing; the
+Next: [train5 — Adam](train5-adam.md). The architecture stops changing; the
 *steps* get smart. This is the rung where the transformer finally earns its
 keep — and where you watch the model grow up in the childhood album.
 
-[← train3](train3.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train5 →](train5.md)
+[← train3](train3-attention.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train5 →](train5-adam.md)

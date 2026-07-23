@@ -21,7 +21,7 @@ microbrain deltas:
 - gpt() takes an optional attn_trace list to capture those weights
 
 usage: python train3.py [--fast]   (--fast: 300 steps; full run is ~minutes, pure Python)
-lesson: lessons/train3.md — run first, read second
+lesson: lessons/train3-attention.md — run first, read second
 """
 
 import os       # os.path.exists

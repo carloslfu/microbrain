@@ -22,7 +22,7 @@ microbrain deltas (all rungs carry these):
 - a diagram drawn from the model itself (here: the count table as a heatmap)
 
 usage: python train0.py        (instant — counting is one pass over the data)
-lesson: lessons/train0.md — run this file first, then read that
+lesson: lessons/train0-counting.md — run this file first, then read that
 """
 
 import os       # os.path.exists

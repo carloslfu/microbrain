@@ -187,8 +187,8 @@ that number is a map to your bug.
 
 ---
 
-Next: [train2 — autograd](train2.md). The forty lines of hand calculus you
+Next: [train2 — autograd](train2-autograd.md). The forty lines of hand calculus you
 just verified become obsolete — replaced by forty lines that derive them
 automatically, for any architecture you'll ever write.
 
-[← train0](train0.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train2 →](train2.md)
+[← train0](train0-counting.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train2 →](train2-autograd.md)

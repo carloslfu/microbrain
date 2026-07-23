@@ -189,8 +189,8 @@ need for "context window" in production systems.
 
 ---
 
-Next: [train7 — the ablation lab](train7.md). You've built it and shipped it;
+Next: [train7 — the ablation lab](train7-ablation-lab.md). You've built it and shipped it;
 now take it apart, organ by organ, and check your predictions against the
 damage report.
 
-[← train5](train5.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train7 →](train7.md)
+[← train5](train5-adam.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train7 →](train7-ablation-lab.md)

@@ -175,6 +175,6 @@ sign or a factor of 2, you now know how to find out which line lied.
 
 ---
 
-Next: [train3 — attention](train3.md). The model finally gets to look left.
+Next: [train3 — attention](train3-attention.md). The model finally gets to look left.
 
-[← train1](train1.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train3 →](train3.md)
+[← train1](train1-gradient-descent.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train3 →](train3-attention.md)

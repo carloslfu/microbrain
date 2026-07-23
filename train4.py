@@ -20,7 +20,7 @@ microbrain deltas:
 - writes out/train4_losses.txt so train5.py can overlay SGD vs Adam
 
 usage: python train4.py [--fast]   (--fast: 300 steps; full run is ~minutes, pure Python)
-lesson: lessons/train4.md — run first, read second
+lesson: lessons/train4-multi-head.md — run first, read second
 """
 
 import os       # os.path.exists

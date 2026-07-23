@@ -31,7 +31,7 @@ python train0.py                # instant
 python train1.py                # ~10 s
 ```
 
-Then read `lessons/train0.md` — the lessons assume you run first, read
+Then read `lessons/train0-counting.md` — the lessons assume you run first, read
 second. Three practical notes:
 
 - `python` means your Python 3; some systems spell it `python3`.
@@ -45,7 +45,7 @@ second. Three practical notes:
 
 Then keep climbing. Honest timings on a laptop (pure-Python, one number
 at a time — the slowness is the point, not a flaw): train2 ≈ 7 min, train3–train6 ≈ 10–12 min each,
-train7 ≈ 17 min for all six runs (five surgeries plus the baseline). Every
+train7 ≈ 18 min for all six runs (five surgeries plus the baseline). Every
 training rung takes `--fast` — 300 steps instead of the full 1,000; train7's
 lab drops to 100 per surgery — seconds on the early rungs, a few minutes on
 the heavy ones, when you want the shape without the wait; `python compare.py` prints the
@@ -67,7 +67,9 @@ any AI agent makes a fine lab partner for it. Have it run the rungs, produce
 and explain the diff between any two files, referee your exercise
 predictions, or chase a tangent. Everything an agent needs is in-repo:
 pinned canon in `reference/`, deterministic seeds, the author's logs in
-`runs/`. The lessons show every load-bearing line inline, so *following the
+`runs/` — and `python tools/check.py` verifies the repo's consistency gates
+(every link, every quoted number) in one command. The lessons show every
+load-bearing line inline, so *following the
 course* never requires running anything at all — though training your own
 and hitting the quiz is the whole fun.
 
@@ -88,14 +90,14 @@ out):
 | rung | file | the one new idea | val loss | effective choices¹ |
 |---|---|---|---|---|
 | — | — | uniform shrug (no model) | 3.6376 | 38.0 |
-| 0 | [train0.py](train0.py) · [lesson](lessons/train0.md) | bigram by **counting** | 2.6774 | 14.5 |
-| 1 | [train1.py](train1.py) · [lesson](lessons/train1.md) | **gradients, by hand** (SGD) | 2.7301 | 15.3 |
-| 2 | [train2.py](train2.py) · [lesson](lessons/train2.md) | **autograd** — same numbers, ~45× slower, Karpathy's file gets *shorter* | 2.7301 | 15.3 |
-| 3 | [train3.py](train3.py) · [lesson](lessons/train3.md) | **attention** + positions + residuals + rmsnorm | 2.6886 | 14.7 |
-| 4 | [train4.py](train4.py) · [lesson](lessons/train4.md) | **multi-head** — same param count, four spotlights | 2.6926 | 14.8 |
-| 5 | [train5.py](train5.py) · [lesson](lessons/train5.md) | **Adam** — the count table finally falls | **2.6216** | **13.8** |
-| 6 | [train6.py](train6.py) · [lesson](lessons/train6.md) | *(ours)* save/load, temperature, the KV cache measured, the quiz | 2.6216 | 13.8 |
-| 7 | [train7.py](train7.py) · [lesson](lessons/train7.md) | *(ours)* the ablation lab: break it on purpose, organ by organ | — | — |
+| 0 | [train0.py](train0.py) · [lesson](lessons/train0-counting.md) | bigram by **counting** | 2.6774 | 14.5 |
+| 1 | [train1.py](train1.py) · [lesson](lessons/train1-gradient-descent.md) | **gradients, by hand** (SGD) | 2.7301 | 15.3 |
+| 2 | [train2.py](train2.py) · [lesson](lessons/train2-autograd.md) | **autograd** — same numbers, ~45× slower, Karpathy's file gets *shorter* | 2.7301 | 15.3 |
+| 3 | [train3.py](train3.py) · [lesson](lessons/train3-attention.md) | **attention** + positions + residuals + rmsnorm | 2.6886 | 14.7 |
+| 4 | [train4.py](train4.py) · [lesson](lessons/train4-multi-head.md) | **multi-head** — same param count, four spotlights | 2.6926 | 14.8 |
+| 5 | [train5.py](train5.py) · [lesson](lessons/train5-adam.md) | **Adam** — the count table finally falls | **2.6216** | **13.8** |
+| 6 | [train6.py](train6.py) · [lesson](lessons/train6-inference-toolkit.md) | *(ours)* save/load, temperature, the KV cache measured, the quiz | 2.6216 | 13.8 |
+| 7 | [train7.py](train7.py) · [lesson](lessons/train7-ablation-lab.md) | *(ours)* the ablation lab: break it on purpose, organ by organ | — | — |
 | end | [namer.py](namer.py) · [epilogue](lessons/epilogue.md) | your model as a tool; the bridge to production | — | — |
 
 ¹ `e^(val loss)`: out of 38 possible next characters, how many is the model
@@ -127,6 +129,8 @@ GLOSSARY.md              every term in plain words, with its aliases and the run
                          where it's earned — for mid-course lookups
 runs/                    the author's full logs — every excerpt in the lessons is quoted
                          verbatim from these files, so every claim is checkable
+tools/                   render_svgs.py draws assets/ from the logs; check.py runs the
+                         repo's eight consistency gates (links, snippets, quoted numbers)
 reference/               pinned snapshots of both Karpathy gists, fetched revision by revision
 PROGRESSION.md           the published ladder + the gist's own revision story (243 → 199 lines)
 ```

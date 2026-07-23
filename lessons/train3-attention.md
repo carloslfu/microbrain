@@ -191,7 +191,7 @@ attention over it unaffordable.
 
 ---
 
-Next: [train4 — multi-head](train4.md). Same parameter count, four places to
+Next: [train4 — multi-head](train4-multi-head.md). Same parameter count, four places to
 look at once.
 
-[← train2](train2.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train4 →](train4.md)
+[← train2](train2-autograd.md) · [home](../README.md) · [glossary](../GLOSSARY.md) · [train4 →](train4-multi-head.md)

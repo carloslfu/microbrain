@@ -20,7 +20,7 @@ microbrain deltas:
   end, so you can watch babble become structure
 
 usage: python train5.py [--fast]   (--fast: 300 steps; full run is ~minutes, pure Python)
-lesson: lessons/train5.md — run first, read second
+lesson: lessons/train5-adam.md — run first, read second
 """
 
 import os       # os.path.exists
