@@ -111,8 +111,8 @@ for i in range(vocab_size):
     line = ''.join(shades[min(9, int(10 * p / mx))] for p in row)
     print(f'  {labels[i]} {line}')
 
-# A few rows in words: what the counts actually learned
-for ch in ['^', '-', 'a', 'q']:
+# A few rows in words: what the counts actually learned (skip chars this corpus lacks)
+for ch in ['^'] + [c for c in ('-', 'a', 'q') if c in uchars]:
     i = BOS if ch == '^' else uchars.index(ch)
     probs = bigram(i)
     top = sorted(range(vocab_size), key=lambda j: -probs[j])[:3]
