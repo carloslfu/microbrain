@@ -170,6 +170,15 @@ A row of the `wte` table. Rung 1.
 one full pass over the training data. Frontier models train
 for *less* than one; this course does about two. Rung 5.
 
+#### generalization
+
+performing well on inputs never seen in training — what val loss measures
+and the memorization gauge guards. Bought by *sharing*: parameters cover
+many contexts at once, so evidence transfers between them (`-tion` helps
+`-sion`), which no count-table row can do for another. Parameters are
+compression; compression is generalization. Rungs 5 (bought by sharing)
+and 6 (measured by the gauge).
+
 #### gist
 
 GitHub's format for sharing a single file. Both Karpathy

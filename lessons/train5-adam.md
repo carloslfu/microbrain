@@ -8,7 +8,7 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
         you are here: the steps get smart. this is microgpt.
 ```
 
-*New this rung:* [Adam](../GLOSSARY.md#adam) · [bias correction](../GLOSSARY.md#bias-correction) · [epoch](../GLOSSARY.md#epoch) · [momentum](../GLOSSARY.md#momentum) — every term links to the [glossary](../GLOSSARY.md).
+*New this rung:* [Adam](../GLOSSARY.md#adam) · [bias correction](../GLOSSARY.md#bias-correction) · [epoch](../GLOSSARY.md#epoch) · [generalization](../GLOSSARY.md#generalization) · [momentum](../GLOSSARY.md#momentum) — every term links to the [glossary](../GLOSSARY.md).
 
 The change from train4 is one small block — three lines of buffers and a
 five-line update rule, shown complete below — and it lands the biggest
@@ -88,7 +88,19 @@ The completed scoreboard, six files in the making:
 
 Same 4,928 parameters as train4. Same 1,000 documents in the same order. The
 only change is *how the steps were taken*: 14.8 → 13.8, and the count table
-finally falls. And before you compare this log to train4's, a warning: step 1's printed
+finally falls.
+
+Worth pausing on how a table that was *provably optimal* got beaten at all.
+It was optimal per row — one character of context, every row learning alone.
+The transformer's 4,928 **shared** parameters cover a 40-character context
+no table could hold (38^40 rows) or fill (488 documents); sharing means
+evidence transfers — what the weights learn from `training` helps with
+`braining`, which no count row can do for another. Parameters are
+compression, and compression is [generalization](../GLOSSARY.md#generalization).
+Adam didn't add that capacity; it's the first optimizer on the ladder strong
+enough to cash it in.
+
+And before you compare this log to train4's, a warning: step 1's printed
 line is a trap with a lesson inside. Its two loss fields disagree about
 whether the optimizers have diverged yet — exercise 1 makes you predict
 which, so no spoilers here.

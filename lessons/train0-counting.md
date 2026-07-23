@@ -106,9 +106,13 @@ tiny thing isn't parroting.
 
 Counting is a **closed-form solution**: a direct, exact formula. One pass
 over the data computes the provably best possible bigram table. This is the
-only rung with that luxury. The moment the model gets more expressive — two
-characters back, the shape of a whole word — no formula can fill the table.
-That is the course's hinge, in Karpathy's words: *gradient descent is what
+only rung with that luxury, and the table's exactness has a price with two
+parts: rows multiply by 38 per character of context (exercise 3 measures
+that wall), and every row learns *alone* — a thousand sightings of `-tion`
+teach the `-sion` row nothing. The moment the model gets more expressive —
+two characters back, the shape of a whole word — no formula can fill the
+table, and no corpus can either. That is the course's hinge, in Karpathy's
+words: *gradient descent is what
 you need when the model is too expressive for exact solutions.* Rung 1
 rebuilds today's exact answer with the approximate method, on purpose — so
 you can watch the method work before it faces problems with no exact answer.
