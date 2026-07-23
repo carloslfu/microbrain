@@ -77,8 +77,11 @@ everything else is frozen scaffold from the rung below, and **every lesson
 shows the exact new lines inline**, verbatim from the file, with the full
 file one click away. You never need a terminal diff to follow the idea (the
 files stay adjacent and diffable for those who like it, or for your agent).
-Numbers below are from full runs on this repo's corpus (543 idea names,
-38-token vocabulary, 10% held out):
+From rung 3 on, every file trains the same tiny GPT — vocab 38 · dims 16 ·
+context 40 · 4 heads · **1 layer** · 4,928 params, the dials printed on the
+[architecture diagram](assets/architecture.svg). Numbers below are from full
+runs on this repo's corpus (543 idea names, 38-token vocabulary, 10% held
+out):
 
 | rung | file | the one new idea | val loss | effective choices¹ |
 |---|---|---|---|---|

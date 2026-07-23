@@ -237,6 +237,15 @@ add one imaginary count to every cell so nothing
 has probability exactly zero ("never say never"). aka add-one smoothing.
 Rung 0 — and its removal is rung 0's break-it crash.
 
+#### layer / transformer block
+
+one full repeat of the transformer's unit: attention (communicate
+between positions) then MLP (compute within one), each adding its
+adjustment to the residual stream. `n_layer` counts these blocks — 1 in
+this course, ~96 in production; a "96-layer model" is this unit stacked
+96 times. A different word from *linear layer* (a single matrix
+multiply — several of those live inside one block). Rung 4.
+
 #### learning rate
 
 the step-size multiplier on every update. Ours starts

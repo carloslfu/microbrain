@@ -8,7 +8,7 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
         you are here: same box, four places to look at once
 ```
 
-*New this rung:* [head / multi-head](../GLOSSARY.md#head--multi-head) — every term links to the [glossary](../GLOSSARY.md).
+*New this rung:* [head / multi-head](../GLOSSARY.md#head--multi-head) · [layer / transformer block](../GLOSSARY.md#layer--transformer-block) — every term links to the [glossary](../GLOSSARY.md).
 
 This is the quietest rung on the ladder — and that's its lesson. The diff from
 train3 does two things: it slices attention into four heads, and it wraps the
