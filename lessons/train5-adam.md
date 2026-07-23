@@ -93,7 +93,7 @@ finally falls.
 Worth pausing on how a table that was *provably optimal* got beaten at all.
 It was optimal per row — one character of context, every row learning alone.
 The transformer's 4,928 **shared** parameters cover a 40-character context
-no table could hold (38^40 rows) or fill (488 documents); sharing means
+no table could hold (38^40 ≈ 10^63 rows) or fill (488 documents); sharing means
 evidence transfers — what the weights learn from `training` helps with
 `braining`, which no count row can do for another. Parameters are
 compression, and compression is [generalization](../GLOSSARY.md#generalization).

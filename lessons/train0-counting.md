@@ -31,7 +31,8 @@ becomes an id. One extra token, BOS, marks both the start and the end of a name
 
 **The model** is `state_dict[i][j]`: how many times token `j` followed token
 `i`. That's it — a **bigram** model, the two-token pattern: this character,
-next character, nothing else. To predict, normalize row `i` into probabilities. We add one
+next character, nothing else. The whole model is 38 rows × 38 columns —
+1,444 numbers, every one of them a count. To predict, normalize row `i` into probabilities. We add one
 imaginary count to every cell (Laplace smoothing) so nothing has probability
 exactly zero — "never say never," for reasons the break-it exercise makes vivid.
 The entire model, from [train0.py](../train0.py):

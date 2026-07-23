@@ -385,8 +385,9 @@ the instrument line each rung prints every few steps —
 #### parameters
 
 the numbers training is allowed to change; the model
-itself. Here 4,928 of them (bigram rungs: 4,064). aka weights (the code
-prints `params`), and stored in the `state_dict`. Rung 0.
+itself. Here 4,928 of them (the MLP bigram rungs: 4,064; rung 0's count
+table stores 1,444 counts). aka weights (the code prints `params`), and
+stored in the `state_dict`. Rung 0.
 
 #### perplexity
 

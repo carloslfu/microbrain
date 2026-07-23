@@ -53,7 +53,10 @@ layer to 64 hidden units → ReLU → a linear layer to 38 logits. `softmax` tur
 logits into probabilities: exponentiate (making everything positive, and gaps
 multiplicative), then normalize. 4,064 parameters, initialized to small random
 noise, `gauss(0, 0.08)` (bell-curve random numbers centered on 0, spread
-0.08). The whole network, from [train1.py](../train1.py):
+0.08). That's nearly 3× the count table's 1,444 cells, to do the same
+one-character job approximately — the price of the differentiable form. What
+the overhead buys: every number is now *nudgeable* by a gradient, and
+nudgeable is what scales. The whole network, from [train1.py](../train1.py):
 
 ```python
 def mlp(token_id):
