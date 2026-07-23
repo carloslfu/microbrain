@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="624" height="608" viewBox="0 0 624 608">
-<rect width="624" height="608" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="608" viewBox="0 0 700 608">
+<rect width="700" height="608" fill="#ffffff"/>
 <text x="28" y="32" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="15" fill="#1f2328" text-anchor="start" font-weight="bold">the whole model: P(next char | current char), from the count table</text>
-<text x="28" y="52" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#6a737d" text-anchor="start">row = current char, column = next char, darker = more probable (row-scaled) · runs/train0.log</text>
+<text x="28" y="52" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#6a737d" text-anchor="start">row = current char, col = next char, darker = more probable (row-scaled) · runs/train0.log</text>
 <text x="96.5" y="76" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="10" fill="#6a737d" text-anchor="middle">-</text>
 <text x="109.5" y="76" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="10" fill="#6a737d" text-anchor="middle">0</text>
 <text x="122.5" y="76" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="10" fill="#6a737d" text-anchor="middle">1</text>

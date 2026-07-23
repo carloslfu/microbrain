@@ -69,11 +69,11 @@ def heatmap():
         lab, cells = l[2], l[4:4 + len(header)]
         rows.append((lab, cells))
     cell, x0, y0 = 13, 90, 84
-    W = x0 + len(header) * cell + 40
+    W = max(x0 + len(header) * cell + 40, 700)
     Hh = y0 + len(rows) * cell + 30
     s = svg_open(W, Hh)
     s.append(text(28, 32, "the whole model: P(next char | current char), from the count table", 15, INK, bold=True))
-    s.append(text(28, 52, 'row = current char, column = next char, darker = more probable (row-scaled) · runs/train0.log', 12, MUTED))
+    s.append(text(28, 52, 'row = current char, col = next char, darker = more probable (row-scaled) · runs/train0.log', 12, MUTED))
     for j, ch in enumerate(header):
         s.append(text(x0 + j * cell + cell / 2, y0 - 8, ch, 10, MUTED, 'middle'))
     for r, (lab, cells) in enumerate(rows):
@@ -95,7 +95,7 @@ def attention():
         if not m: break
         rows.append((m.group(1), m.group(2)))
     cell, x0, y0 = 24, 96, 96
-    W = x0 + len(header) * cell + 40
+    W = x0 + len(header) * cell + 72
     Hh = y0 + len(rows) * cell + 30
     s = svg_open(W, Hh)
     s.append(text(28, 32, "where trained attention looked: 'test-time-training'", 15, INK, bold=True))
@@ -207,7 +207,7 @@ def graph():
              ('a',      '+2', '+18',    60, 474),
              ('b',      '-3', '-12',   190, 474)]
     edges = [(0, 1), (1, 2), (1, 3), (2, 4), (4, 5), (4, 6), (5, 7), (5, 8)]
-    W, Hh, bw, bh = 560, 540, 106, 46
+    W, Hh, bw, bh = 584, 540, 106, 46
     s = svg_open(W, Hh)
     s.append(text(20, 26, 'the by-hand graph, drawn: L = (relu(a*b + 8) - 5)^2', 14.5, INK, bold=True))
     s.append(text(20, 44, 'black: value computed forward · red: gradient dL/dnode, filled by one backward()', 11.5, MUTED))
@@ -224,7 +224,7 @@ def graph():
 
 # ------------------------------------------------- architecture (train3/4/5)
 def architecture():
-    W, Hh = 780, 1010
+    W, Hh = 780, 1034
     cx, bw = 300, 300
     s = svg_open(W, Hh)
     s.append('<defs><marker id="m" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#6a737d"/></marker></defs>')
@@ -253,7 +253,7 @@ def architecture():
     s.append(text(cx - bw / 2 + 70, 168, 'wte row (16)', 12, INK, 'middle'))
     s.append(f'<rect x="{cx+bw/2-140}" y="144" width="140" height="40" fill="#ffffff" stroke="{INK}" stroke-width="1.2" rx="8"/>')
     s.append(text(cx + bw / 2 - 70, 168, 'wpe row (16)', 12, INK, 'middle'))
-    note(168, 'wte 608 + wpe 640 params')
+    note(168, 'wte 608 · wpe 640')
     s.append(f'<line x1="{cx-bw/2+70}" y1="184" x2="{cx-4}" y2="216" stroke="{MUTED}" stroke-width="1.3" marker-end="url(#m)"/>')
     s.append(f'<line x1="{cx+bw/2-70}" y1="184" x2="{cx+4}" y2="216" stroke="{MUTED}" stroke-width="1.3" marker-end="url(#m)"/>')
     plus(228); arrow(239, 260)
@@ -279,15 +279,15 @@ def architecture():
     s.append(f'<path d="M {cx} 556 C {bypass_x} 556, {bypass_x} 724, {cx+12} 724" fill="none" stroke="{BLUE}" stroke-width="1.4" marker-end="url(#m)"/>')
     s.append(text(bypass_x + 6, 728, 'residual', 10.5, BLUE))
     arrow(735, 762)
-    box(764, 40, 'lm_head', '16 -> 38 scores, one per token')
-    note(788, 'lm_head: 608 params')
-    arrow(804, 826)
-    box(828, 40, 'softmax -> probabilities')
-    arrow(868, 890)
-    box(892, 40, 'sample the next token', 'append it, move to the next position')
-    s.append(f'<path d="M {cx+bw/2} 912 C {W-46} 912, {W-46} 96, {cx+bw/2+2} 96" fill="none" stroke="{MUTED}" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#m)"/>')
-    s.append(text(W - 40, 500, 'repeat', 11, MUTED, 'end'))
-    s.append(text(cx, 980, 'total: 4,928 parameters — every box above is a list of plain Python floats', 12, INK, 'middle', bold=True))
+    box(764, 56, 'lm_head', '16 -> 38 scores, one per token')
+    note(792, 'lm_head: 608 params')
+    arrow(820, 842)
+    box(844, 40, 'softmax -> probabilities')
+    arrow(884, 906)
+    box(908, 56, 'sample the next token', 'append it, move to the next position')
+    s.append(f'<path d="M {cx+bw/2} 936 C {W-36} 936, {W-36} 96, {cx+bw/2+2} 96" fill="none" stroke="{MUTED}" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#m)"/>')
+    s.append(text(W - 30, 520, 'repeat', 11, MUTED, 'end'))
+    s.append(text(cx, 1004, 'total: 4,928 parameters — every box above is a list of plain Python floats', 12, INK, 'middle', bold=True))
     save('architecture.svg', s)
 
 if __name__ == '__main__':

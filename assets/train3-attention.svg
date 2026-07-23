@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="592" height="582" viewBox="0 0 592 582">
-<rect width="592" height="582" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="624" height="582" viewBox="0 0 624 582">
+<rect width="624" height="582" fill="#ffffff"/>
 <text x="28" y="32" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="15" fill="#1f2328" text-anchor="start" font-weight="bold">where trained attention looked: 'test-time-training'</text>
 <text x="28" y="52" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#6a737d" text-anchor="start">row = position being predicted from, column = position it attends to</text>
 <text x="28" y="68" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#6a737d" text-anchor="start">darker = more weight (row-scaled) · note the ^ (BOS) column: an attention sink · runs/train3.log</text>

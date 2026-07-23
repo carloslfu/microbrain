@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="560" height="540" viewBox="0 0 560 540">
-<rect width="560" height="540" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="584" height="540" viewBox="0 0 584 540">
+<rect width="584" height="540" fill="#ffffff"/>
 <text x="20" y="26" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="14.5" fill="#1f2328" text-anchor="start" font-weight="bold">the by-hand graph, drawn: L = (relu(a*b + 8) - 5)^2</text>
 <text x="20" y="44" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="11.5" fill="#6a737d" text-anchor="start">black: value computed forward · red: gradient dL/dnode, filled by one backward()</text>
 <line x1="320" y1="105.0" x2="320" y2="143.0" stroke="#d8dee4" stroke-width="1.6"/>
