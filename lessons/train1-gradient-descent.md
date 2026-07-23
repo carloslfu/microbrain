@@ -56,7 +56,12 @@ noise, `gauss(0, 0.08)` (bell-curve random numbers centered on 0, spread
 0.08). That's nearly 3× the count table's 1,444 cells, to do the same
 one-character job approximately — the price of the differentiable form. What
 the overhead buys: every number is now *nudgeable* by a gradient, and
-nudgeable is what scales. The whole network, from [train1.py](../train1.py):
+nudgeable is what scales. And notice what one document's update *touches*:
+rung 0's three-line training incremented a single cell and left the other
+1,443 alone; here the same document reaches into the two linear layers that
+every character flows through (3,456 of the 4,064 numbers are those shared
+layers). No context owns a private row anymore — that sharing is where
+generalization will come from, and rung 5 collects on it. The whole network, from [train1.py](../train1.py):
 
 ```python
 def mlp(token_id):

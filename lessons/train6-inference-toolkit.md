@@ -122,7 +122,12 @@ near-inevitable. Our 543 hyphenated 20-character slugs rattle around an
 astronomically larger one. Our
 model lacks the capacity to store paths to specific training docs, so it
 stores *statistics* — morphemes, hyphen rhythm, endings. Generalization isn't
-a virtue here; it's what's left when memorizing is unaffordable. (Rung 4's
+a virtue here; it's what's left when memorizing is unaffordable. Flip that
+around and the gauge earns its keep: a rung-0-style count table with the
+full 40-character context would score a perfect 30/30 here — at that context
+length every training context occurs once, so "counting" *is* verbatim
+replay, and static for everything else. This gauge is the instrument that
+tells a compressed model from a giant lookup; 0 is the compression working. (Rung 4's
 `n_layer = 2` exercise is where you can start to buy it back and watch the
 gauge move.)
 

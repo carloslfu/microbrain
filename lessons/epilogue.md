@@ -48,7 +48,9 @@ communicate (attention), compute (MLP), score (loss), blame (backward), step
 (Adam), sample — you have now written, run, broken, and repaired at every
 layer. **The efficiency** — tensors, kernels, parallelism, serving — is a
 decade of magnificent engineering that changes no formulas. And **the wisdom**
-— what these models know — is data and scale, not mechanism.
+— what these models know — is data and scale, not mechanism. A frontier model
+is the bet your 4,928 floats made, scaled: a compressed model of its corpus,
+sized so that memorizing is unaffordable and generalization is what's left.
 
 Karpathy closes his post with the Feynman line that has always been the
 course's real syllabus: *what I cannot create, I do not understand.* You
