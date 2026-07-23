@@ -42,20 +42,42 @@ def ladder():
     stages = [('uniform', 38.0, MUTED), ('counting', 14.5, BLUE), ('by hand', 15.3, BLUE),
               ('autograd', 15.3, BLUE), ('attention', 14.7, BLUE), ('multi-head', 14.8, BLUE),
               ('Adam', 13.8, RED)]
-    W, H, pad, base = 860, 340, 56, 280
-    bw, gap = 88, 26
+    W, H, base = 1170, 356, 286
     s = svg_open(W, H)
-    s.append(text(pad, 34, 'effective choices — among how many characters is the model still guessing?', 15, INK, bold=True))
-    s.append(text(pad, 54, 'e^(val loss), full runs, 543-doc corpus · lower is better · red: the rung that finally beats the count table', 12, MUTED))
-    scale = (base - 90) / 38.0
+    s.append(text(56, 34, 'effective choices — among how many characters is the model still guessing?', 15, INK, bold=True))
+    s.append(text(56, 54, 'e^(val loss), full runs, 543-doc corpus · lower is better · red: the rung that finally beats the count table', 12, MUTED))
+
+    # left panel — full scale: training collapses 38 -> ~14
+    lx, lbw, lgap = 56, 34, 10
+    lscale = (base - 96) / 38.0
     for i, (name, v, color) in enumerate(stages):
-        x = pad + i * (bw + gap)
-        h = v * scale
-        s.append(f'<rect x="{x}" y="{base - h:.1f}" width="{bw}" height="{h:.1f}" fill="{color}" opacity="{0.55 if i == 0 else 0.9}" rx="3"/>')
-        s.append(text(x + bw / 2, base - h - 8, f'{v:.1f}', 14, INK, 'middle', bold=(i in (0, 6))))
-        s.append(text(x + bw / 2, base + 20, name, 12.5, MUTED, 'middle'))
-        s.append(text(x + bw / 2, base + 36, '—' if i == 0 else f'rung {i - 1}', 11, MUTED, 'middle'))
-    s.append(f'<line x1="{pad-10}" y1="{base}" x2="{W-pad+10}" y2="{base}" stroke="{GRID}" stroke-width="1"/>')
+        x = lx + i * (lbw + lgap)
+        h = v * lscale
+        s.append(f'<rect x="{x}" y="{base - h:.1f}" width="{lbw}" height="{h:.1f}" fill="{color}" opacity="{0.55 if i == 0 else 0.9}" rx="2"/>')
+    s.append(text(lx + lbw / 2, base - 38.0 * lscale - 8, '38.0', 12, INK, 'middle', bold=True))
+    lw = 7 * (lbw + lgap) - lgap
+    s.append(f'<line x1="{lx-8}" y1="{base}" x2="{lx+lw+8}" y2="{base}" stroke="{GRID}" stroke-width="1"/>')
+    s.append(text(lx + lw / 2, base + 20, 'uniform, then the six trained rungs:', 11.5, MUTED, 'middle'))
+    s.append(text(lx + lw / 2, base + 36, 'training collapses 38 to ~14', 11.5, MUTED, 'middle'))
+
+    # right panel — the same six trained bars, zoomed so the story is visible
+    zx, zbw, zgap, zfloor = 430, 72, 20, 13.0
+    zscale = (base - 96) / (15.6 - zfloor)
+    s.append(text(zx, 82, 'zoom — same six bars, axis starts at 13 (deliberately truncated)', 11.5, MUTED, bold=True))
+    y_count = base - (14.5 - zfloor) * zscale
+    zw = 6 * (zbw + zgap) - zgap
+    for i, (name, v, color) in enumerate(stages[1:]):
+        x = zx + i * (zbw + zgap)
+        h = (v - zfloor) * zscale
+        s.append(f'<rect x="{x}" y="{base - h:.1f}" width="{zbw}" height="{h:.1f}" fill="{color}" opacity="0.9" rx="3"/>')
+        s.append(text(x + zbw / 2, base - h - 8, f'{v:.1f}', 13.5, INK, 'middle', bold=(i == 5)))
+        s.append(text(x + zbw / 2, base + 20, name, 12.5, MUTED, 'middle'))
+        s.append(text(x + zbw / 2, base + 36, f'rung {i}', 11, MUTED, 'middle'))
+    s.append(f'<line x1="{zx-8}" y1="{y_count:.1f}" x2="{zx+zw+8}" y2="{y_count:.1f}" stroke="{INK}" stroke-width="1" stroke-dasharray="5,4" opacity="0.45"/>')
+    s.append(text(zx + zw + 18, y_count + 4, 'the count table —', 11, MUTED))
+    s.append(text(zx + zw + 18, y_count + 19, 'the bar to beat', 11, MUTED))
+    s.append(f'<line x1="{zx-8}" y1="{base}" x2="{zx+zw+8}" y2="{base}" stroke="{GRID}" stroke-width="1"/>')
+    s.append(text(zx - 14, base + 4, '13', 11, MUTED, 'end'))
     save('ladder.svg', s)
 
 # ---------------------------------------------------- train0 count-table heatmap
