@@ -16,12 +16,14 @@ Earned at rung 7.
 
 the intermediate numbers flowing through the network for
 one input (everything between the embedding and the logits). Parameters are
-learned; activations are computed fresh every forward pass.
+learned; activations are computed fresh every forward pass. Rung 3.
 
 #### Adam
 
 the optimizer that gives every parameter its own momentum (`m`)
-and its own step size (via `v`). aka adaptive moment estimation. Rung 5.
+and its own step size (via `v`). aka adaptive moment estimation — the
+code's "first/second moment" buffers are `m` and `v`; this optimizer `v`
+is unrelated to attention's value vector. Rung 5.
 
 #### argmax
 
@@ -32,7 +34,8 @@ sampling. Temperature → 0 turns sampling into argmax. Rung 6.
 
 the mechanism that lets a position consult earlier
 positions: its *query* is dotted against their *keys*, softmax turns the
-match scores into weights, and the weighted average of their *values* is
+match scores into *attention weights* (recomputed every pass — activations,
+not learned parameters), and the weighted average of their *values* is
 what it reads back. A soft dictionary lookup. Rung 3.
 
 #### attention sink
@@ -74,6 +77,10 @@ a model that predicts the next token from the current token
 alone: two-token patterns, nothing longer. A *trigram* uses the previous
 two; an *n-gram* the previous n−1. Rung 0.
 
+#### block size
+
+see **context window**.
+
 #### BOS
 
 Beginning of Sequence, the one special token. Marks both "start
@@ -93,8 +100,9 @@ is this, applied many times. Rungs 1–2.
 
 #### checkpoint
 
-the model saved to disk. Here: `out/model.json`, a dict of
-float lists and nothing else. aka weights file. Rung 6.
+the model saved to disk. Here: `out/model.json` — the state_dict as float
+lists, plus the dials (n_embd, block_size, n_head, n_layer) and the
+vocabulary. aka weights file. Rung 6.
 
 #### closed-form
 
@@ -160,7 +168,7 @@ A row of the `wte` table. Rung 1.
 #### epoch
 
 one full pass over the training data. Frontier models train
-for *less* than one; this course does about two. Rung 5's lesson, en route.
+for *less* than one; this course does about two. Rung 5.
 
 #### gist
 
@@ -194,8 +202,8 @@ aka gradcheck. Rung 1.
 #### head / multi-head
 
 one attention lookup with its own query-key match
-and its own softmax. Multi-head splits the embedding into slices (here 4×4
-dims) so each slice can look somewhere different, at zero extra parameter
+and its own softmax. Multi-head splits attention's q/k/v vectors into
+slices (here 4×4 dims) so each slice can look somewhere different, at zero extra parameter
 cost. Rung 4.
 
 #### heatmap
@@ -208,10 +216,18 @@ ramp, light to dark: `.` `:` `-` `=` `+` `*` `#` `%` `@`. Rung 0.
 the intermediate numbers between two linear layers (here
 64); workspace, neither input nor output. Rung 1.
 
+#### inductive bias
+
+the assumptions a design bakes into a model before any data
+arrives — what it will find easy to learn. Four narrow heads instead of
+one wide lookup is a bet of exactly this kind. Rung 4.
+
 #### inference
 
 running a trained model to get outputs; no gradients, no
-learning. *Serving* is doing inference for many users at once. Rung 6.
+learning. *Serving* is doing inference for many users at once. Every rung's
+output prints the word (the "--- inference ---" header); rung 6 makes it
+the topic. Rung 6.
 
 #### init
 
@@ -244,7 +260,8 @@ between positions) then MLP (compute within one), each adding its
 adjustment to the residual stream. `n_layer` counts these blocks — 1 in
 this course, ~96 in production; a "96-layer model" is this unit stacked
 96 times. A different word from *linear layer* (a single matrix
-multiply — several of those live inside one block). Rung 4.
+multiply — several of those live inside one block), and from *block size*
+(the context window). Rungs 3 (the block) and 4 (the layer loop).
 
 #### learning rate
 
@@ -255,17 +272,21 @@ big and decays linearly to zero: bold early, careful late. aka lr. Rung 1.
 
 a matrix multiply: every output is a weighted sum of all
 inputs. `linear()` in the code. aka fully-connected layer, dense layer.
-Rung 1.
+Not the transformer's *layer* — see **layer / transformer block**. Rung 1.
 
 #### lm_head
 
 the final linear layer, turning the 16-number stream back
-into 38 token scores: the "language-model head," the model's mouth. Rung 3.
+into 38 token scores: the "language-model head," the model's mouth. Not an
+attention head — this "head" just means a part bolted onto the model's
+end. Rung 3.
 
 #### logits
 
 the raw scores the model outputs, one per token in the
-vocabulary, before softmax turns them into probabilities. Rung 1.
+vocabulary, before softmax turns them into probabilities. More generally,
+any pre-softmax scores: attention's match scores are `attn_logits` in the
+code — one per *position*, not per token. Rung 1.
 
 #### loss
 
@@ -346,11 +367,17 @@ val data (memorizing quirks), vs. failing to fit even the training data
 (not enough capacity or training). The train/val gap is the gauge. Rung 1
 onward.
 
+#### panel
+
+the instrument line each rung prints every few steps —
+`step ... | loss ... | val loss ... | effective choices ...` — see
+**instruments**.
+
 #### parameters
 
 the numbers training is allowed to change; the model
-itself. Here 4,928 of them (bigram rungs: 4,064). aka weights, and stored
-in the `state_dict`. Rung 0.
+itself. Here 4,928 of them (bigram rungs: 4,064). aka weights (the code
+prints `params`), and stored in the `state_dict`. Rung 0.
 
 #### perplexity
 
@@ -365,7 +392,9 @@ a second table (`wpe`), one learned vector per
 
 the three vectors each position computes for
 attention: what I'm looking for / what I contain / what I'll contribute if
-chosen. aka q/k/v. Rung 3.
+chosen. aka q/k/v. Unrelated to rung 2's autograd `Value` class — an
+unlucky name collision (the code's `values` list holds `Value` objects).
+Rung 3.
 
 #### ReLU
 
@@ -419,6 +448,13 @@ pretraining. Same engine, new data and objective. Epilogue.
 stochastic gradient descent: step every parameter against its
 gradient, where each step trusts one document ("stochastic") rather than
 the whole dataset. Rung 1.
+
+#### shrug
+
+this course's name for the uniform prediction: all 38 tokens equally
+likely, loss ln(38) ≈ 3.6376, effective choices 38. Where every untrained
+model starts — and where rung 2's broken-backward exercise stays frozen.
+Rung 0.
 
 #### skip connections
 
@@ -487,4 +523,6 @@ hyphen, BOS). aka vocab. Rung 0.
 
 #### weights
 
-see **parameters**.
+see **parameters**. But *attention weights* (`attn_weights`) are not
+parameters: they're softmax outputs saying where to look, computed fresh
+every forward pass — activations, not learned numbers.

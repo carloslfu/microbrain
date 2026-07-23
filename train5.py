@@ -239,7 +239,7 @@ for step in range(num_steps):
     if (step + 1) in album_steps:
         album.append((step + 1, sample_names(6)))
 
-    # Instrument panel at checkpoints
+    # Instrument panel at sampled steps
     if step in (0, num_steps // 2, num_steps - 1):
         vl = avg_nll(val_docs)
         print(f"step {step+1:4d} / {num_steps:4d} | loss {loss.data:.4f} | val loss {vl:.4f} | effective choices {math.exp(vl):.1f} of {vocab_size}")

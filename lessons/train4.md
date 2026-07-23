@@ -57,7 +57,7 @@ portfolio diversification for lookups — never bet all 16 dimensions on one
 place to look.
 
 The layer loop is the other half of the diff, and it's shape-only:
-state_dict keys become `layer0.attn_wq`, the block body indents one level,
+state_dict entries become `layer0.attn_wq`, the block body indents one level,
 and a transformer becomes "this, stacked." The KV lists nest along with it
 (`keys[li].append(k)`): every layer keeps its *own* memory of the sequence —
 the right picture for production models too. Set `n_layer = 2` and nothing
@@ -154,7 +154,9 @@ grade yourself on all four.
 <details>
 <summary>Solutions</summary>
 
-**1.** Yes, it can — same capacity, different inductive bias: four narrow
+**1.** Yes, it can — same capacity, different [inductive
+bias](../GLOSSARY.md#inductive-bias) (the assumptions a design bakes in):
+four narrow
 heads can be *worse* if the task really wanted one wide correlation (head_dim
 drops 16 → 4, and each softmax sees only a quarter of the signal). Here they
 tied (14.7 vs 14.8): at bigram-ish loss levels on 488 docs, the split neither

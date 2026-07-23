@@ -40,7 +40,7 @@ Two calibration notes before the reveal. First: the val set is 55 documents,
 so differences under ~0.03 nats are coin-flips; differences over ~0.1 are
 real wounds. Second: the baseline below reads 15.6 effective choices, not
 rung 5's 13.8 — the lab trains 300 steps per run, not 1,000 (six full-budget
-trainings would run well over an hour). Same architecture, smaller budget; by now
+trainings would run about an hour). Same architecture, smaller budget; by now
 that distinction should feel load-bearing.
 
 ## What the numbers said

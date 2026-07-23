@@ -45,9 +45,10 @@ second. Three practical notes:
 
 Then keep climbing. Honest timings on a laptop (pure-Python, one number
 at a time — the slowness is the point, not a flaw): train2 ≈ 7 min, train3–train6 ≈ 10–12 min each,
-train7 ≈ 20 min for all six runs (five surgeries plus the baseline). Every
-rung takes `--fast` (seconds on the early rungs, ~1–3 min on the heavy ones)
-when you want the shape without the wait; `python compare.py` prints the
+train7 ≈ 17 min for all six runs (five surgeries plus the baseline). Every
+training rung takes `--fast` — 300 steps instead of the full 1,000; train7's
+lab drops to 100 per surgery — seconds on the early rungs, a few minutes on
+the heavy ones, when you want the shape without the wait; `python compare.py` prints the
 whole ladder from whatever logs you've produced and fast-runs the gaps.
 
 Each lesson ends with three exercises: **predict-then-run** (commit before the
@@ -78,7 +79,8 @@ shows the exact new lines inline**, verbatim from the file, with the full
 file one click away. You never need a terminal diff to follow the idea (the
 files stay adjacent and diffable for those who like it, or for your agent).
 From rung 3 on, every file trains the same tiny GPT — vocab 38 · dims 16 ·
-context 40 · 4 heads · **1 layer** · 4,928 params, the dials printed on the
+context 40 · **1 layer** · 4,928 params, single-head at rung 3 and 4 heads
+from rung 4 — the dials printed on the
 [architecture diagram](assets/architecture.svg). Numbers below are from full
 runs on this repo's corpus (543 idea names, 38-token vocabulary, 10% held
 out):
@@ -117,7 +119,7 @@ different numbers; the shape of the story is what transfers.
 ```
 train0.py … train5.py    the canon — Karpathy's six build-steps, ported (block 40, vocab 38)
 train6.py  train7.py     ours — the inference toolkit and the ablation lab
-namer.py                 the payoff: out/model.json as a name-generating tool (try --quiz)
+namer.py                 the payoff: out/model.json (train6's output) as a name-generating tool (try --quiz)
 compare.py               the ladder on one screen
 data/make_dataset.py     corpus harvester (data.txt stays out of the repository — it's personal)
 lessons/                 one lesson per rung + the epilogue
@@ -149,7 +151,8 @@ step 1000 | mianicov, reat-hivarsian, jang-tin-tining-avingantige, agan-folin, .
 ```
 
 That's one model, photographed at four ages, learning the shape of idea names
-from pure static (random noise) — in about a minute of real time per photograph.
+from pure static (random noise) — the whole childhood, eleven minutes of
+laptop time.
 
 ## Credits
 

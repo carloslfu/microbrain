@@ -25,8 +25,8 @@ step 1000 / 1000 | loss 2.4283 | val loss 2.6216 | effective choices 13.8 of 38
 ```
 
 **13.8. The count table (14.5) has finally been beaten** — by the same
-architecture that lost to it under SGD for two straight rungs. Hold that
-thought for train5's lesson; here, on to the toolkit.
+architecture that lost to it under SGD for two straight rungs. That story
+was train5's lesson; here, on to the toolkit.
 
 ## 1. The file of floats
 
@@ -36,7 +36,8 @@ thought for train5's lesson; here, on to the toolkit.
    loaded it back. val loss 2.621591 | identical: True
 ```
 
-The save format is `json.dump` of the state_dict. No serialization framework,
+The save format is `json.dump` of the state_dict plus the dials and the
+vocabulary. No serialization framework,
 no magic: a GPT *is* a named collection of float lists — the checkpoint, from
 [train6.py](../train6.py):
 

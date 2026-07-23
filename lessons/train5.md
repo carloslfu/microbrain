@@ -10,9 +10,9 @@ docs -> tokenize -> model -> loss -> backward -> update -> sample
 
 *New this rung:* [Adam](../GLOSSARY.md#adam) · [bias correction](../GLOSSARY.md#bias-correction) · [epoch](../GLOSSARY.md#epoch) · [momentum](../GLOSSARY.md#momentum) — every term links to the [glossary](../GLOSSARY.md).
 
-The change from train4 is nine lines — five of optimizer state, four of
-update rule, shown complete below — and it is the largest single improvement
-on the course's scoreboard. Sit with that
+The change from train4 is one small block — three lines of buffers and a
+five-line update rule, shown complete below — and it lands the biggest
+single move on the scoreboard since counting. Sit with that
 asymmetry: rungs 3 and 4 rebuilt the entire model around attention and
 *couldn't beat counting*; this rung changes only how the parameters step, and
 wins. In deep learning, the optimizer is not plumbing. It's a protagonist.
@@ -23,11 +23,14 @@ SGD moved every parameter by `lr × its gradient`. Adam keeps two running
 averages *per parameter* and moves by their ratio:
 
 - **`m` — momentum, a memory of direction.** `m = 0.85·m + 0.15·grad`. Our
-  batch size is one document; each gradient is one document's *opinion*, and
+  [batch size](../GLOSSARY.md#batch-size) is one document; each gradient is
+  one document's *opinion*, and
   opinions swing wildly (watch the raw loss bounce across the first five
   steps: 3.57, 3.65, 3.47, 3.55, 3.71). Momentum averages the last ~7
   opinions into a consensus direction before moving. The 7 comes from
-  1/(1−0.85).
+  1/(1−0.85). (And at one document per step, 1,000 steps is about two
+  [epochs](../GLOSSARY.md#epoch) — two full passes over the 488 training
+  docs.)
 - **`v` — a memory of scale.** `v = 0.99·v + 0.01·grad²`. Dividing the step
   by `√v` gives every parameter its *own* unit system: a rarely-touched
   embedding row (how often does `q` appear?) gets bold steps when its moment
@@ -126,7 +129,7 @@ step 1000 | mianicov, reat-hivarsian, jang-tin-tining-avingantige, agan-folin, s
 Step 0 is the uniform shrug as literature — digits and all, 38 effective
 choices on display. By step **50** — fifty documents! — the cheap statistics
 are in: hyphen rhythm, consonant-vowel alternation, digits mostly gone
-(they're rare in the corpus). By 250, morphemes (`-ative`, `-ing` machinery
+(they're rare in the corpus). By 250, [morphemes](../GLOSSARY.md#morpheme) (`-ative`, `-ing` machinery
 warming up). By 1000, word-shaped segments with plausible endings. Nobody
 scheduled this curriculum. Frequent, high-payoff patterns get learned first
 because they dominate the gradient — a scaling law you can watch with the

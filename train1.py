@@ -1,5 +1,5 @@
 """
-train1.py: Bigram language model with a single-layer MLP, trained by gradient descent.
+train1.py: Bigram language model with a one-hidden-layer MLP, trained by gradient descent.
 
 Same as train0.py:
 - Dataset, tokenizer, training loop structure, inference, instruments
@@ -10,13 +10,13 @@ Different from train0.py:
 - Introduces: softmax, linear, numerical and analytic gradients
 
 The MLP is effectively a differentiable version of the bigram count table:
-token_id -> embedding lookup -> hidden layer -> logits -> softmax -> probs.
+token_id -> embedding lookup -> hidden units -> logits -> softmax -> probs.
 The gradient tells us how to nudge each parameter to reduce the loss. We show
 two ways to compute it: numerically (perturb and measure) and analytically
 (chain rule). They agree, but the analytic version is O(params) faster.
 
 microbrain deltas:
-- instrument panel at checkpoints (val loss + effective choices)
+- instrument panel at sampled steps (val loss + effective choices)
 - diagram: a 1-D cross-section of the loss landscape, sweeping one trained
   weight while holding the other 4,063 fixed — the valley SGD walked into
 
@@ -180,7 +180,7 @@ for step in range(num_steps):
     for i, (row, j) in enumerate(params):
         row[j] -= lr_t * grad[i]
 
-    # Instrument panel at checkpoints
+    # Instrument panel at sampled steps
     if step in (0, num_steps // 2, num_steps - 1):
         vl = avg_nll(val_docs)
         print(f"step {step+1:4d} / {num_steps:4d} | loss {loss:.4f} | val loss {vl:.4f} | effective choices {math.exp(vl):.1f} of {vocab_size}")

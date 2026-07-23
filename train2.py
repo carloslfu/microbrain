@@ -1,5 +1,5 @@
 """
-train2.py: Bigram language model with a single-layer MLP, trained with autograd.
+train2.py: Bigram language model with a one-hidden-layer MLP, trained with autograd.
 
 Same as train1.py:
 - Dataset, tokenizer, model architecture (MLP), SGD optimizer, inference, instruments
@@ -202,7 +202,7 @@ for step in range(num_steps):
         p.data -= lr_t * p.grad
         p.grad = 0
 
-    # Instrument panel at checkpoints
+    # Instrument panel at sampled steps
     if step in (0, num_steps // 2, num_steps - 1):
         vl = avg_nll(val_docs)
         print(f"step {step+1:4d} / {num_steps:4d} | loss {loss.data:.4f} | val loss {vl:.4f} | effective choices {math.exp(vl):.1f} of {vocab_size}")

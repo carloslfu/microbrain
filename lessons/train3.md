@@ -63,7 +63,7 @@ the algorithm):
 Note the two lists threaded through `gpt(token_id, pos_id, keys, values)`:
 every position appends its key and value. During training this looks like mere
 bookkeeping. Rung 6 reveals the same two lists are *the* serving optimization
-of the LLM era — the KV cache — and measures what they save.
+of the LLM era — the [KV cache](../GLOSSARY.md#kv-cache) — and measures what they save.
 
 **Residuals: the default is "change nothing."** Both blocks compute
 `x = x + block(x)`, an *adjustment* to a stream that flows through untouched.
@@ -134,7 +134,7 @@ special-case it. Your 4,928-parameter model rediscovered it in 1000 steps.
 
 ## The idea to keep
 
-A transformer block is two phases with a clean division of labor:
+A [transformer block](../GLOSSARY.md#layer--transformer-block) is two phases with a clean division of labor:
 **communicate, then compute**. Attention moves information *between* positions
 (and is the only place positions touch); the MLP thinks *within* a position.
 Both write adjustments onto a shared residual stream. That's the whole
@@ -155,7 +155,7 @@ reason; check against step 1.
 logits (rung 4 will spell it `head_dim**0.5`). Predict the *mechanism* of
 what goes wrong (what do big dot products do to a softmax? what does a saturated softmax
 do to gradients?), then run `--fast` with and without, same seed, and compare
-step-301 panels. Separately: predict what removing `wpe` entirely would do —
+step-300 panels. Separately: predict what removing `wpe` entirely would do —
 then hold that prediction; rung 7 runs that surgery under lab conditions.
 
 **3. Extend it.** At inference, force generation past the context window:
@@ -175,7 +175,7 @@ softmax saturates toward one-hot, and the gradient through a saturated
 softmax goes quiet — attention's *routing* stops learning. Now the measured
 truth at *this* dimension: removing the scale changed val loss from 2.8149
 to 2.8146 at 300 steps. **Nothing.** Sixteen dimensions of rmsnorm'd
-activations against 0.08-scale weights simply never produce logits big
+[activations](../GLOSSARY.md#activations) against 0.08-scale weights simply never produce logits big
 enough to saturate. The 1/√d division is insurance written for large d — at
 d = 4,096 it's load-bearing; at d = 16 it's a formality. You just ran your
 first ablation whose honest result is "not at this scale" — rung 7 makes a

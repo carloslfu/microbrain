@@ -8,7 +8,7 @@ docs -> tokenize -> model -> loss -> update -> sample
 you are here: the whole machine, smallest possible version
 ```
 
-*New this rung:* [bigram](../GLOSSARY.md#bigram) · [BOS](../GLOSSARY.md#bos) · [closed-form](../GLOSSARY.md#closed-form) · [corpus](../GLOSSARY.md#corpus) · [cross-entropy](../GLOSSARY.md#cross-entropy) · [effective choices](../GLOSSARY.md#effective-choices) · [heatmap](../GLOSSARY.md#heatmap) · [Laplace smoothing](../GLOSSARY.md#laplace-smoothing) · [loss](../GLOSSARY.md#loss) · [nats](../GLOSSARY.md#nats) · [parameters](../GLOSSARY.md#parameters) · [sampling](../GLOSSARY.md#sampling) · [state_dict](../GLOSSARY.md#state_dict) · [token](../GLOSSARY.md#token) · [val / validation set](../GLOSSARY.md#val--validation-set) · [vocabulary](../GLOSSARY.md#vocabulary) — every term links to the [glossary](../GLOSSARY.md).
+*New this rung:* [bigram](../GLOSSARY.md#bigram) · [BOS](../GLOSSARY.md#bos) · [closed-form](../GLOSSARY.md#closed-form) · [corpus](../GLOSSARY.md#corpus) · [cross-entropy](../GLOSSARY.md#cross-entropy) · [effective choices](../GLOSSARY.md#effective-choices) · [heatmap](../GLOSSARY.md#heatmap) · [Laplace smoothing](../GLOSSARY.md#laplace-smoothing) · [loss](../GLOSSARY.md#loss) · [nats](../GLOSSARY.md#nats) · [parameters](../GLOSSARY.md#parameters) · [sampling](../GLOSSARY.md#sampling) · [shrug](../GLOSSARY.md#shrug) · [state_dict](../GLOSSARY.md#state_dict) · [token](../GLOSSARY.md#token) · [val / validation set](../GLOSSARY.md#val--validation-set) · [vocabulary](../GLOSSARY.md#vocabulary) — every term links to the [glossary](../GLOSSARY.md).
 
 Every rung of this course is this same pipeline. Only the `model` box will grow.
 Today it is a table of counts, and yet the whole loop is already present:
@@ -141,11 +141,14 @@ what lets a model answer questions about things it hasn't seen. (Keep this
 crash in mind at rung 1, where a broken gradient produces the same
 `math domain error` flavor — models die at log-of-zero.)
 
-**3.** The table becomes 38×38×38 = 54,872 rows of 38 numbers. Our 488 docs
-contain ~10k trigrams, so the overwhelming majority of rows stay empty —
-you'd be sampling from pure smoothing most of the time. Add a fourth character
-and it's 2M rows. Counting scales exponentially in context length; that wall
-is why the rest of this course exists.
+**3.** Rows multiply by 38 per character of context. A trigram table
+conditions on the previous *two* tokens: 38×38 = 1,444 rows of 38 numbers
+(54,872 cells). Our 488 docs contain ~9.4k trigrams and visit only ~500 of
+those rows — a third; everywhere else you'd be sampling pure smoothing. One
+more character makes it 54,872 rows, ~95% of them never visited — counting
+is already dead at 4-grams on this corpus. The table grows exponentially in
+context length and the data doesn't; that wall is why the rest of this
+course exists.
 
 </details>
 

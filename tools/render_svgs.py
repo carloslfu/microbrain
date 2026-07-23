@@ -229,7 +229,7 @@ def architecture():
     s = svg_open(W, Hh)
     s.append('<defs><marker id="m" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#6a737d"/></marker></defs>')
     s.append(text(24, 30, 'the whole architecture — gpt() from train3.py to train5.py', 15, INK, bold=True))
-    s.append(text(24, 50, "this course's dials: vocab 38 · dims 16 · context 40 · 4 heads · 1 layer · 4,928 params", 12, MUTED))
+    s.append(text(24, 50, "this course's dials: vocab 38 · dims 16 · context 40 · 1 layer · 4 heads from rung 4 · 4,928 params", 12, MUTED))
     def box(y, h, title, sub=None, stroke=INK, wd=1.3, dash=''):
         d = f' stroke-dasharray="{dash}"' if dash else ''
         s.append(f'<rect x="{cx-bw/2}" y="{y}" width="{bw}" height="{h}" fill="#ffffff" stroke="{stroke}" stroke-width="{wd}" rx="9"{d}/>')

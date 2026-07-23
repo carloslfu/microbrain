@@ -141,7 +141,8 @@ what's shared between positions, what isn't? Then measure with `count_nodes`.
 
 **2. Break it.** In `backward()`, walk the topo order forward:
 `for v in topo:` instead of `reversed(topo)`. First predict what the by-hand
-graph will print. Then predict what training will do. Then run both.
+graph will print. Then predict what training will do. Then run both
+(`--fast` is plenty).
 
 **3. Extend it.** Give `Value` a `.tanh()`. Derivative: 1 − tanh². Then prove
 yourself right the train1 way: perturb an input by 1e-5, measure `(L2−L1)/eps`
