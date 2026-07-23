@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="624" height="582" viewBox="0 0 624 582">
-<rect width="624" height="582" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="740" height="582" viewBox="0 0 740 582">
+<rect width="740" height="582" fill="#ffffff"/>
 <text x="28" y="32" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="15" fill="#1f2328" text-anchor="start" font-weight="bold">where trained attention looked: 'test-time-training'</text>
 <text x="28" y="52" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#6a737d" text-anchor="start">row = position being predicted from, column = position it attends to</text>
 <text x="28" y="68" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#6a737d" text-anchor="start">darker = more weight (row-scaled) · note the ^ (BOS) column: an attention sink · runs/train3.log</text>
-<text x="108.0" y="88" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#6a737d" text-anchor="middle">^</text>
+<text x="108.0" y="88" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#cf222e" text-anchor="middle" font-weight="bold">^</text>
 <text x="132.0" y="88" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#6a737d" text-anchor="middle">t</text>
 <text x="156.0" y="88" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#6a737d" text-anchor="middle">e</text>
 <text x="180.0" y="88" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#6a737d" text-anchor="middle">s</text>

@@ -117,14 +117,14 @@ def attention():
         if not m: break
         rows.append((m.group(1), m.group(2)))
     cell, x0, y0 = 24, 96, 96
-    W = x0 + len(header) * cell + 72
+    W = max(x0 + len(header) * cell + 72, 740)
     Hh = y0 + len(rows) * cell + 30
     s = svg_open(W, Hh)
     s.append(text(28, 32, "where trained attention looked: 'test-time-training'", 15, INK, bold=True))
     s.append(text(28, 52, 'row = position being predicted from, column = position it attends to', 12, MUTED))
     s.append(text(28, 68, 'darker = more weight (row-scaled) · note the ^ (BOS) column: an attention sink · runs/train3.log', 12, MUTED))
     for j, ch in enumerate(header):
-        s.append(text(x0 + j * cell + cell / 2, y0 - 8, ch, 12, MUTED, 'middle'))
+        s.append(text(x0 + j * cell + cell / 2, y0 - 8, ch, 12, RED if ch == '^' else MUTED, 'middle', bold=(ch == '^')))
     for r, (lab, cells) in enumerate(rows):
         s.append(text(x0 - 10, y0 + r * cell + cell - 8, lab, 12, MUTED, 'end'))
         for j, ch in enumerate(cells):
@@ -145,7 +145,7 @@ def race():
         return out
     sgd, adam = smooth(load('train4_losses.txt')), smooth(load('train5_losses.txt'))
     n = min(len(sgd), len(adam))
-    W, Hh, pad_l, pad_r, pad_t, pad_b = 860, 320, 64, 24, 70, 40
+    W, Hh, pad_l, pad_r, pad_t, pad_b = 860, 320, 64, 64, 70, 40
     lo = min(min(sgd[:n]), min(adam[:n])); hi = max(max(sgd[:n]), max(adam[:n]))
     def X(i): return pad_l + i * (W - pad_l - pad_r) / (n - 1)
     def Y(v): return pad_t + (hi - v) * (Hh - pad_t - pad_b) / (hi - lo)
@@ -162,6 +162,12 @@ def race():
         lx, ly = W - 260 + k * 130, pad_t + 6
         s.append(f'<line x1="{lx}" y1="{ly}" x2="{lx+22}" y2="{ly}" stroke="{color}" stroke-width="3"/>')
         s.append(text(lx + 28, ly + 4, label, 12, color, 'start', bold=True))
+    yS, yA = Y(sgd[n - 1]), Y(adam[n - 1])
+    if abs(yA - yS) < 14:
+        mid = (yS + yA) / 2
+        yS, yA = mid - 7, mid + 7
+    s.append(text(W - pad_r + 8, yS + 4, f'{sgd[n-1]:.2f}', 11.5, MUTED, bold=True))
+    s.append(text(W - pad_r + 8, yA + 4, f'{adam[n-1]:.2f}', 11.5, RED, bold=True))
     s.append(text(pad_l, Hh - 12, 'step 1', 11, MUTED))
     s.append(text(W - pad_r, Hh - 12, f'step {n}', 11, MUTED, 'end'))
     save('train5-race.svg', s)
