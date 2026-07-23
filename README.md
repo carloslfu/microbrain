@@ -111,9 +111,11 @@ count table for two straight rungs** (14.7, 14.8 vs 14.5) until the optimizer
 rung lands. The architecture was never the bottleneck. Rung 5's lesson is
 where that sinks in.
 
-Every number in the lessons comes from *this* corpus with *these* seeds,
-and the runs are deterministic: on the same data, your logs match the
-lessons digit for digit. Your own corpus (`--names`, `--from`) gives
+Every number in the lessons comes from *this* corpus with *these* seeds —
+one frozen snapshot, hash-pinned in [data/MANIFEST.txt](data/MANIFEST.txt)
+(a live brain grows; the harvester warns when a fresh harvest drifts from
+the pin) — and the runs are deterministic: on the same data, your logs
+match the lessons digit for digit. Your own corpus (`--names`, `--from`) gives
 different numbers — and, measured, a partly different plot
 ([runs/names-ladder.log](runs/names-ladder.log)): on Karpathy's 32k names
 the mechanisms replay exactly (train1 and train2 still match to the digit;

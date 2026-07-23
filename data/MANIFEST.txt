@@ -1,0 +1,5 @@
+canonical snapshot of data/data.txt — the corpus behind every number in the lessons
+sha256: c9102703e6b7c7da3ecfb9004a632f84584cd15beefbd6259bdaf93748635b7a
+docs: 543 (488 train / 55 val) · vocab 38 · harvested 2026-07-21 from the author's db.md store
+A live brain grows: a fresh harvest today keeps more docs and shifts every number.
+The committed runs/ logs correspond to exactly this snapshot.

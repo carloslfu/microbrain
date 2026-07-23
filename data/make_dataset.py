@@ -108,3 +108,15 @@ if __name__ == "__main__":
     print(f"charset ({len(charset)} chars): {charset}")
     print(f"vocab will be {len(charset) + 1} tokens (chars + BOS)")
     print("sample:", ", ".join(docs[:4]))
+
+    # The committed runs/ logs pin one frozen snapshot of this corpus
+    # (data/MANIFEST.txt). A live brain grows, so a fresh harvest can drift —
+    # say so, instead of letting the lesson numbers silently stop matching.
+    manifest = os.path.join(os.path.dirname(OUT), "MANIFEST.txt")
+    if os.path.exists(manifest):
+        import hashlib
+        sha = hashlib.sha256(open(OUT, "rb").read()).hexdigest()
+        pinned = next((l.split()[1] for l in open(manifest) if l.startswith("sha256:")), None)
+        if pinned and sha != pinned:
+            print(f"note: this harvest differs from the canonical snapshot in {manifest}")
+            print("      the committed logs and lesson numbers pin that snapshot; yours will differ")
