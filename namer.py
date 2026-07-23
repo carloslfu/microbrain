@@ -116,7 +116,7 @@ def draw_novel(count, min_len=4, max_len=40):
 if '--quiz' in sys.argv:
     # the payoff, sharpened: three of these are records in the corpus,
     # three came out of 4,928 floats. no peeking.
-    assert known, "the quiz needs data/data.txt — run: python data/make_dataset.py"
+    assert known, "the quiz needs data/data.txt — run: python data/make_dataset.py --names (or --from yourlist.txt)"
     real = random.sample(sorted(k for k in known if 6 <= len(k) <= 30), 3)
     fakes, _ = draw_novel(3, min_len=6, max_len=30)
     quiz = real + fakes

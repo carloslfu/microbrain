@@ -26,6 +26,7 @@ Usage:
     python data/make_dataset.py                 # harvest the brain (default)
     python data/make_dataset.py --names         # Karpathy's names dataset instead
     python data/make_dataset.py --from list.txt # any file of short strings, one per line
+    MICROBRAIN_DB=~/my-store/records python data/make_dataset.py  # your own db.md brain
 
 Output: data/data.txt (one doc per line, shuffled with a fixed seed so every
 train script sees the same order; the last 10% will serve as validation data).
@@ -39,7 +40,7 @@ import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "data.txt")
-DB = os.path.expanduser("~/Projects/command-center/db/records")
+DB = os.path.expanduser(os.environ.get("MICROBRAIN_DB", "~/Projects/command-center/db/records"))
 DIRS = ["concepts", "entities", "source-notes", "synthesis"]
 MAX_LEN = 39  # block_size 40 = BOS + 39 characters
 

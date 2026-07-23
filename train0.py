@@ -32,7 +32,7 @@ random.seed(42)
 
 # Dataset: the names of ideas (already shuffled by data/make_dataset.py, seed 42)
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'data.txt')
-assert os.path.exists(DATA), "no data/data.txt yet — run: python data/make_dataset.py"
+assert os.path.exists(DATA), "no data/data.txt yet — run: python data/make_dataset.py --names (or --from yourlist.txt; no flags harvests the author's brain)"
 docs = [l.strip() for l in open(DATA).read().strip().split('\n') if l.strip()] # list[str] of documents
 val_docs = docs[-len(docs) // 10:]    # held out: the model never trains on these
 train_docs = docs[:-len(docs) // 10]  # the docs the model learns from

@@ -38,7 +38,8 @@ second. Three practical notes:
 - Not the author of this particular brain? Step 1 harvests *his* knowledge
   base. Bring your own corpus instead: `--names` downloads Karpathy's 32k
   human names, or `--from yourlist.txt` trains on any file of short strings,
-  one per line.
+  one per line. (Keep a db.md brain of your own?
+  `MICROBRAIN_DB=~/my-store/records` points the harvester at it.)
 - Worth doing from the start: `mkdir -p out`, then run each rung as
   `python trainN.py | tee out/trainN.log` (`tee` shows the output *and*
   saves it). `compare.py` builds the final ladder from those saved logs.
