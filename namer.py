@@ -131,7 +131,8 @@ if '--quiz' in sys.argv:
     else:
         print("\n" + " " * 8 + "(committed? rerun with --answers for the key)")
 else:
-    print(f"microbrain namer | {count} novel idea names | T={temperature}")
+    tag = f" | seed {seed}" if seed is not None else ""
+    print(f"microbrain namer | {count} novel idea names | T={temperature}{tag}")
     novel, attempts = draw_novel(count)
     for i, name in enumerate(novel):
         print(f"  {i+1:2d}. {name}")

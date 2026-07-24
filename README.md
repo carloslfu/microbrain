@@ -116,13 +116,14 @@ where that sinks in.
 Every number in the lessons comes from the committed corpus — one frozen
 snapshot, shipped as `data/data.txt` and hash-pinned in
 [data/MANIFEST.txt](data/MANIFEST.txt) — and the runs are deterministic:
-clone, train, and your logs match the lessons digit for digit. Your own corpus (`--names`, `--from`) gives
+clone, train, and your logs match the lessons digit for digit (the
+wall-clock timings are the one exception — those are your machine's). Your own corpus (`--names`, `--from`) gives
 different numbers — and, measured, a partly different plot
 ([runs/names-ladder.log](runs/names-ladder.log)): on Karpathy's 32k names
 the mechanisms replay exactly (train1 and train2 still match to the digit;
 gradient descent still loses to counting; Adam still wins the ladder,
 11.7 → 10.5 of 27) — but attention beats the count table under plain SGD
-already, because ~55× the data moves the optimizer bottleneck. Rung 5's
+already, because ~58× the data moves the optimizer bottleneck. Rung 5's
 moral survives either way: an outcome belongs to architecture *and*
 training *and* data, never one alone. That names track doubles as the
 anyone-can-reproduce lane: no brain required — run `--names`, walk the same

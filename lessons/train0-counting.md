@@ -149,8 +149,9 @@ at log-of-zero — remember the flavor of this crash.) Captured in
 
 **3.** Rows multiply by 38 per character of context. A trigram table
 conditions on the previous *two* tokens: 38×38 = 1,444 rows of 38 numbers
-(54,872 cells). Our 459 docs contain ~8.7k trigrams and visit only 500 of
-those rows — a third; everywhere else you'd be sampling pure smoothing. One
+(54,872 cells). Our 459 docs contain 9,168 trigrams (BOS-bracketed, the way
+train0 tokenizes) and visit only 513 of those rows — a third; everywhere
+else you'd be sampling pure smoothing. One
 more character makes it 54,872 rows, ~96% of them never visited — counting
 is already dead at 4-grams on this corpus. The table grows exponentially in
 context length and the data doesn't; that wall is why the rest of this

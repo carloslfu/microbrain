@@ -438,7 +438,8 @@ lesson, adding exactly one idea.
 #### sampling
 
 generating: turn logits into probabilities, draw one token,
-append, repeat until BOS. Rung 0 onward; temperature added at rung 6.
+append, repeat until BOS. Rung 0 onward; the temperature dial sits in the
+code from rung 1 on and gets its treatment at rung 6.
 
 #### seed
 

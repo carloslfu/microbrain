@@ -106,7 +106,7 @@ confirmations. When a component "doesn't matter," the first question is
 never "remove it?" — it's "*at what budget would it start mattering?*" When
 a paper says "X improves Y," the silent suffix is always "at our scale, on
 our data, for our step count." You now own a lab where checking such claims
-costs four minutes.
+costs five minutes.
 
 ## Exercises
 
@@ -118,8 +118,8 @@ company — so did the author of this lesson.)
 **2. Break it further.** The lab's most important dial is `num_steps`. Rerun
 at 600 or 1000 steps: does no-wpe still win? Does no-relu stay free? Commit
 to both answers first. This lesson deliberately does not spoil either — the
-whole point of owning the lab is that the answer is four minutes away and
-*yours*.
+whole point of owning the lab is that the answer is one lab-run away — half
+an hour at 600 steps — and *yours*.
 
 **3. Extend it.** Add a seventh surgery of your own to `SURGERIES`. Good
 candidates, in ascending ambition:
