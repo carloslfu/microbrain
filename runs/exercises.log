@@ -238,3 +238,9 @@ microbrain namer | 4 novel idea names | T=2.0
 
 [exit 0]
 
+== namer · the novelty filter, stress-tested — 1,000 unfiltered draws ==
+method: namer.py's generate() called 1,000 times with NO filter (seed 123, T=0.8),
+        each raw draw checked for exact membership in data/data.txt (511 records)
+
+verbatim real records among 1,000 raw samples: 0
+

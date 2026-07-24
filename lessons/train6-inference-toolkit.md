@@ -111,6 +111,18 @@ management.
 4) novelty filter: 30 samples -> 0 verbatim training docs, 0 empty -> 30 genuinely new
 ```
 
+First, what the filter *is*, because the name oversells it: six lines of
+plain Python in [namer.py](../namer.py) (`draw_novel`), not a neural
+anything — generate a name, keep it only if it isn't in `data.txt`, isn't a
+duplicate, and isn't degenerate in length. A set-membership check bolted
+onto the model's mouth. And on this corpus it's measurably *redundant*: we
+stripped it and drew 1,000 raw samples — **zero** were real records
+(captured in [runs/exercises.log](../runs/exercises.log)). The filter
+exists to turn that statistical fact into a mechanical guarantee — and
+because it stops being redundant the moment someone swaps in a dense corpus
+(on Karpathy's names, the model *does* parrot), which the rest of this
+section explains.
+
 The memorization gauge has read 0 all course, and this rung's 30-sample
 census confirms it. Readers of microgpt's own
 [launch thread](https://gist.github.com/karpathy/8627fe009c40f57531cb18360106ce95)
