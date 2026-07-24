@@ -1,5 +1,6 @@
-canonical snapshot of data/data.txt — the corpus behind every number in the lessons
-sha256: c9102703e6b7c7da3ecfb9004a632f84584cd15beefbd6259bdaf93748635b7a
-docs: 543 (488 train / 55 val) · vocab 38 · harvested 2026-07-21 from the author's db.md store
-A live brain grows: a fresh harvest today keeps more docs and shifts every number.
-The committed runs/ logs correspond to exactly this snapshot.
+canonical corpus — data/data.txt, committed; the file behind every number in the lessons
+sha256: 544ad6afa6113d653c405f4bc1d9a66a3bd4305bec91ca18587489a33fa01318
+docs: 511 (459 train / 52 val) · vocab 38 · harvested 2026-07-21 from the author's db.md store,
+curated 2026-07-23 (32 private slugs removed: business, client, health, finance, family)
+The committed runs/ logs correspond to exactly this file. A live brain grows;
+the harvester warns when a fresh harvest drifts from this pin.

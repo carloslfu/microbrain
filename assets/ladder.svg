@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1170" height="356" viewBox="0 0 1170 356">
 <rect width="1170" height="356" fill="#ffffff"/>
 <text x="56" y="34" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="15" fill="#1f2328" text-anchor="start" font-weight="bold">effective choices — among how many characters is the model still guessing?</text>
-<text x="56" y="54" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#6a737d" text-anchor="start">e^(val loss), full runs, 543-doc corpus · lower is better · red: the rung that finally beats the count table</text>
+<text x="56" y="54" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#6a737d" text-anchor="start">e^(val loss), full runs, 511-doc corpus · lower is better · red: the rung that finally beats the count table</text>
 <rect x="56" y="96.0" width="34" height="190.0" fill="#6a737d" opacity="0.55" rx="2"/>
 <rect x="100" y="213.5" width="34" height="72.5" fill="#0969da" opacity="0.9" rx="2"/>
-<rect x="144" y="209.5" width="34" height="76.5" fill="#0969da" opacity="0.9" rx="2"/>
-<rect x="188" y="209.5" width="34" height="76.5" fill="#0969da" opacity="0.9" rx="2"/>
-<rect x="232" y="212.5" width="34" height="73.5" fill="#0969da" opacity="0.9" rx="2"/>
-<rect x="276" y="212.0" width="34" height="74.0" fill="#0969da" opacity="0.9" rx="2"/>
-<rect x="320" y="217.0" width="34" height="69.0" fill="#cf222e" opacity="0.9" rx="2"/>
+<rect x="144" y="210.0" width="34" height="76.0" fill="#0969da" opacity="0.9" rx="2"/>
+<rect x="188" y="210.0" width="34" height="76.0" fill="#0969da" opacity="0.9" rx="2"/>
+<rect x="232" y="213.0" width="34" height="73.0" fill="#0969da" opacity="0.9" rx="2"/>
+<rect x="276" y="212.5" width="34" height="73.5" fill="#0969da" opacity="0.9" rx="2"/>
+<rect x="320" y="217.5" width="34" height="68.5" fill="#cf222e" opacity="0.9" rx="2"/>
 <text x="73.0" y="88.0" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12" fill="#1f2328" text-anchor="middle" font-weight="bold">38.0</text>
 <line x1="48" y1="286" x2="362" y2="286" stroke="#d8dee4" stroke-width="1"/>
 <text x="205.0" y="306" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="11.5" fill="#6a737d" text-anchor="middle">uniform, then the six trained rungs:</text>
@@ -18,24 +18,24 @@
 <text x="466.0" y="168.3846153846154" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="13.5" fill="#1f2328" text-anchor="middle">14.5</text>
 <text x="466.0" y="306" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12.5" fill="#6a737d" text-anchor="middle">counting</text>
 <text x="466.0" y="322" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="11" fill="#6a737d" text-anchor="middle">rung 0</text>
-<rect x="522" y="117.9" width="72" height="168.1" fill="#0969da" opacity="0.9" rx="3"/>
-<text x="558.0" y="109.92307692307688" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="13.5" fill="#1f2328" text-anchor="middle">15.3</text>
+<rect x="522" y="125.2" width="72" height="160.8" fill="#0969da" opacity="0.9" rx="3"/>
+<text x="558.0" y="117.23076923076928" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="13.5" fill="#1f2328" text-anchor="middle">15.2</text>
 <text x="558.0" y="306" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12.5" fill="#6a737d" text-anchor="middle">by hand</text>
 <text x="558.0" y="322" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="11" fill="#6a737d" text-anchor="middle">rung 1</text>
-<rect x="614" y="117.9" width="72" height="168.1" fill="#0969da" opacity="0.9" rx="3"/>
-<text x="650.0" y="109.92307692307688" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="13.5" fill="#1f2328" text-anchor="middle">15.3</text>
+<rect x="614" y="125.2" width="72" height="160.8" fill="#0969da" opacity="0.9" rx="3"/>
+<text x="650.0" y="117.23076923076928" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="13.5" fill="#1f2328" text-anchor="middle">15.2</text>
 <text x="650.0" y="306" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12.5" fill="#6a737d" text-anchor="middle">autograd</text>
 <text x="650.0" y="322" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="11" fill="#6a737d" text-anchor="middle">rung 2</text>
-<rect x="706" y="161.8" width="72" height="124.2" fill="#0969da" opacity="0.9" rx="3"/>
-<text x="742.0" y="153.76923076923083" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="13.5" fill="#1f2328" text-anchor="middle">14.7</text>
+<rect x="706" y="169.1" width="72" height="116.9" fill="#0969da" opacity="0.9" rx="3"/>
+<text x="742.0" y="161.0769230769231" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="13.5" fill="#1f2328" text-anchor="middle">14.6</text>
 <text x="742.0" y="306" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12.5" fill="#6a737d" text-anchor="middle">attention</text>
 <text x="742.0" y="322" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="11" fill="#6a737d" text-anchor="middle">rung 3</text>
-<rect x="798" y="154.5" width="72" height="131.5" fill="#0969da" opacity="0.9" rx="3"/>
-<text x="834.0" y="146.4615384615384" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="13.5" fill="#1f2328" text-anchor="middle">14.8</text>
+<rect x="798" y="161.8" width="72" height="124.2" fill="#0969da" opacity="0.9" rx="3"/>
+<text x="834.0" y="153.76923076923083" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="13.5" fill="#1f2328" text-anchor="middle">14.7</text>
 <text x="834.0" y="306" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12.5" fill="#6a737d" text-anchor="middle">multi-head</text>
 <text x="834.0" y="322" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="11" fill="#6a737d" text-anchor="middle">rung 4</text>
-<rect x="890" y="227.5" width="72" height="58.5" fill="#cf222e" opacity="0.9" rx="3"/>
-<text x="926.0" y="219.5384615384615" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="13.5" fill="#1f2328" text-anchor="middle" font-weight="bold">13.8</text>
+<rect x="890" y="234.8" width="72" height="51.2" fill="#cf222e" opacity="0.9" rx="3"/>
+<text x="926.0" y="226.8461538461539" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="13.5" fill="#1f2328" text-anchor="middle" font-weight="bold">13.7</text>
 <text x="926.0" y="306" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="12.5" fill="#6a737d" text-anchor="middle">Adam</text>
 <text x="926.0" y="322" font-family="SFMono-Regular,Consolas,Menlo,monospace" font-size="11" fill="#6a737d" text-anchor="middle">rung 5</text>
 <line x1="422" y1="176.4" x2="970" y2="176.4" stroke="#1f2328" stroke-width="1" stroke-dasharray="5,4" opacity="0.45"/>

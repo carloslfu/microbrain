@@ -1,14 +1,14 @@
-num docs: 488 train / 55 val
+num docs: 459 train / 52 val
 vocab size: 38
 num params: 4928 (same as train3.py — heads are a split, not new capacity)
-step    1 / 1000 | loss 3.5698 | val loss 3.6733 | effective choices 39.4 of 38
+step    1 / 1000 | loss 3.5698 | val loss 3.6741 | effective choices 39.4 of 38
 step    2 / 1000 | loss 3.6675
-step    3 / 1000 | loss 3.5361
-step    4 / 1000 | loss 3.5864
-step    5 / 1000 | loss 3.6392
-step  501 / 1000 | loss 2.7344 | val loss 2.7258 | effective choices 15.3 of 38
-step 1000 / 1000 | loss 2.5121 | val loss 2.6926 | effective choices 14.8 of 38
-training took 662.2s
+step    3 / 1000 | loss 3.6091
+step    4 / 1000 | loss 3.6540
+step    5 / 1000 | loss 3.5719
+step  501 / 1000 | loss 2.7218 | val loss 2.7185 | effective choices 15.2 of 38
+step 1000 / 1000 | loss 3.4516 | val loss 2.6875 | effective choices 14.7 of 38
+training took 520.0s
 
 --- attention over 'test-time-training', per head (row = position, cols = looked-at) ---
 head 0:
@@ -16,43 +16,43 @@ head 0:
     ^ | @
     t | @@
     e | @@#
-    s | @%@@
+    s | @@@@
     t | @@@@@
     - | @%%@%@
     t | @@%@@@@
     i | @@%@@@@%
-    m | @#%@%@##%
+    m | @#%@%@%#%
     e | @@#@@@@%@#
-    - | @%%@%@%%@%@
+    - | @%@@@@@%@@@
     t | @@@@@@@@@@@@
-    r | @#@@%@%%%@%%%
-    a | @@@%@@@%@@@@@@
-    i | %@#%%%%#%#@%@*%
-    n | %%@@%@%@@@%%%@@%
-    i | %@#%%%%#%*%%@*%%#
+    r | @%@@%@%%@@@%%
+    a | @@@%@@@%@%@@@%
+    i | %%#%%%%#%#%%@*%
+    n | %%@@@%%@@@%%%@@%
+    i | %%#%%%%#%*%%@*%%#
     n | %@@%@%@@@@%@%@@%@%
-    g | @%@@@@@@@@@@%@@@@@%
+    g | @@@@@@@@@@@@@@@@@@%
 head 1:
       ^test-time-training
     ^ | @
     t | @@
     e | @@@
     s | @#@@
-    t | %@%@%
-    - | %*@@*%
+    t | %%%@%
+    - | %*@@#%
     t | %%%@%%%
-    i | @#@#%%%*
-    m | @%@@%@%@@
-    e | @@%%@@@%%%
-    - | #*%@*#*@%@#
-    t | *#*#***@%***
-    r | %@%@%%@@@%%%%
-    a | #@##@%@%@*%@@#
-    i | @%@#@%@+*@@@@@+
+    i | @%@#@%@*
+    m | @%@@%@%@%
+    e | @@%%@@@%@%
+    - | %*@@*%#@%@#
+    t | *#*#*#*@%***
+    r | %@%@%@@@@%%%%
+    a | %@##@%%%@#%%@#
+    i | @%@#@%@+*@@@@@*
     n | @@@@@@@@@@@@@@@@
-    i | @#@*%%%+*%%%%@+@+
+    i | %%%*@%%+*%%%%@+@+
     n | %@%%@@@%@%@@@%%%%%
-    g | #@*#@#%%@*%%@#%*%#%
+    g | #@*#@%%%@*%%@#@*%#%
 head 2:
       ^test-time-training
     ^ | @
@@ -60,61 +60,61 @@ head 2:
     e | @%*
     s | @@%%
     t | @@*%%
-    - | @@*%%@
-    t | @@*#%%%
-    i | %%@@%%%@
+    - | @@#%%@
+    t | @@#%%%%
+    i | %%@@@@@@
     m | @@#%%@%#%
     e | @%+##%#*#+
-    - | @@#@@@@#%%@
-    t | @@##%%@#%*@%
-    r | @@@%@%@@@%@@@
+    - | @@%@@@@#@%@
+    t | @@#%%@%#%*@%
+    r | @@@%@@@@@%@@@
     a | %%@%%%%#@@%%%@
-    i | @%@@@@@@@@@@@@@
+    i | @@@@@@@@@@@@@@@
     n | #%@%@%%@%@#%#%@%
-    i | %%@%%%%@%@%%%@@@@
-    n | %@@%@%@@@%%%%%@%@%
-    g | @@@%@%@@@%@@@@@#@%%
+    i | %%@%%%%@%@%%@@@@@
+    n | %@@%@%@@@%%@%%@%@%
+    g | @@@%@@@@@%@%@@@#@%%
 head 3:
       ^test-time-training
     ^ | @
     t | @@
-    e | %@@
-    s | #*%@
+    e | @@@
+    s | #*@@
     t | #@%%@
     - | @#@@%@
     t | #@%#@#@
-    i | @#@%%@%@
-    m | %%@#@@%%%
-    e | %@@*@%%#%@
-    - | %%@@%@%@@@%
+    i | @#@%%@%%
+    m | %%@%@@%@%
+    e | @@@*@%%##@
+    - | %%@@%@%@@@@
     t | #@%%@#@%%%#@
     r | %%@@%%%@@@%@%
-    a | %%@%%%%@@@@%%%
+    a | %%@%%%%@%@%%%#
     i | @%@#%@%%%@@#%%%
-    n | **#@#*#%#%*%#*%%
-    i | @%@#%@%%%@@%%%@%%
-    n | #*#@##%##%*%#*%%%@
-    g | %%%%%%@%%@%@%#%#%#@
+    n | *##@##%%%%*%#*%%
+    i | @%@#%@%%%@@%%%%%%
+    n | ##%@##%%%@*%#*%%%@
+    g | #%%#%#%%%@%@##%#%#@
 
 --- inference (new, hallucinated idea names) ---
-sample  1: malaranti-singe-marint-bod
-sample  2: orat-g-mepioentudeng-hencontint-pr
-sample  3: josule-l
-sample  4: derend-miv-arati
-sample  5: gepn-amonge-mark-anertins
-sample  6: simonstinardin
-sample  7: dracuron-morin-hele
-sample  8: charore-j-bstiomor
-sample  9: parere-tin-l-mensitimangelabrilanared-m-
-sample 10: haroban-mating
-sample 11: pontin-r
-sample 12: intin-atitinin
-sample 13: iarem-picatintingeri
-sample 14: ferlinin-m-tintin
-sample 15: atagringl-s
-sample 16: so-baren-ontin
-sample 17: gum-2
-sample 18: gemararontrerelans
-sample 19: janticy
-sample 20: ag-onauconinin-mengaripengre
+sample  1: maige-ion-singe-marint-cod
+sample  2: orcs-g-meon
+sample  3: cles-che-hem-parion-ri
+sample  4: llstaren
+sample  5: farine-me
+sample  6: 207ast
+sample  7: geni-bereng-marl-bintroreps
+sample  8: ereorenen-rron
+sample  9: datisinion
+sample 10: dang-hon-atiti-mamonticor
+sample 11: parere-tin-m-mentitgelaralabriemall-cbon
+sample 12: iche-an-me
+sample 13: pomoreltin-s
+sample 14: jeron-britinin
+sample 15: jarem-pl-atomestinti
+sample 16: gerlinon-m-tintin
+sample 17: ctagrinin-s
+sample 18: so-bapen-marre
+sample 19: itha-we-che-mon
+sample 20: serece-mendetra
 memorization: 0/20 samples are verbatim training docs

@@ -13,7 +13,7 @@ need when the model is too expressive for exact solutions.
 
 microbrain deltas (all rungs carry these):
 - the corpus is the names of ideas from a db.md knowledge store, not human names
-  (543 docs instead of 32,033 — small data is part of this course, run
+  (511 docs instead of 32,033 — small data is part of this course, run
   data/make_dataset.py first)
 - a validation split the model never trains on, and two honest numbers measured
   on it: val loss, and "effective choices" = e^(val loss) — out of 38 possible

@@ -60,7 +60,7 @@ docstring convention, same architecture and optimizer, `diff`-able against
 
 | dial | microgpt | microbrain | why |
 |---|---|---|---|
-| corpus | 32,033 human names | 543 idea names from a db.md knowledge store | personal data makes failure legible and success delightful |
+| corpus | 32,033 human names | 511 idea names from a db.md knowledge store | personal data makes failure legible and success delightful |
 | block_size | 16 | 40 | idea names run longer than first names |
 | vocab | 27 | 38 | digits and hyphens are load-bearing in slugs |
 | val split | none | 10% held out | small corpus ⇒ overfitting is *the* phenomenon to watch |

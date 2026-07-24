@@ -26,10 +26,10 @@ averages *per parameter* and moves by their ratio:
   [batch size](../GLOSSARY.md#batch-size) is one document; each gradient is
   one document's *opinion*, and
   opinions swing wildly (watch the raw loss bounce across the first five
-  steps: 3.57, 3.65, 3.47, 3.55, 3.71). Momentum averages the last ~7
+  steps: 3.57, 3.65, 3.59, 3.71, 3.48). Momentum averages the last ~7
   opinions into a consensus direction before moving. The 7 comes from
   1/(1−0.85). (And at one document per step, 1,000 steps is about two
-  [epochs](../GLOSSARY.md#epoch) — two full passes over the 488 training
+  [epochs](../GLOSSARY.md#epoch) — two full passes over the 459 training
   docs.)
 - **`v` — a memory of scale.** `v = 0.99·v + 0.01·grad²`. Dividing the step
   by `√v` gives every parameter its *own* unit system: a rarely-touched
@@ -70,9 +70,9 @@ today.
 ## What the numbers said
 
 ```
-step    1 / 1000 | loss 3.5698 | val loss 3.6669 | effective choices 39.1 of 38
-step  501 / 1000 | loss 2.6792 | val loss 2.6778 | effective choices 14.6 of 38
-step 1000 / 1000 | loss 2.4283 | val loss 2.6216 | effective choices 13.8 of 38
+step    1 / 1000 | loss 3.5698 | val loss 3.6680 | effective choices 39.2 of 38
+step  501 / 1000 | loss 2.6680 | val loss 2.6704 | effective choices 14.4 of 38
+step 1000 / 1000 | loss 3.5158 | val loss 2.6165 | effective choices 13.7 of 38
 ```
 
 The completed scoreboard, six files in the making:
@@ -80,20 +80,20 @@ The completed scoreboard, six files in the making:
 | model | optimizer | val loss | eff. choices |
 |---|---|---|---|
 | uniform shrug | — | 3.6376 | 38.0 |
-| count table (train0) | counting | 2.6774 | 14.5 |
-| MLP bigram (train1/2) | SGD | 2.7301 | 15.3 |
-| + attention (train3) | SGD | 2.6886 | 14.7 |
-| + multi-head (train4) | SGD | 2.6926 | 14.8 |
-| **same model (train5)** | **Adam** | **2.6216** | **13.8** |
+| count table (train0) | counting | 2.6764 | 14.5 |
+| MLP bigram (train1/2) | SGD | 2.7239 | 15.2 |
+| + attention (train3) | SGD | 2.6796 | 14.6 |
+| + multi-head (train4) | SGD | 2.6875 | 14.7 |
+| **same model (train5)** | **Adam** | **2.6165** | **13.7** |
 
 Same 4,928 parameters as train4. Same 1,000 documents in the same order. The
-only change is *how the steps were taken*: 14.8 → 13.8, and the count table
+only change is *how the steps were taken*: 14.7 → 13.7, and the count table
 finally falls.
 
 The table was *provably optimal* — so how did it fall? It was optimal per
 row: one character of context, every row learning alone.
 The transformer's 4,928 **shared** parameters cover a 40-character context
-no table could hold (38^40 ≈ 10^63 rows) or fill (488 documents); sharing means
+no table could hold (38^40 ≈ 10^63 rows) or fill (459 documents); sharing means
 evidence transfers — what the weights learn from `training` helps with
 `braining`, which no count row can do for another. Parameters are
 compression, and compression is [generalization](../GLOSSARY.md#generalization).
@@ -109,12 +109,12 @@ The file draws the race (s = SGD from train4's saved curve, A = Adam):
 
 ```
    3.60 | *s
-   3.28 |   A
-   2.97 |      AAs  s       s
-   2.81 |         A*   As**   A A*** *ss**  ss            ss  ss   s
-   2.74 |               A             AA  *sAA*s   *ss    AAssA sssAsssss
-   2.58 |                                       AsA   AAAA           AA  A
-   2.50 |                                        A
+   3.29 |   A
+   2.97 |      AA   s
+   2.89 |        s *Ass  ss*ss** s s
+   2.81 |        As  AA**AA AA  *AsA*s**  *s               ss
+   2.74 |         A               A  A  *s Ass  s*sssss*sssA ssssssss  sss
+   2.66 |                                A  AAs A AAAAA AAA AAAAAA AAssA
 ```
 
 (Abridged — your run prints all fifteen rows. The same two curves, drawn
@@ -133,9 +133,9 @@ log:
 
 ```
 step    0 | m129o8dwl-x7nfi1o8kliw13m-uvwax1c7omlpp6, fpx3bbb2kk73p9lfqj3pl, iqz, ...
-step   50 | reva-ve, manrema-lalat-g-s, re-la-tonias, ...
-step  250 | menticarerenmiti-landiol-s, eorel-mesellarepe-patinstis-vacpong, ...
-step 1000 | mianicov, reat-hivarsian, jang-tin-tining-avingantige, agan-folin, seag, an
+step   50 | rat--ye, jantinb-lako, el-orta-lbaures-t, ...
+step  250 | padereange-dinulintti-manatin-s, henge-en, larenatingasening, ...
+step 1000 | ag-ong, arense-arereinit-mare, moderar, vem-santt-romantinion, rabstiobl-a, rol-dieell-alicinerg
 ```
 
 Step 0 is the uniform shrug as literature — digits and all, 38 effective
@@ -178,7 +178,7 @@ Then run `--fast` both ways and compare tails.
 **1.** Split verdict, and that's the lesson. The *train loss* is identical
 (3.5698): computed on the same init and document *before* the first update,
 where no optimizer difference can exist. The *val loss* on the same line
-differs (3.6733 vs 3.6669): the panel evaluates *after* the update, so it
+differs (3.6741 vs 3.6680): the panel evaluates *after* the update, so it
 already contains one step of SGD-versus-Adam. One printed line straddles
 the first step. If you answered "identical" or "different" for the whole
 line, the log just taught you to read per-field.

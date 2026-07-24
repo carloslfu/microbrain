@@ -15,24 +15,24 @@ built from the questions every reader asks the moment train5 finishes: *where
 does the model live? what's temperature? why is serving fast?* — questions
 about the half of the lifecycle the training gist doesn't cover. The training
 in this file is identical to train5's, and the panel agrees; everything
-interesting happens after `training took 705.1s — now the toolkit`.
+interesting happens after `training took 482.1s — now the toolkit`.
 
 First, note what training itself delivered:
 
 ```
-step 1000 / 1000 | loss 2.4283 | val loss 2.6216 | effective choices 13.8 of 38
+step 1000 / 1000 | loss 3.5158 | val loss 2.6165 | effective choices 13.7 of 38
 ```
 
-**13.8. The count table (14.5) has finally been beaten** — by the same
+**13.7. The count table (14.5) has finally been beaten** — by the same
 architecture that lost to it under SGD for two straight rungs. That story
 was train5's lesson; here, on to the toolkit.
 
 ## 1. The file of floats
 
 ```
-1) saved model to out/model.json (106,388 bytes) | val loss 2.621591
+1) saved model to out/model.json (106,337 bytes) | val loss 2.616468
    all 4928 params zeroed. it now babbles: ['02e3x0jbv5bb8-f2l1agx24t-xk9usct6mjtaesi', ...]
-   loaded it back. val loss 2.621591 | identical: True
+   loaded it back. val loss 2.616468 | identical: True
 ```
 
 The save format is `json.dump` of the state_dict plus the dials and the
@@ -74,25 +74,25 @@ you downloaded — the 106 KB version of a multi-hundred-GB idea.
 ## 2. Temperature, the one-knob personality
 
 ```
-   T=0.1 | ant-conting, pran-marating, mare-maratin-sengerion, arin-are-angentining, ...
-   T=0.5 | comanes, man, torary-mararan, si-madelint-ferals, mose, ...
-   T=1.0 | dhegervssee, visary-mbododittiarl-mastidediag, rktui, yat-wlak-prollinges, ...
+   T=0.1 | antin-stingrin, are-arelan, mare-congerengen-s, maron-seratingen, ...
+   T=0.5 | comaniton-h, toraru-mararcor, mark-kasefe-aral, post-vsat-tolaartins, ...
+   T=1.0 | dheferutiif, urt2, v-meoboenty, aon-markicifice, rlsui, ...
 ```
 
 Mechanically it's one line — divide the logits before softmax. Dividing by
 0.1 multiplies every logit gap by 10: the biggest probability swallows the
-rest, and the model loops its safest morphemes (`-ing`, `-ating`, over and
+rest, and the model loops its safest morphemes (`mar-`, `-ingen`, over and
 over — same seed on every row, so the differences are pure temperature).
 Dividing by 1.0 leaves the model's true distribution: braver, weirder,
-sometimes `rktui`. As T→0 sampling becomes argmax; as T grows it approaches
+sometimes `rlsui`. As T→0 sampling becomes argmax; as T grows it approaches
 the uniform shrug. Every "creativity slider" you've ever seen in an AI
 product is this division.
 
 ## 3. The KV cache, measured
 
 ```
-   with cache:    'ceos-fipo-abl-paliting' |  23 model calls | 0.366s
-   without cache: 'ceos-fipo-abl-paliting' | 276 model calls | 4.601s
+   with cache:    'ceot-hipo-ban-pallsild' |  23 model calls | 0.130s
+   without cache: 'ceot-hipo-ban-pallsild' | 276 model calls | 1.737s
 ```
 
 Same seed, same name, character for character — the cache changes *nothing*
@@ -100,7 +100,7 @@ about the math. It changes the work: with the keys/values lists kept between
 characters (as the training loop always did), producing token N costs one
 model call; throw the lists away and you must replay the whole
 prefix, so 22 characters cost 276 calls instead of 23. That's 1+2+...+23
-versus 23 — quadratic versus linear, a 12.6× real-time gap at name length,
+versus 23 — quadratic versus linear, a 13.4× real-time gap at name length,
 and the gap *grows with every character*. Scale the sequence to a chat
 history and you understand why serving systems obsess over KV-cache
 management.
@@ -118,7 +118,7 @@ reported verbatim training names among *its* samples, at
 nearly our parameter count (4,192 vs 4,928). Why does ours not parrot?
 Memorization pressure is about the *density of the space*. His 32,033 human
 names crowd a small space of short, convergent strings — many "kamon"s are
-near-inevitable. Our 543 hyphenated 20-character slugs rattle around an
+near-inevitable. Our 511 hyphenated 20-character slugs rattle around an
 astronomically larger one. Our
 model lacks the capacity to store paths to specific training docs, so it
 stores *statistics* — morphemes, hyphen rhythm, endings. Generalization isn't
@@ -135,9 +135,9 @@ gauge move.)
 ## 5. The quiz
 
 ```
-   1. gorloni-beal-erfgeltiollan      4. jalien
-   2. typed-provenance-for-llm-agents 5. engram-labs-weight-memory-vs-dbmd
-   3. ai-driven-drug-discovery        6. onntic-chatthon
+   1. mumisitio-chal-dingem        4. niorpa-chauthpitigenen
+   2. distillation-rl-spectrum     5. osworld-verified
+   3. personal-ai-usage-registry   6. nicodd
 ```
 
 Three are records in the brain; three came out of 4,928 floats. Commit to
@@ -175,11 +175,11 @@ chatbot era: conditioning a frozen model with context instead of training it.
 **1.** The pattern from §3: a length-N name costs N+1 calls with the cache,
 1+2+…+(N+1) without, so the ratio is (N+2)/2 — *linear in length*. At the
 39-character limit: 40 calls versus 820, a 20.5× gap (the measured 22-char
-case was 23 vs 276, 12.6× wall-clock).
+case was 23 vs 276, 13.4× wall-clock).
 
 **2.** One row of `lm_head` is one token's scoring direction; a 10⁶ weight
 makes that token's logit explode whenever its input feature is nonzero. Run
-and you'll see something like `fznizen-bzanazize-czizazaz` — and, measured
+and you'll see something like `mzazzezzz-azaziozis-s` — and, measured
 observation: it looks like that at *every* temperature. At |logit| ≈ 10⁶,
 dividing by T changes nothing; softmax is saturated either way, so the
 corruption is temperature-*proof* (the hide-it-with-heat intuition only works

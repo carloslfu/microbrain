@@ -20,9 +20,9 @@ shape. Nothing else will be added — only upgraded.
 
 ## Walk the code
 
-**The data** is 543 idea names from a personal knowledge base, one per line —
+**The data** is 511 idea names from a personal knowledge base, one per line —
 `test-time-training`, `geva-2021-ffn-kv-memory`, `patient-hm`. We keep the last
-55 locked in a drawer (`val_docs`) and never train on them. Everything we
+52 locked in a drawer (`val_docs`) and never train on them. Everything we
 *trust* gets measured on that drawer.
 
 **The tokenizer** is an alphabet. 37 characters appear in the corpus; each
@@ -68,11 +68,11 @@ something it hasn't absorbed yet.
 
 ```
 uniform loss: ln(38) = 3.6376 -> effective choices: 38
-step    1 /  488 | loss 3.6376
-step  400 /  488 | loss 2.3932
-step  488 /  488 | loss 2.8910
+step    1 /  459 | loss 3.6376
+step  400 /  459 | loss 2.4930
+step  459 /  459 | loss 2.9104
 
-train loss 2.6221 | val loss 2.6774 | effective choices 14.5 of 38
+train loss 2.6220 | val loss 2.6764 | effective choices 14.5 of 38
 ```
 
 Three things worth staring at:
@@ -80,7 +80,7 @@ Three things worth staring at:
 - **Step 1 is exactly 3.6376.** Before any counts, smoothing makes every row
   uniform — the model's first answer is a shrug, and the math says a shrug
   costs ln(38) nats.
-- **The per-step loss bounces** (2.39 at step 400, 2.89 at step 488). Each step
+- **The per-step loss bounces** (2.49 at step 400, 2.91 at step 459). Each step
   quizzes on one document, and some documents are just weird. Only the averaged
   panel line at the bottom deserves your trust. This stays true all course.
 - **Effective choices: 38 → 14.5.** This is `e^(val loss)`, and it's the most
@@ -95,10 +95,10 @@ from the run's log (your terminal prints the same grid in ASCII, shade ramp
 ![the whole bigram model: P(next char | current char)](../assets/train0-heatmap.svg)
 
 Two rows to find:
-`q`, which is nearly a single dark cell (`u`, 0.25 — the corpus's `qwen`s and
-`quantization`s at work), and the BOS row, whose favorite openers are `c`, `a`,
-`m`. And the samples are glorious garbage: `o-cerot-g-ck-boncor-steave-...`,
-`sc-dag`, `ons`. From two meters away they look like idea names. From one meter
+`q`, which is nearly a single dark cell (`u`, 0.24 — the corpus's `qwen`s and
+`quantization`s at work), and the BOS row, whose favorite openers are `a`, `c`,
+`m`. And the samples are glorious garbage: `n-cernv4c-ck-boncor-steave-...`,
+`niosta-dag`, `xtu3qdy`. From two meters away they look like idea names. From one meter
 they mean nothing. That texture-without-structure is exactly what one character
 of context buys — and 0/20 samples were verbatim training docs, so even this
 tiny thing isn't parroting.
@@ -129,13 +129,13 @@ instead of `(c + 1) / total`. Predict what happens and *when*, precisely.
 Then run it.
 
 **3. Extend it.** Make it a trigram model: condition on the previous *two*
-tokens. How big is the table now? How many of its rows did 488 training docs
+tokens. How big is the table now? How many of its rows did 459 training docs
 actually visit? At what n-gram size does counting stop being a viable plan?
 
 <details>
 <summary>Solutions</summary>
 
-**1.** After `-`: `a` (0.11), then `s`, `m`. Before a digit: `-` (49 times
+**1.** After `-`: `a` (0.11), then `m`, `s`. Before a digit: `-` (48 times
 in the training docs), then `2` and `0` — digits follow hyphens and other
 digits (`gpt-4`, `2025`); a letter almost never touches a digit directly.
 
@@ -149,9 +149,9 @@ at log-of-zero — remember the flavor of this crash.) Captured in
 
 **3.** Rows multiply by 38 per character of context. A trigram table
 conditions on the previous *two* tokens: 38×38 = 1,444 rows of 38 numbers
-(54,872 cells). Our 488 docs contain ~9.4k trigrams and visit only ~500 of
+(54,872 cells). Our 459 docs contain ~8.7k trigrams and visit only 500 of
 those rows — a third; everywhere else you'd be sampling pure smoothing. One
-more character makes it 54,872 rows, ~95% of them never visited — counting
+more character makes it 54,872 rows, ~96% of them never visited — counting
 is already dead at 4-grams on this corpus. The table grows exponentially in
 context length and the data doesn't; that wall is why the rest of this
 course exists.

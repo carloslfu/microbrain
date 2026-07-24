@@ -1,4 +1,4 @@
-num docs: 488 train / 55 val | vocab size: 38
+num docs: 459 train / 52 val | vocab size: 38
 
 Every run: same init, same data order, Adam, 300 steps. Before the
 results arrive, commit to predictions — rank the five surgeries by how much
@@ -8,20 +8,20 @@ they raise val loss over baseline, and write your ranking down:
 
 The lab is now running (~minutes per surgery, pure Python)...
 
-baseline     | val loss 2.7444 | effective choices  15.6 | 170.6s | reange, cong-man-wentes-sis, weracal-sdonangl-mttennge, age-core-stimamonatitratinginar
-no-wpe       | val loss 2.7201 | effective choices  15.2 | 225.8s | re-den, apende-h-wenter-sior, cojage-tere-cepanvingein, age-corebringedind
-no-residual  | val loss 2.9102 | effective choices  18.4 | 203.4s | sianen, clenanan-wenon, aser, wao-cam-sareimdolis
-no-rmsnorm   | val loss 2.8007 | effective choices  16.5 | 157.7s | ricenn, cileblan-wente, arert, cicace-t-re-daran
-no-relu      | val loss 2.7572 | effective choices  15.8 | 157.5s | re-gen, cmancole-ventet-ser, warad-a-sere-denges, demam
-beta2=0.5    | val loss 2.7684 | effective choices  15.9 | 163.9s | ricemat-mararan-wontis-stiv, colace-satind-mar, semal-vagg-core-tingelong, pordond-me-lstes
+baseline     | val loss 2.7394 | effective choices  15.5 | 147.6s | richelt-mararde-wentis-s, stuge-abe-sipomantar, sdene-w-biant, gerlamaling
+no-wpe       | val loss 2.7120 | effective choices  15.1 | 143.5s | re-den, arendimab, marer-sgry, bod-an-serebantary
+no-residual  | val loss 2.9279 | effective choices  18.7 | 147.4s | rialen, bimedoen-vgepes-rer, wap-c-i-seredelien, saneil
+no-rmsnorm   | val loss 2.8049 | effective choices  16.5 | 145.8s | ricenn, cimede-k-wente, arert, cicace-t-re-daran
+no-relu      | val loss 2.7529 | effective choices  15.7 | 146.4s | re-han, conrapan-wentew-sis, warad-a-sericearen, semece
+beta2=0.5    | val loss 2.7466 | effective choices  15.6 | 140.0s | roinge, aranan-h-wentit-sor, warai-c-sas, cemelatt-feng
 
 --- damage report (val loss, lower is better) ---
-  no-wpe       2.7201 |#########################################
-  baseline     2.7444 |#########################################
-  no-relu      2.7572 |##########################################
-  beta2=0.5    2.7684 |##########################################
-  no-rmsnorm   2.8007 |##########################################
-  no-residual  2.9102 |############################################
+  no-wpe       2.7120 |#########################################
+  baseline     2.7394 |#########################################
+  beta2=0.5    2.7466 |#########################################
+  no-relu      2.7529 |#########################################
+  no-rmsnorm   2.8049 |##########################################
+  no-residual  2.9279 |############################################
 
-baseline is 2.7444; every surgery above it is the price of a missing organ.
+baseline is 2.7394; every surgery above it is the price of a missing organ.
 interpretations live in lessons/train7-ablation-lab.md — but only after you've compared your predicted ranking.

@@ -36,22 +36,22 @@ SURGERIES = [
 ]
 ```
 
-Two calibration notes before the reveal. First: the val set is 55 documents,
+Two calibration notes before the reveal. First: the val set is 52 documents,
 so differences under ~0.03 nats are coin-flips; differences over ~0.1 are
-real wounds. Second: the baseline below reads 15.6 effective choices, not
-rung 5's 13.8 — the lab trains 300 steps per run, not 1,000 (six full-budget
+real wounds. Second: the baseline below reads 15.5 effective choices, not
+rung 5's 13.7 — the lab trains 300 steps per run, not 1,000 (six full-budget
 trainings would run about an hour). Same architecture, smaller budget; by now
 you know that distinction is never small.
 
 ## What the numbers said
 
 ```
-baseline     | val loss 2.7444 | effective choices  15.6 ...
-no-wpe       | val loss 2.7201 | effective choices  15.2 ...
-no-residual  | val loss 2.9102 | effective choices  18.4 ...
-no-rmsnorm   | val loss 2.8007 | effective choices  16.5 ...
-no-relu      | val loss 2.7572 | effective choices  15.8 ...
-beta2=0.5    | val loss 2.7684 | effective choices  15.9 ...
+baseline     | val loss 2.7394 | effective choices  15.5 ...
+no-wpe       | val loss 2.7120 | effective choices  15.1 ...
+no-residual  | val loss 2.9279 | effective choices  18.7 ...
+no-rmsnorm   | val loss 2.8049 | effective choices  16.5 ...
+no-relu      | val loss 2.7529 | effective choices  15.7 ...
+beta2=0.5    | val loss 2.7466 | effective choices  15.6 ...
 ```
 
 (Rows abridged — the log adds each run's time and four samples. And that
@@ -61,20 +61,20 @@ no-wpe row is not a typo; Scandal #1 below.)
 
 Two confirmations, two scandals, one shrug:
 
-**Confirmed: residuals are the most load-bearing organ.** +0.17 nats, 15.6 →
-18.4 effective choices — the only wound far outside the noise floor. Without
+**Confirmed: residuals are the most load-bearing organ.** +0.19 nats, 15.5 →
+18.7 effective choices — the only wound far outside the noise floor. Without
 `x = x + block(x)`, every block must *re-derive* its input instead of
 adjusting it. And blame reaching the embeddings now filters through every
 intervening matrix — rung 2 taught you the `+`'s local gradient is 1; that
 was the highway, and you just closed it. This is why "just stack more layers"
 only became possible after 2015-era architectures made identity the default.
 
-**Confirmed: normalization is quietly important.** +0.06. Not a
+**Confirmed: normalization is quietly important.** +0.066. Not a
 catastrophe at one layer — activations can only drift so far in one block —
 but the thermostat is visibly doing work even here, and its value compounds
 with depth. (Your `n_layer = 2` exercise from rung 4 is where to see that.)
 
-**Scandal #1: no-wpe *won*.** Lower val loss than baseline (−0.024 — a
+**Scandal #1: no-wpe *won*.** Lower val loss than baseline (−0.027 — a
 coin-flip's width, but the organ you'd have defended to the death just
 measured *free to remove*).
 At 300 steps and bigram-ish loss levels, nearly all predictive power is
@@ -86,7 +86,7 @@ training run hasn't reached yet. **An ablation is not a fact about an organ;
 it is a fact about an organ at a budget, a scale, and a dataset.** Every
 published ablation table you will ever read deserves this same suspicion.
 
-**Scandal #2: the nonlinearity is nearly free to remove.** +0.013 — noise.
+**Scandal #2: the nonlinearity is nearly free to remove.** +0.014 — noise.
 Remove the relu and the two stacked linear layers should collapse toward
 one linear map; why no damage? Because at this scale the *attention softmax* is already
 supplying nonlinearity, and the bigram-ish statistics being learned are
@@ -94,7 +94,7 @@ mostly linear-reachable anyway. At production scale the MLP stack is where
 most parameters and (by current understanding) most stored knowledge live —
 another budget-dependent truth, in the other direction.
 
-**The shrug: β₂ = 0.5** cost +0.024 — twitchier steps, mildly worse, not
+**The shrug: β₂ = 0.5** cost +0.007 — twitchier steps, barely worse, not
 fatal at this size. Adam's defaults are robust plumbing, not a knife edge.
 
 ## The idea to keep
@@ -134,8 +134,8 @@ candidates, in ascending ambition:
 <details>
 <summary>Solutions</summary>
 
-**1.** The measured ranking, worst wound first: no-residual (+0.166),
-no-rmsnorm (+0.056), beta2=0.5 (+0.024), no-relu (+0.013), no-wpe (−0.024).
+**1.** The measured ranking, worst wound first: no-residual (+0.189),
+no-rmsnorm (+0.066), no-relu (+0.014), beta2=0.5 (+0.007), no-wpe (−0.027).
 Anything within ±0.03 of baseline you should have graded as "tie," not
 "win/loss."
 

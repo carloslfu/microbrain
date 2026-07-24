@@ -100,33 +100,36 @@ neural networks learn from their mistakes, this line is the literal mechanism.
 ## What the numbers said
 
 ```
-step    1 / 1000 | loss 3.6369 | val loss 3.6403 | effective choices 38.1 of 38
-step  501 / 1000 | loss 2.7682 | val loss 2.7960 | effective choices 16.4 of 38
-step 1000 / 1000 | loss 2.5796 | val loss 2.7301 | effective choices 15.3 of 38
-training took 9.7s
+step    1 / 1000 | loss 3.6369 | val loss 3.6404 | effective choices 38.1 of 38
+step  501 / 1000 | loss 2.7228 | val loss 2.7837 | effective choices 16.2 of 38
+step 1000 / 1000 | loss 3.6912 | val loss 2.7239 | effective choices 15.2 of 38
+training took 9.5s
 ```
 
 - **It starts at the shrug.** 3.6369 ≈ ln(38). Tiny random weights make every
   logit nearly 0, and softmax of all-zeros is uniform. Untrained networks
   don't start wrong, they start maximally noncommittal.
-- **It ends where counting ended — almost.** Val loss 2.7301 (15.3 choices)
-  versus rung 0's exact answer, 2.6774 (14.5). A thousand steps of calculus
+- **It ends where counting ended — almost.** Val loss 2.7239 (15.2 choices)
+  versus rung 0's exact answer, 2.6764 (14.5). A thousand steps of calculus
   approximately rediscovered the count table. It did *not* beat it, and it
   can't: for this model class, counting was already optimal. The point was
   never to win here. It was to certify the approximate method against a known
   answer — before rung 3 points it at problems where no known answer exists.
-- **Train 2.5796 vs val 2.7301.** The first daylight between the two curves.
-  Small corpus, honest split; watch this gap all course.
+- **Step 1000's train field reads 3.6912 — above the shrug?!** No: that field
+  is one document's quiz (whichever doc step 1000 landed on — a hard one),
+  not an average. The averaged val line beside it, 2.7239, is the only number
+  on the panel that deserves your trust. The panel prints both precisely so
+  you learn to tell them apart.
 
 The rung also draws its own loss landscape — a 1-D slice through a
 4,064-dimensional bowl, sweeping one weight while all others hold still:
 
 ```
-  loss  3.229 |                     W                   *
-  loss  3.204 |                     W             **
-  loss  3.172 |                     W****
-  loss  3.153 | *****************************************
-  weight sweeps -3.03 .. +2.97, W = trained value -0.031, min loss 3.1535
+  loss  3.201 |                     W                   *
+  loss  3.149 |                     W    ***
+  loss  3.143 |                     W****
+  loss  3.124 | *****************************************
+  weight sweeps -3.01 .. +2.99, W = trained value -0.011, min loss 3.1235
 ```
 
 (Numbers from the full run; `--fast` draws its own, equally valid valley.)
@@ -134,7 +137,7 @@ The rung also draws its own loss landscape — a 1-D slice through a
 `W` marks where SGD actually left this weight: on the floor of the valley.
 One subtlety worth keeping: `W` is *near* the minimum of this curve, not on
 it. This curve is the loss on **one** document; training minimized the
-**average** over 488. Every parameter lives where hundreds of documents'
+**average** over 459. Every parameter lives where hundreds of documents'
 tugs cancel out. "The model" is a negotiated settlement.
 
 ## The idea to keep
@@ -182,7 +185,7 @@ either side of 3.6376.
 
 **2.** Two-act failure, both acts observed live: first, the referee catches it
 immediately — `max diff 0.01862396` where a healthy run prints `0.00000000`.
-Ignore the referee, and training runs *uphill*: 3.6369 → 3.6406 → 3.6444...
+Ignore the referee, and training runs *uphill*: 3.6369 → 3.6406 → 3.6429...
 Five steps later it's so confidently wrong that the true next character's
 probability underflows to exact zero and the run dies with
 `ValueError: math domain error` at `-math.log(probs[target_id])` — the same

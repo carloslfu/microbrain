@@ -70,22 +70,21 @@ shown above *are* the meaningful changes.)
 ## What the numbers said
 
 ```
-step    1 / 1000 | loss 3.5698 | val loss 3.6733 | effective choices 39.4 of 38
-step  501 / 1000 | loss 2.7344 | val loss 2.7258 | effective choices 15.3 of 38
-step 1000 / 1000 | loss 2.5121 | val loss 2.6926 | effective choices 14.8 of 38
-training took 662.2s
+step    1 / 1000 | loss 3.5698 | val loss 3.6741 | effective choices 39.4 of 38
+step  501 / 1000 | loss 2.7218 | val loss 2.7185 | effective choices 15.2 of 38
+step 1000 / 1000 | loss 3.4516 | val loss 2.6875 | effective choices 14.7 of 38
+training took 520.0s
 ```
 
-Versus train3's 2.6886 / 14.7: **statistically the same** (14.8, within noise
-on a 55-doc val set), with a slightly lower train loss (2.5121 vs 2.5713 —
-a bit more fitting muscle). The scoreboard so far, and it's humbling:
+Versus train3's 2.6796 / 14.6: **statistically the same** (14.7, within noise
+on a 52-doc val set). The scoreboard so far, and it's humbling:
 
 | model | val loss | eff. choices |
 |---|---|---|
-| counting (train0) | **2.6774** | **14.5** |
-| MLP bigram (train1/2) | 2.7301 | 15.3 |
-| + attention (train3) | 2.6886 | 14.7 |
-| + multi-head (train4) | 2.6926 | 14.8 |
+| counting (train0) | **2.6764** | **14.5** |
+| MLP bigram (train1/2) | 2.7239 | 15.2 |
+| + attention (train3) | 2.6796 | 14.6 |
+| + multi-head (train4) | 2.6875 | 14.7 |
 
 A complete GPT architecture and a count table are neck and neck, table ahead.
 If the course stopped here you'd conclude transformers are overrated. The
@@ -102,7 +101,7 @@ head 0:
     ^ | @
     t | @@
     e | @@#
-    s | @%@@
+    s | @@@@
     t | @@@@@
     - | @%%@%@
 ```
@@ -111,15 +110,15 @@ head 3:
       ^test-time-training
     ^ | @
     t | @@
-    e | %@@
-    s | #*%@
+    e | @@@
+    s | #*@@
     t | #@%%@
     - | @#@@%@
 ```
 
 At this scale, honesty
 compels the observation that they have **not** specialized into crisp,
-nameable roles. All four keep the BOS sink — heads 0 and 2 most visibly, head 3
+nameable roles. All four keep the BOS sink — head 0 most visibly, head 3
 spreading a bit more evenly across recent characters — but they differ in
 texture, not in story. Expecting "head 2 tracks hyphens" from 4,928 parameters is romance. What
 four heads reliably buy is four *chances* — and redundancy when some of
@@ -138,7 +137,7 @@ invisible infrastructure. This rung is where you watch one get installed.
 ## Exercises
 
 **1. Predict, then run.** The scoreboard above already showed the outcome:
-14.7 → 14.8, a statistical tie. The question worth committing to *before
+14.6 → 14.7, a statistical tie. The question worth committing to *before
 reading the solution*: could you have ruled that tie out in advance? Given
 identical parameter counts, what would a big win — or a big loss — have told
 you?
@@ -151,7 +150,7 @@ skin in the game when the bar chart prints.
 
 **3. Extend it.** Set `n_layer = 2`. Predict all of: the new parameter count
 (count it from the state_dict shapes before running), the direction of train
-loss, the direction of val loss on 543 docs, and the runtime. Run `--fast` and
+loss, the direction of val loss on 511 docs, and the runtime. Run `--fast` and
 grade yourself on all four.
 
 <details>
@@ -162,7 +161,7 @@ bias](../GLOSSARY.md#inductive-bias) (the assumptions a design bakes in):
 four narrow
 heads can be *worse* if the task really wanted one wide correlation (head_dim
 drops 16 → 4, and each softmax sees only a quarter of the signal). Here they
-tied (14.7 vs 14.8): at bigram-ish loss levels on 488 docs, the split neither
+tied (14.6 vs 14.7): at bigram-ish loss levels on 459 docs, the split neither
 pays nor charges. The lesson is that it was free, not that it was magic.
 
 **2.** Filed at rung 7 — the lab prints the answer as a bar chart; the notes
@@ -171,7 +170,7 @@ there discuss it *after* the reader has committed. No spoilers here.
 **3.** Parameter count: each layer adds 4·(16·16) attention + 2·(64·16) MLP =
 3,072, so 4,928 → 8,000. The other three you grade from your own run — and
 the val-direction question is the interesting one on a corpus this small
-(more capacity, same 488 docs: watch the train/val gap, not just val).
+(more capacity, same 459 docs: watch the train/val gap, not just val).
 
 </details>
 

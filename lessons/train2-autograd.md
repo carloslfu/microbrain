@@ -101,12 +101,12 @@ sitting.
 Put train1's log and train2's side by side:
 
 ```
-train1:  step 1: 3.6369   step 501: 2.7682   step 1000: 2.5796   val 2.7301
-train2:  step 1: 3.6369   step 501: 2.7682   step 1000: 2.5796   val 2.7301
+train1:  step 1: 3.6369   step 501: 2.7228   step 1000: 3.6912   val 2.7239
+train2:  step 1: 3.6369   step 501: 2.7228   step 1000: 3.6912   val 2.7239
 ```
 
 Identical. Not similar — identical to every printed decimal, all the way down
-to producing the same 20 samples at the end (`gentid`, `224`, `ice-an`...).
+to producing the same 20 samples at the end (`ingrid`, `224`, `l-cach`...).
 Same seed, same math, different author: in train1 you were the chain rule; in
 train2 the graph is. This is the strongest possible verification that the
 abstraction is faithful, and you get it for free by diffing two logs.
@@ -114,11 +114,11 @@ abstraction is faithful, and you get it for free by diffing two logs.
 The price, measured on this laptop:
 
 ```
-train1: training took 9.7s
-train2: training took 433.8s
+train1: training took 9.5s
+train2: training took 408.4s
 ```
 
-~45× slower. Every `+` now allocates an object instead of adding two floats.
+~43× slower. Every `+` now allocates an object instead of adding two floats.
 This is the honest cost of flexibility, and it previews the epilogue: PyTorch
 is, at heart, this same Value class where the "one number" is a million-entry
 tensor — the bookkeeping amortized until it disappears.
@@ -160,7 +160,7 @@ read: `L` grad +1, `diff` grad −6, everything deeper 0.0000. The reason:
 walked forward, every node gives out its blame *before* it has received any.
 `diff` gets its −6 only after its own turn has already passed, so the blame
 stops there — one layer deep. And training? It runs without
-any error — 300 steps, 135 seconds of flawless forward passes — and learns
+any error — 300 steps, 126 seconds of flawless forward passes — and learns
 nothing: val loss 3.6405, effective choices 38.1, at step 1, at step 151, and
 at step 300. Frozen at the shrug. This is the nastiest failure mode in the
 course: *no crash, plausible logs, zero learning.* Real-world variants of

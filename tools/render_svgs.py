@@ -39,13 +39,13 @@ def save(name, parts):
 
 # ---------------------------------------------------------------- ladder hero
 def ladder():
-    stages = [('uniform', 38.0, MUTED), ('counting', 14.5, BLUE), ('by hand', 15.3, BLUE),
-              ('autograd', 15.3, BLUE), ('attention', 14.7, BLUE), ('multi-head', 14.8, BLUE),
-              ('Adam', 13.8, RED)]
+    stages = [('uniform', 38.0, MUTED), ('counting', 14.5, BLUE), ('by hand', 15.2, BLUE),
+              ('autograd', 15.2, BLUE), ('attention', 14.6, BLUE), ('multi-head', 14.7, BLUE),
+              ('Adam', 13.7, RED)]
     W, H, base = 1170, 356, 286
     s = svg_open(W, H)
     s.append(text(56, 34, 'effective choices — among how many characters is the model still guessing?', 15, INK, bold=True))
-    s.append(text(56, 54, 'e^(val loss), full runs, 543-doc corpus · lower is better · red: the rung that finally beats the count table', 12, MUTED))
+    s.append(text(56, 54, 'e^(val loss), full runs, 511-doc corpus · lower is better · red: the rung that finally beats the count table', 12, MUTED))
 
     # left panel — full scale: training collapses 38 -> ~14
     lx, lbw, lgap = 56, 34, 10
@@ -208,7 +208,7 @@ def damage():
 def pipeline():
     # rung 0's map: six stages. backward earns its box at rung 2 (this SVG
     # is embedded only in train0's lesson, whose ASCII map matches).
-    stages = [('docs', '543 idea names'), ('tokenize', 'chars -> ids'), ('model', 'the box that grows'),
+    stages = [('docs', '511 idea names'), ('tokenize', 'chars -> ids'), ('model', 'the box that grows'),
               ('loss', 'surprise'), ('update', 'step params'),
               ('sample', 'babble new names')]
     W, Hh, bw, bh, gap, y = 800, 214, 104, 46, 18, 96

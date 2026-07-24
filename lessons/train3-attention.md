@@ -89,24 +89,24 @@ and a reason — exercise 1 grades you.
 
 ```
 num params: 4928
-step    1 / 1000 | loss 3.7557 | val loss 3.6776 | effective choices 39.6 of 38
-step  501 / 1000 | loss 2.7643 | val loss 2.7225 | effective choices 15.2 of 38
-step 1000 / 1000 | loss 2.5713 | val loss 2.6886 | effective choices 14.7 of 38
-training took 627.8s
+step    1 / 1000 | loss 3.7557 | val loss 3.6756 | effective choices 39.5 of 38
+step  501 / 1000 | loss 2.7633 | val loss 2.7123 | effective choices 15.1 of 38
+step 1000 / 1000 | loss 3.6591 | val loss 2.6796 | effective choices 14.6 of 38
+training took 477.4s
 ```
 
-- **It starts *worse* than the shrug** — 39.6 effective choices out of 38.
+- **It starts *worse* than the shrug** — 39.5 effective choices out of 38.
   train1 began a whisker from uniform; this model begins *actively confused*,
   because random attention pulls noise from random places into every
   prediction. More machinery, more ways to be wrong before training.
-- **Val 2.6886 (14.7 choices): still behind counting's 2.6774 (14.5).** Read
+- **Val 2.6796 (14.6 choices): still behind counting's 2.6764 (14.5).** Read
   that again — a transformer, losing to a count table. No trick: SGD is
   underfitting this much richer model, and the fix is two rungs away (Adam).
   Beware the reflex "fancier architecture ⇒ better number"; the optimizer has
   a vote.
-- **But the samples stopped being bigram babble:** `malaranti-senge-marin`,
-  `ale-stin`, `sinitintheunstin`, `jarn-an-meting`. Suffix machinery (`-ing`,
-  `-tion`), hyphen-separated segments with word-like lengths. Loss and taste
+- **But the samples stopped being bigram babble:** `malaranti-senin-marin`,
+  `ale-stin`, `apariont-g`, `tanel-he-arenont-ri`. Suffix machinery (`-ont`,
+  `-in`), hyphen-separated segments with word-like lengths. Loss and taste
   disagree here, and both are honest: average per-character surprise is
   dominated by ordinary characters, while *structure* shows up in samples long
   before it moves the average. Keep both instruments.
@@ -123,7 +123,7 @@ columns = where its attention went:
     t | @@##%
     - | @@%@@@
     ...
-    n | @#%**%#@#%%*#%@%
+    n | @*#**%*@##%*#%@%@%
 ```
 
 The same weights, drawn properly:
@@ -178,8 +178,8 @@ the keys and queries learn to match sensibly.
 **2.** The textbook mechanism: unscaled dot products grow with dimension,
 softmax saturates toward one-hot, and the gradient through a saturated
 softmax goes quiet — attention's *routing* stops learning. Now the measured
-truth at *this* dimension: removing the scale changed val loss from 2.8146
-to 2.8149 at 300 steps. **Nothing.** Sixteen dimensions of rmsnorm'd
+truth at *this* dimension: removing the scale changed val loss from 2.8071
+to 2.8068 at 300 steps. **Nothing.** Sixteen dimensions of rmsnorm'd
 [activations](../GLOSSARY.md#activations) against 0.08-scale weights simply never produce logits big
 enough to saturate. The 1/√d division is insurance written for large d — at
 d = 4,096 it's load-bearing; at d = 16 it's a formality. You just ran your

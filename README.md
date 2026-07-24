@@ -26,8 +26,7 @@ too, read with an AI agent alongside; it fills gaps on demand.
 ## Quickstart
 
 ```
-python data/make_dataset.py     # harvest the corpus (or: --names for Karpathy's 32k names)
-python train0.py                # instant
+python train0.py                # instant — the corpus ships with the repo
 python train1.py                # ~10 s
 ```
 
@@ -35,18 +34,20 @@ Then read `lessons/train0-counting.md` — the lessons assume you run first, rea
 second. Three practical notes:
 
 - `python` means your Python 3; some systems spell it `python3`.
-- Not the author of this particular brain? Step 1 harvests *his* knowledge
-  base. Bring your own corpus instead: `--names` downloads Karpathy's 32k
-  human names, or `--from yourlist.txt` trains on any file of short strings,
-  one per line. (Keep a db.md brain of your own?
-  `MICROBRAIN_DB=~/my-store/records` points the harvester at it.)
+- The corpus is committed: `data/data.txt`, 511 idea names from the author's
+  knowledge base (lightly curated — a few dozen private slugs removed;
+  [data/MANIFEST.txt](data/MANIFEST.txt) pins the exact file). So every
+  number in the lessons reproduces on your machine, out of the box. Prefer
+  your own corpus? `python data/make_dataset.py --names` downloads Karpathy's
+  32k human names, `--from yourlist.txt` trains on any file of short strings,
+  and `MICROBRAIN_DB=~/my-store/records` harvests your own db.md brain.
 - Worth doing from the start: `mkdir -p out`, then run each rung as
   `python trainN.py | tee out/trainN.log` (`tee` shows the output *and*
   saves it). `compare.py` builds the final ladder from those saved logs.
 
 Then keep climbing. Honest timings on a laptop (pure-Python, one number
-at a time — the slowness is the point, not a flaw): train2 ≈ 7 min, train3–train6 ≈ 10–12 min each,
-train7 ≈ 18 min for all six runs (five surgeries plus the baseline). Every
+at a time — the slowness is the point, not a flaw): train2 ≈ 7 min, train3–train6 ≈ 8–9 min each,
+train7 ≈ 15 min for all six runs (five surgeries plus the baseline). Every
 rung from train1 up takes `--fast`: 300 steps instead of the full 1,000
 (train7's lab drops to 100 per surgery). That's seconds on the early rungs
 and a few minutes on the heavy ones — the shape without the wait. And
@@ -85,38 +86,37 @@ From rung 3 on, every file trains the same tiny GPT — vocab 38 · dims 16 ·
 context 40 · **1 layer** · 4,928 params, single-head at rung 3 and 4 heads
 from rung 4 — the dials printed on the
 [architecture diagram](assets/architecture.svg). Numbers below are from full
-runs on this repo's corpus (543 idea names, 38-token vocabulary, 10% held
+runs on this repo's corpus (511 idea names, 38-token vocabulary, 10% held
 out):
 
 | rung | file | the one new idea | val loss | effective choices¹ |
 |---|---|---|---|---|
 | — | — | uniform shrug (no model) | 3.6376 | 38.0 |
-| 0 | [train0.py](train0.py) · [lesson](lessons/train0-counting.md) | bigram by **counting** | 2.6774 | 14.5 |
-| 1 | [train1.py](train1.py) · [lesson](lessons/train1-gradient-descent.md) | **gradients, by hand** (SGD) | 2.7301 | 15.3 |
-| 2 | [train2.py](train2.py) · [lesson](lessons/train2-autograd.md) | **autograd** — same numbers, ~45× slower, Karpathy's file gets *shorter* | 2.7301 | 15.3 |
-| 3 | [train3.py](train3.py) · [lesson](lessons/train3-attention.md) | **attention** + positions + residuals + rmsnorm | 2.6886 | 14.7 |
-| 4 | [train4.py](train4.py) · [lesson](lessons/train4-multi-head.md) | **multi-head** — same param count, four spotlights | 2.6926 | 14.8 |
-| 5 | [train5.py](train5.py) · [lesson](lessons/train5-adam.md) | **Adam** — the count table finally falls | **2.6216** | **13.8** |
-| 6 | [train6.py](train6.py) · [lesson](lessons/train6-inference-toolkit.md) | *(ours)* save/load, temperature, the KV cache measured, the quiz | 2.6216 | 13.8 |
+| 0 | [train0.py](train0.py) · [lesson](lessons/train0-counting.md) | bigram by **counting** | 2.6764 | 14.5 |
+| 1 | [train1.py](train1.py) · [lesson](lessons/train1-gradient-descent.md) | **gradients, by hand** (SGD) | 2.7239 | 15.2 |
+| 2 | [train2.py](train2.py) · [lesson](lessons/train2-autograd.md) | **autograd** — same numbers, ~43× slower, Karpathy's file gets *shorter* | 2.7239 | 15.2 |
+| 3 | [train3.py](train3.py) · [lesson](lessons/train3-attention.md) | **attention** + positions + residuals + rmsnorm | 2.6796 | 14.6 |
+| 4 | [train4.py](train4.py) · [lesson](lessons/train4-multi-head.md) | **multi-head** — same param count, four spotlights | 2.6875 | 14.7 |
+| 5 | [train5.py](train5.py) · [lesson](lessons/train5-adam.md) | **Adam** — the count table finally falls | **2.6165** | **13.7** |
+| 6 | [train6.py](train6.py) · [lesson](lessons/train6-inference-toolkit.md) | *(ours)* save/load, temperature, the KV cache measured, the quiz | 2.6165 | 13.7 |
 | 7 | [train7.py](train7.py) · [lesson](lessons/train7-ablation-lab.md) | *(ours)* the ablation lab: break it on purpose, organ by organ | — | — |
 | end | [namer.py](namer.py) · [epilogue](lessons/epilogue.md) | your model as a tool; the bridge to production | — | — |
 
 ¹ `e^(val loss)`: out of 38 possible next characters, how many is the model
 still effectively guessing among? Uniform = 38, perfect = 1. (An untrained
 model can even score *above* 38 — rung 3 opens there.) The standard name is
-perplexity. Watch it fall down the ladder, 38 → 13.8 — the bumps at rungs 1
+perplexity. Watch it fall down the ladder, 38 → 13.7 — the bumps at rungs 1
 and 4 are lessons, and the lessons own them.
 
 The mid-ladder plot twist is real and deliberate: **a complete GPT loses to a
-count table for two straight rungs** (14.7, 14.8 vs 14.5) until the optimizer
+count table for two straight rungs** (14.6, 14.7 vs 14.5) until the optimizer
 rung lands. The architecture was never the bottleneck. Rung 5's lesson is
 where that sinks in.
 
-Every number in the lessons comes from *this* corpus with *these* seeds —
-one frozen snapshot, hash-pinned in [data/MANIFEST.txt](data/MANIFEST.txt)
-(a live brain grows; the harvester warns when a fresh harvest drifts from
-the pin) — and the runs are deterministic: on the same data, your logs
-match the lessons digit for digit. Your own corpus (`--names`, `--from`) gives
+Every number in the lessons comes from the committed corpus — one frozen
+snapshot, shipped as `data/data.txt` and hash-pinned in
+[data/MANIFEST.txt](data/MANIFEST.txt) — and the runs are deterministic:
+clone, train, and your logs match the lessons digit for digit. Your own corpus (`--names`, `--from`) gives
 different numbers — and, measured, a partly different plot
 ([runs/names-ladder.log](runs/names-ladder.log)): on Karpathy's 32k names
 the mechanisms replay exactly (train1 and train2 still match to the digit;
@@ -135,7 +135,7 @@ train0.py … train5.py    the canon — Karpathy's six build-steps, ported (blo
 train6.py  train7.py     ours — the inference toolkit and the ablation lab
 namer.py                 the payoff: out/model.json (train6's output) as a name-generating tool (try --quiz)
 compare.py               the ladder on one screen
-data/make_dataset.py     corpus harvester (data.txt stays out of the repository — it's personal)
+data/                    data.txt, the committed 511-name corpus (MANIFEST.txt pins it) + the harvester
 lessons/                 one lesson per rung + the epilogue
 GLOSSARY.md              every term in plain words, with its aliases and the rung
                          where it's earned — for mid-course lookups
@@ -161,14 +161,14 @@ maps, the SGD-vs-Adam race, and the childhood album:
 
 ```
 step    0 | m129o8dwl-x7nfi1o8kliw13m-uvwax1c7omlpp6, fpx3bbb2kk73p9lfqj3pl, iqz, ...
-step   50 | reva-ve, manrema-lalat-g-s, re-la-tonias, ...
-step  250 | menticarerenmiti-landiol-s, eorel-mesellarepe-patinstis-vacpong, ...
-step 1000 | mianicov, reat-hivarsian, jang-tin-tining-avingantige, agan-folin, ...
+step   50 | rat--ye, jantinb-lako, el-orta-lbaures-t, ...
+step  250 | padereange-dinulintti-manatin-s, henge-en, larenatingasening, ...
+step 1000 | ag-ong, arense-arereinit-mare, moderar, vem-santt-romantinion, ...
 ```
 
 That's one model, photographed at four ages, learning the shape of idea names
-from pure static (random noise) — the whole childhood, eleven minutes of
-laptop time.
+from pure static (random noise) — the whole childhood, eight and a half
+minutes of laptop time.
 
 ## Credits
 

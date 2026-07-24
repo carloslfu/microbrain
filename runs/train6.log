@@ -1,36 +1,36 @@
-num docs: 488 train / 55 val
+num docs: 459 train / 52 val
 vocab size: 38
 num params: 4928
-step    1 / 1000 | loss 3.5698 | val loss 3.6669 | effective choices 39.1 of 38
-step  501 / 1000 | loss 2.6792 | val loss 2.6778 | effective choices 14.6 of 38
-step 1000 / 1000 | loss 2.4283 | val loss 2.6216 | effective choices 13.8 of 38
-training took 705.1s — now the toolkit
+step    1 / 1000 | loss 3.5698 | val loss 3.6680 | effective choices 39.2 of 38
+step  501 / 1000 | loss 2.6680 | val loss 2.6704 | effective choices 14.4 of 38
+step 1000 / 1000 | loss 3.5158 | val loss 2.6165 | effective choices 13.7 of 38
+training took 482.1s — now the toolkit
 
-1) saved model to out/model.json (106,388 bytes) | val loss 2.621591
+1) saved model to out/model.json (106,337 bytes) | val loss 2.616468
    all 4928 params zeroed. it now babbles: ['02e3x0jbv5bb8-f2l1agx24t-xk9usct6mjtaesi', 'pnowhod0r5uxo5bd1gkb62m-c7jqxn', 'zm7h5']
-   loaded it back. val loss 2.621591 | identical: True
+   loaded it back. val loss 2.616468 | identical: True
    the JSON file of floats IS the model. everything else is scaffolding.
 
 2) temperature ladder (same random seed each row):
-   T=0.1 | ant-conting, pran-marating, mare-maratin-sengerion, arin-are-angentining, conge-marengen, man-ararining
-   T=0.5 | comanes, man, torary-mararan, si-madelint-ferals, mose, war-vefe-moreringerionpraten
-   T=1.0 | dhegervssee, visary-mbododittiarl-mastidediag, rktui, yat-wlak-prollinges, gomk-seovicerpy, 3-epalsemurn-y-aurd4
+   T=0.1 | antin-stingrin, are-arelan, mare-congerengen-s, maron-seratingen, mare-aron-serarention, maran-mantinin
+   T=0.5 | comaniton-h, toraru-mararcor, mark-kasefe-aral, post-vsat-tolaartins, gemepe-heatin, olark
+   T=1.0 | dheferutiif, urt2, v-meoboenty, aon-markicifice, rlsui, yas-wlch-orolmemelmininpass
    low T: argmax-ish, repetitive, safe. high T: adventurous, eventually noise.
 
 3) the KV cache, measured on one generation:
-   with cache:    'ceos-fipo-abl-paliting' |  23 model calls | 0.366s
-   without cache: 'ceos-fipo-abl-paliting' | 276 model calls | 4.601s (recompute the whole prefix per char)
+   with cache:    'ceot-hipo-ban-pallsild' |  23 model calls | 0.130s
+   without cache: 'ceot-hipo-ban-pallsild' | 276 model calls | 1.737s (recompute the whole prefix per char)
    same name, same math — the cache just refuses to redo work. this gap grows with length.
 
 4) novelty filter: 30 samples -> 0 verbatim training docs, 0 empty -> 30 genuinely new
-   survivors: oam-ppran-ci-condis-sthaul-astrpr, gorloni-beal-erfgeltiollan, onntic-chatthon, jalien, ha, labbore-d, mut-pomarang, thedy, epocqusi-d-trse-ty-icoranimplarpen, pim-bendacony
+   survivors: nalarls-f-claioncor-syncul-burs, mumisitio-chal-dingem, nicodd, niorpa-chauthpitigenen, ha, labbore-d, mut-ponepang, sematreng-sism-d-tronatucicoranin, imeral, nghaifg-barew
 
 5) quiz — real brain record or hallucination?
-   1. gorloni-beal-erfgeltiollan
-   2. typed-provenance-for-llm-agents
-   3. ai-driven-drug-discovery
-   4. jalien
-   5. engram-labs-weight-memory-vs-dbmd
-   6. onntic-chatthon
+   1. mumisitio-chal-dingem
+   2. distillation-rl-spectrum
+   3. personal-ai-usage-registry
+   4. niorpa-chauthpitigenen
+   5. osworld-verified
+   6. nicodd
 
    (answers: 1 FAKE, 2 real, 3 real, 4 FAKE, 5 real, 6 FAKE)

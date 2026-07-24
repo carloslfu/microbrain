@@ -124,7 +124,7 @@ aka block size, context length. Rung 3.
 
 #### corpus
 
-the collection of documents a model trains on. Ours: 543 idea
+the collection of documents a model trains on. Ours: 511 idea
 names. Rung 0.
 
 #### cross-entropy
@@ -473,7 +473,7 @@ see **residual stream**.
 #### slug
 
 a short, hyphenated, identifier-style name, like
-`test-time-training`. Our corpus is 543 of them.
+`test-time-training`. Our corpus is 511 of them.
 
 #### softmax
 
